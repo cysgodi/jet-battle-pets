@@ -12,4 +12,3 @@ integrations/rematch.lua
 
 # init
 init/events.lua
-init/main.lua
