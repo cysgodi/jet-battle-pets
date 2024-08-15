@@ -1,6 +1,5 @@
 local _, ketchum = ...
 
-
 local events = CreateFrame("Frame")
 
 function events:OnEvent(event, ...)
