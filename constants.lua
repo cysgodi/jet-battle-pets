@@ -1,0 +1,3 @@
+local _, ketchum = ...
+
+Ketchum = ketchum -- global namespace

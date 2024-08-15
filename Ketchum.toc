@@ -4,4 +4,12 @@
 ## Author: Cysgodi
 ## Notes: An assistant to help you catch every battle pet you want.
 
-Ketchum.lua
+# globals
+constants.lua
+
+# 3rd party integrations
+integrations/rematch.lua
+
+# init
+init/events.lua
+init/main.lua
