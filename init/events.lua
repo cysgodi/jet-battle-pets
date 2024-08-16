@@ -12,7 +12,7 @@ function events:ADDON_LOADED(event, addonname)
   end
 end
 
-function events:PET_BATTLE_OPENING_DONE()
+function events:PET_BATTLE_OPENING_START()
     local numEnemies = C_PetBattles.GetNumPets(Enum.BattlePetOwner.Enemy)
 
     for i = 1, numEnemies do
@@ -28,16 +28,15 @@ function events:PET_BATTLE_OPENING_DONE()
         probability = C_PetJournal.GetDisplayProbabilityByIndex(speciesID, displayIdIndex)
       end
 
-      local pet = ketchum.pets.GetPet(speciesID)
-
-      print(pet.name, probability)
-
       if probability <= 10 then
-        PlaySoundFile("Interface\\AddOns\\Ketchum\\pla-shiny.mp3")
+        PlaySoundFile("Interface\\AddOns\\Ketchum\\assets\\pla-shiny.mp3")
+        local pet = ketchum.pets.GetPet(speciesID)
+        local starIcon = CreateAtlasMarkup("rare-elite-star")
+        print('|c00ffff00'..starIcon..' A shiny '..pet.name..' appears! '..starIcon..'|r')
       end
     end
 end
 
 events:RegisterEvent("ADDON_LOADED")
-events:RegisterEvent("PET_BATTLE_OPENING_DONE")
+events:RegisterEvent("PET_BATTLE_OPENING_START")
 events:SetScript("OnEvent", events.OnEvent)
