@@ -10,17 +10,10 @@ local function isShiny(_, petID)
     return false
   end
 
-  local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
-
-  local displayIdIndex
-
-  for i = 1, numDisplays do
-    local displayID = C_PetJournal.GetDisplayIDByIndex(petInfo.speciesID, i)
-
-    if displayID == petInfo.displayID then
-      displayIdIndex = i
-    end
-  end
+  local displayIdIndex = ketchum.journal:GetDisplayIndex(
+    petInfo.speciesID, 
+    petInfo.displayID
+  )
 
   if not displayIdIndex then
     return false
