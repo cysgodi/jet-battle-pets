@@ -28,7 +28,13 @@ function events:PET_BATTLE_OPENING_DONE()
         probability = C_PetJournal.GetDisplayProbabilityByIndex(speciesID, displayIdIndex)
       end
 
-      print(speciesID, displayID, probability)
+      local pet = ketchum.pets.GetPet(speciesID)
+
+      print(pet.name, probability)
+
+      if probability <= 10 then
+        PlaySoundFile("Interface\\AddOns\\Ketchum\\pla-shiny.mp3")
+      end
     end
 end
 
