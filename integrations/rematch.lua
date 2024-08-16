@@ -26,11 +26,13 @@ end
 
 -- register a badge to Rematch that displays on shiny pets
 function ketchum.rematch:AddShinyBadge() 
+  local atlas = C_Texture.GetAtlasInfo("rare-elite-star")
+
   Rematch.badges:RegisterBadge(
       "pets", 
       "shiny", 
-      "Interface\\Icons\\racial_dwarf_findtreasure",
-      { 0.075, 0.925, 0.075, 0.925 },
+      atlas.file,
+      { 0.936, 0.998, 0.502, 0.564 },
       isShiny
   )
 
