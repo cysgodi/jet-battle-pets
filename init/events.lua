@@ -8,7 +8,8 @@ end
 
 function events:ADDON_LOADED(event, addonname)
   if addonname == "Rematch" then
-    ketchum.rematch:AddShinyBadge()
+    ketchum.rematch:AddHasShinyBadge()
+    ketchum.rematch:AddIsShinyBadge()
   end
 end
 
