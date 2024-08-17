@@ -29,11 +29,17 @@ function events:PET_BATTLE_OPENING_START()
         probability = C_PetJournal.GetDisplayProbabilityByIndex(speciesID, displayIdIndex)
       end
 
+      local shinyIcon = CreateAtlasMarkup("rare-elite-star")
+        
+
       if probability <= 10 then
         PlaySoundFile("Interface\\AddOns\\Ketchum\\assets\\pla-shiny.mp3")
         local pet = ketchum.pets.GetPet(speciesID)
-        local starIcon = CreateAtlasMarkup("rare-elite-star")
-        print('|c00ffff00'..starIcon..' A shiny '..pet.name..' appears! '..starIcon..'|r')
+        print('|c00ffff00'..shinyIcon..' A shiny '..pet.name..' appears! '..shinyIcon..'|r')
+        
+        if i == 1 then
+          ketchum.battleUi:TagShinyActivePet()
+        end
       end
     end
 end

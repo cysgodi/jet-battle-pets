@@ -9,6 +9,7 @@ constants.lua
 
 # utility functions
 utils/journal.lua
+utils/battleUi.lua
 
 # 3rd party integrations
 integrations/rematch.lua
