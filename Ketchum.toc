@@ -1,8 +1,8 @@
 ## Interface: 110002
-## Version: 0.0.1
+## Version: 0.0.2
 ## Title: Ketchum
 ## Author: Cysgodi
-## Notes: An assistant to help you catch every battle pet you want.
+## Notes: Never miss a shiny battle pet.
 
 # globals
 constants.lua
