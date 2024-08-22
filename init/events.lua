@@ -14,37 +14,21 @@ function events:ADDON_LOADED(event, addonname)
 end
 
 function events:PET_BATTLE_OPENING_START()
-    local numEnemies = C_PetBattles.GetNumPets(Enum.BattlePetOwner.Enemy)
+  ketchum.battleUi:UpdateShinyFrames()
+end
 
-    for i = 1, numEnemies do
-      local speciesID = C_PetBattles.GetPetSpeciesID(Enum.BattlePetOwner.Enemy, i)
+function events:PET_BATTLE_OVER()
+  ketchum.battleUi:AfterBattle()
+end
 
-      local displayID = C_PetBattles.GetDisplayID(Enum.BattlePetOwner.Enemy, i)
-
-      local displayIdIndex = ketchum.journal:GetDisplayIndex(speciesID, displayID)
-
-      local probability
-
-      if displayIdIndex then
-        probability = C_PetJournal.GetDisplayProbabilityByIndex(speciesID, displayIdIndex)
-      end
-
-      local shinyIcon = CreateAtlasMarkup("rare-elite-star")   
-
-      if probability <= 10 then
-        PlaySoundFile("Interface\\AddOns\\Ketchum\\assets\\pla-shiny.mp3")
-        local pet = ketchum.pets.GetPet(speciesID)
-        print('|c00ffff00'..shinyIcon..' A shiny '..pet.name..' appears! '..shinyIcon..'|r')
-
-        if i == 1 then
-          ketchum.battleUi:TagShinyActivePet()
-        else
-          ketchum.battleUi:TagShinyBackPet(i)
-        end
-      end
-    end
+function events:PET_BATTLE_PET_CHANGED(_, owner)
+  if owner == Enum.BattlePetOwner.Enemy then
+    ketchum.battleUi:UpdateShinyFrames()
+  end
 end
 
 events:RegisterEvent("ADDON_LOADED")
 events:RegisterEvent("PET_BATTLE_OPENING_START")
+events:RegisterEvent("PET_BATTLE_OVER")
+events:RegisterEvent("PET_BATTLE_PET_CHANGED")
 events:SetScript("OnEvent", events.OnEvent)
