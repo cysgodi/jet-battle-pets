@@ -34,7 +34,7 @@ function ketchum.battleUi:UpdateShinyFrames()
       displayID
     )
 
-    if probability <= 10 then
+    if probability <= ketchum.DEFAULT_SHINY_THRESHOLD then
       if not ketchum.battleUi.alertsFired then
         PlaySoundFile("Interface\\AddOns\\Ketchum\\assets\\pla-shiny.mp3")
         ketchum.battleUi:PrintShinyAlert(speciesID)

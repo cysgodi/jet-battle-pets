@@ -23,7 +23,7 @@ local function hasShiny(_, petID)
   for i = 1, numVariants do
     local probability = C_PetJournal.GetDisplayProbabilityByIndex(petInfo.speciesID, i)
 
-    if(probability <= 10) then
+    if(probability <= ketchum.DEFAULT_SHINY_THRESHOLD) then
       return true
     end
   end
