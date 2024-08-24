@@ -29,15 +29,10 @@ function ketchum.battleUi:UpdateShinyFrames()
 
     local displayIdIndex = ketchum.journal:GetDisplayIndex(speciesID, displayID)
 
-    local probability
-
-    if displayIdIndex then
-      probability = C_PetJournal.GetDisplayProbabilityByIndex(
-        speciesID, 
-        displayIdIndex
-      )
-    end
-
+    local probability = ketchum.journal:GetDisplayProbability(
+      speciesID,
+      displayID
+    )
 
     if probability <= 10 then
       if not ketchum.battleUi.alertsFired then
