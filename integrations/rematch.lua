@@ -3,7 +3,7 @@ local _, ketchum = ...
 ketchum.rematch = {}
 
 -- get variant stat text to display on a pet card
-local function DisplayVariantStats(_, petInfo)
+local function DisplayVariantCount(_, petInfo)
   if not petInfo or not petInfo.speciesID then
     return ""
   end
@@ -15,6 +15,11 @@ local function DisplayVariantStats(_, petInfo)
   end
 
   return numDisplays
+end
+
+-- get text to display on the tooltip for pet card variant stats
+local function DisplayVariantCountTooltip(_, petInfo)
+  return "How many unique models does this pet species have?"
 end
 
 -- should variant stats be shown for a pet?
@@ -119,8 +124,8 @@ function ketchum.rematch:AddVariantStats()
     icon = atlas.file,
     iconCoords = { 0.936, 0.998, 0.502, 0.564 },
     tooltipTitle = "Variants",
-    tooltipBody = "How many unique models does this pet species have?",
+    tooltipBody = DisplayVariantCountTooltip,
     show = ShouldShowVariants,
-    value = DisplayVariantStats
+    value = DisplayVariantCount
   })
 end
