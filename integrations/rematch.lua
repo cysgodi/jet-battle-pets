@@ -49,10 +49,18 @@ local function DisplayVariantCountTooltip(_, petInfo)
     )
 
     local probabilityText = 
-      probability > 70 and commonTextColor..probability.."%"..endTextColor 
-      or probability > 40 and uncommonTextColor..probability.."%"..endTextColor
-      or probability > 10 and rareTextColor..probability.."%"..endTextColor
-      or shinyTextColor..shinyIcon.." "..probability.."%"..endTextColor
+      probability > 70 and commonTextColor
+        ..format("%.2f%%", probability)
+        ..endTextColor 
+      or probability > 40 and uncommonTextColor
+        ..format("%.2f%%", probability)
+        ..endTextColor 
+      or probability > 10 and rareTextColor
+        ..format("%.2f%%", probability)
+        ..endTextColor 
+      or shinyTextColor..shinyIcon.." "
+        ..format("%.2f%%", probability)
+        ..endTextColor 
 
     tooltipBody = tooltipBody..probabilityText
   end
