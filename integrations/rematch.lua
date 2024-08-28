@@ -23,7 +23,7 @@ local function DisplayVariantCountTooltip(_, petInfo)
   local variantCount = numDisplays > 0 and numDisplays or 1
   local colorText = variantCount > 1 and "Colors" or "Color"
 
-  local baseText = "How many unique colors does this pet species have?\n\n"
+  local baseText = "How many unique models does this pet species have?\n\n"
     ..format("%d %s: ", variantCount, colorText)
   local commonTextColor = "|c00ffffff"
   local uncommonTextColor = "|c0000ff00"
