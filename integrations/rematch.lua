@@ -8,7 +8,13 @@ local function DisplayVariantStats(_, petInfo)
     return ""
   end
 
-  return C_PetJournal.GetNumDisplays(petInfo.speciesID)
+  local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
+
+  if numDisplays < 1 then
+    return 1
+  end
+
+  return numDisplays
 end
 
 -- should variant stats be shown for a pet?
@@ -17,7 +23,7 @@ local function ShouldShowVariants(_, petInfo)
     return false
   end
 
-  return C_PetJournal.GetNumDisplays(petInfo.speciesID) > 0
+  return  C_PetJournal.GetNumDisplays(petInfo.speciesID) >= 0
 end
 
 -- does the species with the provided ID have a shiny variant?
