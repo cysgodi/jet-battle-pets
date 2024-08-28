@@ -2,6 +2,24 @@ local _, ketchum = ...
 
 ketchum.rematch = {}
 
+-- get variant stat text to display on a pet card
+local function DisplayVariantStats(_, petInfo)
+  if not petInfo or not petInfo.speciesID then
+    return ""
+  end
+
+  return C_PetJournal.GetNumDisplays(petInfo.speciesID)
+end
+
+-- should variant stats be shown for a pet?
+local function ShouldShowVariants(_, petInfo)
+  if not petInfo or not petInfo.speciesID then
+    return false
+  end
+
+  return C_PetJournal.GetNumDisplays(petInfo.speciesID) > 0
+end
+
 -- does the species with the provided ID have a shiny variant?
 local function hasShiny(_, petID)
   local petInfo = Rematch.petInfo:Fetch(petID)
@@ -85,4 +103,18 @@ function ketchum.rematch:AddIsShinyBadge()
   if( Rematch.frame:IsVisible()) then
     Rematch.frame:Update()
   end
+end
+
+-- add variant stats to Rematch pet cards
+function ketchum.rematch:AddVariantStats()
+  local atlas = C_Texture.GetAtlasInfo("rare-elite-star")
+
+  tinsert(Rematch.petCardStats, {
+    icon = atlas.file,
+    iconCoords = { 0.936, 0.998, 0.502, 0.564 },
+    tooltipTitle = "Variants",
+    tooltipBody = "How many unique models does this pet species have?",
+    show = ShouldShowVariants,
+    value = DisplayVariantStats
+  })
 end
