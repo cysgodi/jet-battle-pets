@@ -19,8 +19,48 @@ end
 
 -- get text to display on the tooltip for pet card variant stats
 local function DisplayVariantCountTooltip(_, petInfo)
-  return "How many unique models does this pet species have?"
+  local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
+  local variantCount = numDisplays > 0 and numDisplays or 1
+  local colorText = variantCount > 1 and "Colors" or "Color"
+
+  local baseText = "How many unique colors does this pet species have?\n\n"
+    ..format("%d %s: ", variantCount, colorText)
+  local commonTextColor = "|c00ffffff"
+  local uncommonTextColor = "|c0000ff00"
+  local rareTextColor = "|c000000ff"
+  local shinyTextColor = "|c00ffff00"
+  local endTextColor = "|r"
+  local shinyIcon = CreateAtlasMarkup("rare-elite-star") 
+
+  if numDisplays <= 1 then
+    return baseText..commonTextColor.."100%"..endTextColor
+  end
+
+  local tooltipBody = baseText
+
+  for slot = 1, numDisplays do
+    if slot ~= 1 then
+      tooltipBody = tooltipBody.." / "
+    end
+
+    local probability = C_PetJournal.GetDisplayProbabilityByIndex(
+      petInfo.speciesID, 
+      slot
+    )
+
+    local probabilityText = 
+      probability > 70 and commonTextColor..probability.."%"..endTextColor 
+      or probability > 40 and uncommonTextColor..probability.."%"..endTextColor
+      or probability > 10 and rareTextColor..probability.."%"..endTextColor
+      or shinyTextColor..shinyIcon.." "..probability.."%"..endTextColor
+
+    tooltipBody = tooltipBody..probabilityText
+  end
+
+  return tooltipBody
 end
+
+
 
 -- should variant stats be shown for a pet?
 local function ShouldShowVariants(_, petInfo)
