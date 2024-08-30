@@ -49,13 +49,13 @@ local function DisplayVariantCountTooltip(_, petInfo)
     )
 
     local probabilityText = 
-      probability > 70 and commonTextColor
+      probability > KetchumSettings.UncommonThreshold and commonTextColor
         ..format("%.2f%%", probability)
         ..endTextColor 
-      or probability > 40 and uncommonTextColor
+      or probability > KetchumSettings.RareTreshold and uncommonTextColor
         ..format("%.2f%%", probability)
         ..endTextColor 
-      or probability > 10 and rareTextColor
+      or probability > KetchumSettings.ShinyThreshold and rareTextColor
         ..format("%.2f%%", probability)
         ..endTextColor 
       or shinyTextColor..shinyIcon.." "
@@ -67,8 +67,6 @@ local function DisplayVariantCountTooltip(_, petInfo)
 
   return tooltipBody
 end
-
-
 
 -- should variant stats be shown for a pet?
 local function ShouldShowVariants(_, petInfo)
@@ -132,7 +130,7 @@ local function isShiny(_, petID)
 
   local probability = C_PetJournal.GetDisplayProbabilityByIndex(petInfo.speciesID, displayIdIndex)
 
-  return probability <= 10
+  return probability <= KetchumSettings.ShinyThreshold
 end
 
 function ketchum.rematch:AddHasShinyBadge()

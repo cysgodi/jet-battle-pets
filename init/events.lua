@@ -1,35 +1,34 @@
 local _, ketchum = ...
 
-local events = CreateFrame("Frame")
+ketchum.events = CreateFrame("Frame")
 
-function events:OnEvent(event, ...)
+function ketchum.events:OnEvent(event, ...)
   self[event](self, event, ...)
 end
 
-function events:ADDON_LOADED(event, addonname)
-  if addonname == "Rematch" then
-    ketchum.rematch:AddHasShinyBadge()
-    ketchum.rematch:AddIsShinyBadge()
-    ketchum.rematch:AddVariantStats()
-  end
+function ketchum.events:PLAYER_LOGIN()
+  local next = next
+
+  KetchumSettings = next(KetchumSettings) ~= nil and KetchumSettings 
+    or ketchum.DEFAULT_SETTINGS
 end
 
-function events:PET_BATTLE_OPENING_START()
+function ketchum.events:PET_BATTLE_OPENING_START()
   ketchum.battleUi:UpdateShinyFrames()
 end
 
-function events:PET_BATTLE_OVER()
+function ketchum.events:PET_BATTLE_OVER()
   ketchum.battleUi:AfterBattle()
 end
 
-function events:PET_BATTLE_PET_CHANGED(_, owner)
+function ketchum.events:PET_BATTLE_PET_CHANGED(_, owner)
   if owner == Enum.BattlePetOwner.Enemy then
     ketchum.battleUi:UpdateShinyFrames()
   end
 end
 
-events:RegisterEvent("ADDON_LOADED")
-events:RegisterEvent("PET_BATTLE_OPENING_START")
-events:RegisterEvent("PET_BATTLE_OVER")
-events:RegisterEvent("PET_BATTLE_PET_CHANGED")
-events:SetScript("OnEvent", events.OnEvent)
+ketchum.events:RegisterEvent("PLAYER_LOGIN")
+ketchum.events:RegisterEvent("PET_BATTLE_OPENING_START")
+ketchum.events:RegisterEvent("PET_BATTLE_OVER")
+ketchum.events:RegisterEvent("PET_BATTLE_PET_CHANGED")
+ketchum.events:SetScript("OnEvent", ketchum.events.OnEvent)
