@@ -17,3 +17,29 @@ ketchum.constants.DEFAULT_SETTINGS = {
   ShinyThreshold = ketchum.constants.DEFAULT_THRESHOLDS.SHINY,
   UncommonThreshold = ketchum.constants.DEFAULT_THRESHOLDS.UNCOMMON
 }
+
+-- string literals to define text color hex values
+local TEXT_COLORS = {
+  COMMON = "ffffff",
+  RARE = "0000ff",
+  SHINY = "ffff00",
+  UNCOMMON = "00ff00"
+}
+
+-- icons that can be used in/as strings
+local TEXT_ICONS = {
+  SHINY = CreateAtlasMarkup("rare-elite-star")
+}
+
+-- string literal patterns to use in the `format` function
+local TEXT_FORMAT_PATTERNS = {
+  PROBABILITY_COLOR = "%s%.2f%%%s"
+}
+
+-- constants related to text formatting
+ketchum.constants.TEXT_FORMAT = {
+  COLOR_PREFIX = "|c00",
+  COLOR_TERMINATOR = "|r",
+  COLORS = TEXT_COLORS,
+  ICONS = TEXT_ICONS
+}
