@@ -25,15 +25,8 @@ local function DisplayVariantCountTooltip(_, petInfo)
 
   local baseText = "How many unique models does this pet species have?\n\n"
     ..format("%d %s: ", variantCount, colorText)
-  local commonTextColor = "|c00ffffff"
-  local uncommonTextColor = "|c0000ff00"
-  local rareTextColor = "|c000000ff"
-  local shinyTextColor = "|c00ffff00"
-  local endTextColor = "|r"
-  local shinyIcon = CreateAtlasMarkup("rare-elite-star") 
-
   if numDisplays <= 1 then
-    return baseText..commonTextColor.."100%"..endTextColor
+    return baseText..ketchum.text:GetRarityText(100)
   end
 
   local tooltipBody = baseText
@@ -46,21 +39,9 @@ local function DisplayVariantCountTooltip(_, petInfo)
     local probability = C_PetJournal.GetDisplayProbabilityByIndex(
       petInfo.speciesID, 
       slot
-    )
+    ) or 100
 
-    local probabilityText = 
-      probability > KetchumSettings.UncommonThreshold and commonTextColor
-        ..format("%.2f%%", probability)
-        ..endTextColor 
-      or probability > KetchumSettings.RareThreshold and uncommonTextColor
-        ..format("%.2f%%", probability)
-        ..endTextColor 
-      or probability > KetchumSettings.ShinyThreshold and rareTextColor
-        ..format("%.2f%%", probability)
-        ..endTextColor 
-      or shinyTextColor..shinyIcon.." "
-        ..format("%.2f%%", probability)
-        ..endTextColor 
+    local probabilityText = ketchum.text:GetRarityText(probability)
 
     tooltipBody = tooltipBody..probabilityText
   end
