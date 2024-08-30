@@ -2,17 +2,18 @@ local _, ketchum = ...
 
 Ketchum = ketchum -- global namespace
 
--- encounter rate ceiling (inclusive) for a model to be considered uncommon
-ketchum.DEFAULT_UNCOMMON_THRESHOLD = 70
+ketchum.constants = {}
 
--- encounter rate ceiling (inclusive) for a model to be considered rare
-ketchum.DEFAULT_RARE_THRESHOLD = 40
+-- encounter rate ceilings (inclusive) for model rarities
+ketchum.constants.DEFAULT_THRESHOLDS = {
+  RARE = 40,
+  SHINY = 10,
+  UNCOMMON = 70
+}
 
--- encounter rate ceiling (inclusive) for a model to be considered shiny
-ketchum.DEFAULT_SHINY_THRESHOLD = 10
-
-ketchum.DEFAULT_SETTINGS = {
-  RareThreshold = ketchum.DEFAULT_RARE_THRESHOLD,
-  ShinyThreshold = ketchum.DEFAULT_SHINY_THRESHOLD,
-  UncommonThreshold = ketchum.DEFAULT_UNCOMMON_THRESHOLD
+-- default settings to apply on init
+ketchum.constants.DEFAULT_SETTINGS = {
+  RareThreshold = ketchum.constants.DEFAULT_THRESHOLDS.RARE,
+  ShinyThreshold = ketchum.constants.DEFAULT_THRESHOLDS.SHINY,
+  UncommonThreshold = ketchum.constants.DEFAULT_THRESHOLDS.UNCOMMON
 }
