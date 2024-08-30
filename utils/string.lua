@@ -2,6 +2,15 @@ local _, ketchum = ...
 
 ketchum.text = {}
 
+-- Given a number representing a percentage return a string literal in the
+-- form `XX.YY%`.
+function ketchum.text:GetProbability(probability)
+  return format (
+    ketchum.constants.TEXT_FORMAT.PATTERNS.PROBABILITY,
+    probability
+  )
+end
+
 -- Given the hex value of a color and some text, return a string literal
 -- in the form `|c00XXYYZZProvidedTextr|`.
 function ketchum.text:SetColor(colorHexString, text)
