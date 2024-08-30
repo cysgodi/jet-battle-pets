@@ -52,7 +52,7 @@ local function DisplayVariantCountTooltip(_, petInfo)
       probability > KetchumSettings.UncommonThreshold and commonTextColor
         ..format("%.2f%%", probability)
         ..endTextColor 
-      or probability > KetchumSettings.RareTreshold and uncommonTextColor
+      or probability > KetchumSettings.RareThreshold and uncommonTextColor
         ..format("%.2f%%", probability)
         ..endTextColor 
       or probability > KetchumSettings.ShinyThreshold and rareTextColor
