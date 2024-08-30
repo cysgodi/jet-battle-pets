@@ -11,12 +11,32 @@ function ketchum.text:FormatProbability(probability)
   )
 end
 
+-- Given a number representing a probability as a percent, format it to
+-- two decimal places of precision and color it by rarity.
+function ketchum.text:GetRarityText(probability)
+  local probabilityColor = ketchum.constants.COLOR_NAMES.COMMON
+  local probabilityText = ketchum.text:FormatProbability(probability)
+
+  if probability <= KetchumSettings.ShinyThreshold then
+    probabilityColor = ketchum.constants.COLOR_NAMES.SHINY
+  elseif probability <= KetchumSettings.RareThreshold then
+    probabilityColor = ketchum.constants.COLOR_NAMES.RARE
+  elseif probability <= KetchumSettings.UncommonThreshold then
+    probabilityColor = ketchum.constants.COLOR_NAMES.UNCOMMON
+  end
+
+  return ketchum.text:SetColorByName(
+    probabilityColor,
+    probabilityText
+  )
+end
+
 -- Given the hex value of a color and some text, return a string literal
 -- in the form `|c00XXYYZZProvidedTextr|`.
 function ketchum.text:SetColor(colorHexString, text)
   return format(
     "%s%s%s%s",
-    ketchum.constants.TEXT_FORMAT.COOLOR_PREFIX,
+    ketchum.constants.TEXT_FORMAT.COLOR_PREFIX,
     colorHexString,
     text,
     ketchum.constants.TEXT_FORMAT.COLOR_TERMINATOR
@@ -25,7 +45,7 @@ end
 
 -- Set the color of the given text to the color with the given name.
 -- Uses the default UI text color if the color name is invalid.
-function ketchum:SetColorByName(colorName, text)
+function ketchum.text:SetColorByName(colorName, text)
   local color = ketchum.constants.TEXT_FORMAT.COLORS[colorName]
 
   if color == nil then
