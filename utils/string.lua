@@ -4,7 +4,7 @@ ketchum.text = {}
 
 -- Given a number representing a percentage return a string literal in the
 -- form `XX.YY%`.
-function ketchum.text:GetProbability(probability)
+function ketchum.text:FormatProbability(probability)
   return format (
     ketchum.constants.TEXT_FORMAT.PATTERNS.PROBABILITY,
     probability
