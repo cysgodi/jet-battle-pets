@@ -33,7 +33,7 @@ local TEXT_ICONS = {
 
 -- string literal patterns to use in the `format` function
 local TEXT_FORMAT_PATTERNS = {
-  PROBABILITY_COLOR = "%s%.2f%%%s"
+  PROBABILITY = "%.2f%%"
 }
 
 -- constants related to text formatting
@@ -41,5 +41,6 @@ ketchum.constants.TEXT_FORMAT = {
   COLOR_PREFIX = "|c00",
   COLOR_TERMINATOR = "|r",
   COLORS = TEXT_COLORS,
-  ICONS = TEXT_ICONS
+  ICONS = TEXT_ICONS,
+  PATTERNS = TEXT_FORMAT_PATTERNS
 }
