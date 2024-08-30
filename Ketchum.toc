@@ -12,9 +12,10 @@ constants.lua
 utils/journal.lua
 utils/battleUi.lua
 
-# 3rd party integrations
-integrations/rematch.lua
-
 # init
 init/main.lua
 init/events.lua
+
+# 3rd party integrations
+integrations/events.lua
+integrations/rematch.lua
