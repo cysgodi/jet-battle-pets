@@ -18,7 +18,15 @@ ketchum.constants.DEFAULT_SETTINGS = {
   UncommonThreshold = ketchum.constants.DEFAULT_THRESHOLDS.UNCOMMON
 }
 
--- string literals to define text color hex values
+-- valid color names to use in utility functions
+ketchum.constants.COLOR_NAMES = {
+  COMMON = "COMMON",
+  RARE = "RARE",
+  SHINY = "SHINY",
+  UNCOMMON = "UNCOMMON"
+}
+
+-- string literals to define color hex values
 local TEXT_COLORS = {
   COMMON = "ffffff",
   RARE = "0000ff",
