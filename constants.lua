@@ -27,6 +27,7 @@ ketchum.constants.COLOR_NAMES = {
 }
 
 ketchum.constants.GRAPHICS = {
+  MODEL_RARITY_ATLAS = C_Texture.GetAtlasInfo("groupfinder-eye-frame"),
   SHINY_ATLAS = C_Texture.GetAtlasInfo("rare-elite-star")
 }
 

@@ -13,6 +13,7 @@ function ketchum.events:PLAYER_ENTERING_WORLD()
     ketchum.rematch:AddHasShinyBadge()
     ketchum.rematch:AddIsShinyBadge()
     ketchum.rematch:AddVariantStats()
+    ketchum.rematch:AddModelRarity()
   end
 end
 
