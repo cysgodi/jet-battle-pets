@@ -2,6 +2,24 @@ local _, ketchum = ...
 
 ketchum.rematch = {}
 
+-- get model rarity text to display on a pet card
+local function DisplayModelRarity(_, petInfo)
+  if not petInfo or not petInfo.speciesID or not petInfo.displayID then
+    return ""
+  end
+
+  local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
+
+  return ketchum.text:GetRarityText(
+    numDisplays > 1 and
+      ketchum.journal:GetDisplayProbability(
+        petInfo.speciesID, 
+        petInfo.displayID
+      ) or
+      100
+  )
+end
+
 -- get variant stat text to display on a pet card
 local function DisplayVariantCount(_, petInfo)
   if not petInfo or not petInfo.speciesID then
@@ -154,5 +172,19 @@ function ketchum.rematch:AddVariantStats()
     tooltipBody = DisplayVariantCountTooltip,
     show = ShouldShowVariants,
     value = DisplayVariantCount
+  })
+end
+
+-- add model rarity to Rematch pet cards
+function ketchum.rematch:AddModelRarity()
+  local atlas = ketchum.constants.GRAPHICS.MODEL_RARITY_ATLAS
+
+  tinsert(Rematch.petCardStats, {
+    icon = atlas.file,
+    iconCoords = ketchum.atlas:GetTexCoords(atlas),
+    tooltipTitle = "Model Rarity",
+    tooltipBody = "How rare is this specific model?",
+    show = true,
+    value = DisplayModelRarity
   })
 end
