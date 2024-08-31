@@ -9,6 +9,7 @@
 constants.lua
 
 # utility functions
+utils/atlas.lua
 utils/string.lua
 utils/journal.lua
 utils/battleUi.lua

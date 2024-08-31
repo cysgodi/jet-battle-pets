@@ -26,6 +26,10 @@ ketchum.constants.COLOR_NAMES = {
   UNCOMMON = "UNCOMMON"
 }
 
+ketchum.constants.GRAPHICS = {
+  SHINY_ATLAS = C_Texture.GetAtlasInfo("rare-elite-star")
+}
+
 -- string literals to define color hex values
 local TEXT_COLORS = {
   COMMON = "ffffff",

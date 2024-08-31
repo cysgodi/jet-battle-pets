@@ -121,7 +121,7 @@ function ketchum.rematch:AddHasShinyBadge()
     "pets",
     "hasShiny",
     atlas.file,
-    { 0.936, 0.998, 0.502, 0.564 },
+    ketchum.atlas:GetTexCoords(atlas),
     hasShiny
   )
 end
@@ -134,7 +134,7 @@ function ketchum.rematch:AddIsShinyBadge()
       "pets", 
       "isShiny", 
       atlas.file,
-      { 0.936, 0.998, 0.502, 0.564 },
+      ketchum.atlas:GetTexCoords(atlas),
       isShiny
   )
 
@@ -145,11 +145,11 @@ end
 
 -- add variant stats to Rematch pet cards
 function ketchum.rematch:AddVariantStats()
-  local atlas = C_Texture.GetAtlasInfo("rare-elite-star")
+  local atlas = ketchum.constants.GRAPHICS.SHINY_ATLAS
 
   tinsert(Rematch.petCardStats, {
     icon = atlas.file,
-    iconCoords = { 0.936, 0.998, 0.502, 0.564 },
+    iconCoords = ketchum.atlas:GetTexCoords(atlas),
     tooltipTitle = "Variants",
     tooltipBody = DisplayVariantCountTooltip,
     show = ShouldShowVariants,
