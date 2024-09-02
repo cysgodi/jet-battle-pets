@@ -79,7 +79,7 @@ local function ShouldShowVariants(_, petInfo)
 end
 
 -- does the species with the provided ID have a shiny variant?
-local function hasShiny(_, petID)
+local function HasShiny(_, petID)
   local petInfo = Rematch.petInfo:Fetch(petID)
 
   if(
@@ -108,7 +108,7 @@ local function hasShiny(_, petID)
 end
 
 -- is the pet with the provided ID a shiny?
-local function isShiny(_, petID)
+local function IsShiny(_, petID)
   local petInfo = Rematch.petInfo:Fetch(petID)
 
   if(
@@ -139,10 +139,10 @@ function ketchum.rematch:AddHasShinyBadge()
 
   Rematch.badges:RegisterBadge(
     "pets",
-    "hasShiny",
+    "HasShiny",
     atlas.file,
     ketchum.atlas:GetTexCoords(atlas),
-    hasShiny
+    HasShiny
   )
 end
 
@@ -152,10 +152,10 @@ function ketchum.rematch:AddIsShinyBadge()
 
   Rematch.badges:RegisterBadge(
       "pets", 
-      "isShiny", 
+      "IsShiny", 
       atlas.file,
       ketchum.atlas:GetTexCoords(atlas),
-      isShiny
+      IsShiny
   )
 
   if( Rematch.frame:IsVisible()) then
