@@ -39,10 +39,10 @@ end
 local function DisplayVariantCountTooltip(_, petInfo)
   local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
   local variantCount = numDisplays > 0 and numDisplays or 1
-  local colorText = variantCount > 1 and "Colors" or "Color"
+  local variantText = variantCount > 1 and "Variants" or "Variant"
 
   local baseText = "How many unique models does this pet species have?\n\n"
-    ..format("%d %s: ", variantCount, colorText)
+    ..format("%d %s: ", variantCount, variantText)
   if numDisplays <= 1 then
     return baseText..ketchum.text:GetRarityText(100)
   end
