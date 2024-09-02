@@ -15,6 +15,7 @@ function ketchum.events:PLAYER_ENTERING_WORLD()
     end
 
     ketchum.rematch:AddHasShinyBadge()
+    ketchum.rematch:AddHasShinyFilter()
     ketchum.rematch:AddIsShinyBadge()
     ketchum.rematch:AddIsShinyFilter()
     ketchum.rematch:AddVariantStats()

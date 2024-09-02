@@ -78,14 +78,11 @@ local function ShouldShowVariants(_, petInfo)
   return  numDisplays and numDisplays >= 0
 end
 
--- does the species with the provided ID have a shiny variant?
-local function HasShiny(_, petID)
-  local petInfo = Rematch.petInfo:Fetch(petID)
-
+-- does a species of pet have a shiny variant?
+local function HasShiny(petInfo)
   if(
     not petInfo.speciesID
     or not petInfo.isWild
-    or (petInfo.count and petInfo.count > 0)
   ) then
     return false
   end
@@ -99,12 +96,17 @@ local function HasShiny(_, petID)
   for i = 1, numVariants do
     local probability = C_PetJournal.GetDisplayProbabilityByIndex(petInfo.speciesID, i)
 
-    if(probability <= ketchum.DEFAULT_SHINY_THRESHOLD) then
+    if(probability <= ketchum.settings.THRESHOLDS.SHINY) then
       return true
     end
   end
 
   return false
+end
+
+-- does a species of pet have a shiny variant, and is it unowned?
+local function HasShinyAndNoneOwned(petInfo)
+  return (not petInfo.count or petInfo.count == 0) and HasShiny(petInfo)
 end
 
 -- is the given pet shiny?
@@ -132,6 +134,13 @@ local function IsShiny(petInfo)
   return probability <= ketchum.settings.THRESHOLDS.SHINY
 end
 
+-- does the pet with the provided ID have a shiny variant?
+local function JournalEntryHasShiny(_, petID)
+  local petInfo = Rematch.petInfo:Fetch(petID)
+
+  return HasShinyAndNoneOwned(petInfo)
+end
+
 -- is the pet with the provided ID a shiny?
 local function JournalEntryIsShiny(_, petID)
   local petInfo = Rematch.petInfo:Fetch(petID)
@@ -149,7 +158,7 @@ function ketchum.rematch:AddHasShinyBadge()
     "HasShiny",
     atlas.file,
     ketchum.atlas:GetTexCoords(atlas),
-    HasShiny
+    JournalEntryHasShiny
   )
 end
 
@@ -196,6 +205,22 @@ function ketchum.rematch:AddVariantStats()
     show = ShouldShowVariants,
     value = DisplayVariantCount
   })
+end
+
+-- add filter to find species that have a shiny variant
+function ketchum.rematch:AddHasShinyFilter()
+  Rematch.menus:AddToMenu("PetFilterMenu", {
+    check = true,
+    func = Rematch.petFilterMenu.ToggleChecked,
+    group = "Other",
+    isChecked = Rematch.petFilterMenu.GetChecked,
+    key = "HasShiny",
+    text = "Has Shiny"
+  })
+
+  function Rematch.filters.otherFuncs:HasShiny(petInfo)
+    return HasShiny(petInfo)
+  end
 end
 
 -- add filter to find shiny models
