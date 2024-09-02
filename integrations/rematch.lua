@@ -148,20 +148,6 @@ local function JournalEntryIsShiny(_, petID)
   return IsShiny(petInfo)
 end
 
--- register a badge to rematch that displays on unlearned pets that have a 
--- shiny model
-function ketchum.rematch:AddHasShinyBadge()
-  local atlas = C_Texture.GetAtlasInfo("rare-elite-star")
-
-  Rematch.badges:RegisterBadge(
-    "pets",
-    "HasShiny",
-    atlas.file,
-    ketchum.atlas:GetTexCoords(atlas),
-    JournalEntryHasShiny
-  )
-end
-
 -- register a badge to Rematch that displays on shiny pets
 function ketchum.rematch:AddIsShinyBadge() 
   local atlas = C_Texture.GetAtlasInfo("rare-elite-star")
@@ -208,13 +194,14 @@ function ketchum.rematch:AddVariantStats()
 end
 
 -- add filter to find species that have a shiny variant
-function ketchum.rematch:AddHasShinyFilter()
-  Rematch.menus:AddToMenu("PetFilterMenu", {
+local function AddHasShinyFilter()
+  Rematch.menus:AddToMenu("PetOther", {
     check = true,
     func = Rematch.petFilterMenu.ToggleChecked,
     group = "Other",
     isChecked = Rematch.petFilterMenu.GetChecked,
     key = "HasShiny",
+    radioGroup = "Has Shiny",
     text = "Has Shiny"
   })
 
@@ -224,17 +211,26 @@ function ketchum.rematch:AddHasShinyFilter()
 end
 
 -- add filter to find shiny models
-function ketchum.rematch:AddIsShinyFilter()
-  Rematch.menus:AddToMenu("PetFilterMenu", {
+local function AddIsShinyFilter()
+  Rematch.menus:AddToMenu("PetOther", {
     check = true,
     func = Rematch.petFilterMenu.ToggleChecked,
     group = "Other",
     isChecked = Rematch.petFilterMenu.GetChecked,
     key = "IsShiny",
+    radioGroup = "Is Shiny",
     text = "Is Shiny",
   })
 
   function Rematch.filters.otherFuncs:IsShiny(petInfo)
     return IsShiny(petInfo)
   end
+end
+
+-- add rematch filters for pet variants
+function ketchum.rematch:AddVariantFilters()
+  Rematch.menus:AddToMenu("PetOther", { spacer = true, text = "" })
+
+  AddIsShinyFilter()
+  AddHasShinyFilter()
 end
