@@ -17,11 +17,11 @@ function ketchum.text:GetRarityText(probability)
   local probabilityColor = ketchum.constants.COLOR_NAMES.COMMON
   local probabilityText = ketchum.text:FormatProbability(probability)
 
-  if probability <= KetchumSettings.ShinyThreshold then
+  if probability <= ketchum.settings.THRESHOLDS.SHINY then
     probabilityColor = ketchum.constants.COLOR_NAMES.SHINY
-  elseif probability <= KetchumSettings.RareThreshold then
+  elseif probability <= ketchum.settings.THRESHOLDS.RARE then
     probabilityColor = ketchum.constants.COLOR_NAMES.RARE
-  elseif probability <= KetchumSettings.UncommonThreshold then
+  elseif probability <= ketchum.settings.THRESHOLDS.UNCOMMON then
     probabilityColor = ketchum.constants.COLOR_NAMES.UNCOMMON
   end
 

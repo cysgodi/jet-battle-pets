@@ -25,6 +25,10 @@ end
 function ketchum.journal:GetDisplayIndex(speciesID, displayID)
   local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
 
+  if not numDisplays then
+    return nil
+  end
+
   local displayIdIndex
 
   for i = 1, numDisplays do

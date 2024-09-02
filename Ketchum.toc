@@ -1,5 +1,5 @@
 ## Interface: 110002
-## Version: 0.1.0
+## Version: 0.2.0
 ## Title: Ketchum
 ## Author: Cysgodi
 ## Notes: Never miss a shiny battle pet.
@@ -7,16 +7,20 @@
 
 # globals
 constants.lua
+state.lua
+
+# saved variables
+savedvars/settings.lua
+
+# init
+init/main.lua
+init/events.lua
 
 # utility functions
 utils/atlas.lua
 utils/string.lua
 utils/journal.lua
 utils/battleUi.lua
-
-# init
-init/main.lua
-init/events.lua
 
 # 3rd party integrations
 integrations/events.lua
