@@ -134,6 +134,8 @@ local function IsShiny(_, petID)
   return probability <= ketchum.settings.THRESHOLDS.SHINY
 end
 
+-- register a badge to rematch that displays on unlearned pets that have a 
+-- shiny model
 function ketchum.rematch:AddHasShinyBadge()
   local atlas = C_Texture.GetAtlasInfo("rare-elite-star")
 
@@ -163,20 +165,6 @@ function ketchum.rematch:AddIsShinyBadge()
   end
 end
 
--- add variant stats to Rematch pet cards
-function ketchum.rematch:AddVariantStats()
-  local atlas = ketchum.constants.GRAPHICS.SHINY_ATLAS
-
-  tinsert(Rematch.petCardStats, {
-    icon = atlas.file,
-    iconCoords = ketchum.atlas:GetTexCoords(atlas),
-    tooltipTitle = "Variants",
-    tooltipBody = DisplayVariantCountTooltip,
-    show = ShouldShowVariants,
-    value = DisplayVariantCount
-  })
-end
-
 -- add model rarity to Rematch pet cards
 function ketchum.rematch:AddModelRarity()
   local atlas = ketchum.constants.GRAPHICS.MODEL_RARITY_ATLAS
@@ -188,5 +176,19 @@ function ketchum.rematch:AddModelRarity()
     tooltipBody = "How rare is this specific model?",
     show = true,
     value = DisplayModelRarity
+  })
+end
+
+-- add variant stats to Rematch pet cards
+function ketchum.rematch:AddVariantStats()
+  local atlas = ketchum.constants.GRAPHICS.SHINY_ATLAS
+
+  tinsert(Rematch.petCardStats, {
+    icon = atlas.file,
+    iconCoords = ketchum.atlas:GetTexCoords(atlas),
+    tooltipTitle = "Variants",
+    tooltipBody = DisplayVariantCountTooltip,
+    show = ShouldShowVariants,
+    value = DisplayVariantCount
   })
 end
