@@ -11,7 +11,7 @@ local function DisplayModelRarity(_, petInfo)
   local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
 
   return ketchum.text:GetRarityText(
-    numDisplays > 1 and
+    numDisplays and numDisplays > 1 and
       ketchum.journal:GetDisplayProbability(
         petInfo.speciesID, 
         petInfo.displayID
@@ -73,7 +73,9 @@ local function ShouldShowVariants(_, petInfo)
     return false
   end
 
-  return  C_PetJournal.GetNumDisplays(petInfo.speciesID) >= 0
+  local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
+
+  return  numDisplays and numDisplays >= 0
 end
 
 -- does the species with the provided ID have a shiny variant?
@@ -129,7 +131,7 @@ local function isShiny(_, petID)
 
   local probability = C_PetJournal.GetDisplayProbabilityByIndex(petInfo.speciesID, displayIdIndex)
 
-  return probability <= KetchumSettings.ShinyThreshold
+  return probability <= ketchum.settings.THRESHOLDS.SHINY
 end
 
 function ketchum.rematch:AddHasShinyBadge()

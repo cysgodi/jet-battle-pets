@@ -10,10 +10,15 @@ function ketchum.events:PLAYER_ENTERING_WORLD()
   end
 
   if C_AddOns.IsAddOnLoaded("Rematch") then
+    if ketchum.state.REMATCH_INIT_COMPLETE then
+      return
+    end
+
     ketchum.rematch:AddHasShinyBadge()
     ketchum.rematch:AddIsShinyBadge()
     ketchum.rematch:AddVariantStats()
     ketchum.rematch:AddModelRarity()
+    ketchum.state.REMATCH_INIT_COMPLETE = true
   end
 end
 
