@@ -107,10 +107,8 @@ local function HasShiny(_, petID)
   return false
 end
 
--- is the pet with the provided ID a shiny?
-local function IsShiny(_, petID)
-  local petInfo = Rematch.petInfo:Fetch(petID)
-
+-- is the given pet shiny?
+local function IsShiny(petInfo)
   if(
     not petInfo.speciesID 
     or not petInfo.displayID
@@ -132,6 +130,13 @@ local function IsShiny(_, petID)
   local probability = C_PetJournal.GetDisplayProbabilityByIndex(petInfo.speciesID, displayIdIndex)
 
   return probability <= ketchum.settings.THRESHOLDS.SHINY
+end
+
+-- is the pet with the provided ID a shiny?
+local function JournalEntryIsShiny(_, petID)
+  local petInfo = Rematch.petInfo:Fetch(petID)
+
+  return IsShiny(petInfo)
 end
 
 -- register a badge to rematch that displays on unlearned pets that have a 
@@ -157,7 +162,7 @@ function ketchum.rematch:AddIsShinyBadge()
       "IsShiny", 
       atlas.file,
       ketchum.atlas:GetTexCoords(atlas),
-      IsShiny
+      JournalEntryIsShiny
   )
 
   if( Rematch.frame:IsVisible()) then
@@ -191,4 +196,20 @@ function ketchum.rematch:AddVariantStats()
     show = ShouldShowVariants,
     value = DisplayVariantCount
   })
+end
+
+-- add filter to find shiny models
+function ketchum.rematch:AddIsShinyFilter()
+  Rematch.menus:AddToMenu("PetFilterMenu", {
+    check = true,
+    func = Rematch.petFilterMenu.ToggleChecked,
+    group = "Other",
+    isChecked = Rematch.petFilterMenu.GetChecked,
+    key = "IsShiny",
+    text = "Is Shiny",
+  })
+
+  function Rematch.filters.otherFuncs:IsShiny(petInfo)
+    return IsShiny(petInfo)
+  end
 end
