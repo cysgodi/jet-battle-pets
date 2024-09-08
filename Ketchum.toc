@@ -15,6 +15,7 @@ savedvars/settings.lua
 # init
 init/main.lua
 init/events.lua
+init/slash.lua
 
 # utility functions
 utils/atlas.lua
