@@ -3,7 +3,7 @@
 ## Title: Ketchum
 ## Author: Cysgodi
 ## Notes: Never miss a shiny battle pet.
-## SavedVariables: KetchumSettings
+## SavedVariables: KetchumEncounters, KetchumSettings
 
 # globals
 constants.lua
@@ -11,6 +11,7 @@ state.lua
 
 # saved variables
 savedvars/settings.lua
+savedvars/encounters.lua
 
 # init
 init/main.lua
