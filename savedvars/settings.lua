@@ -5,6 +5,8 @@ KetchumSettings = {}
 
 -- default settings to apply on init
 local DEFAULT_SETTINGS = {
+  -- flag to turn encounter data collection on/off
+  ENABLE_DATA_COLLECTION = false,
   -- encounter rate ceilings (inclusive) for model rarities
   THRESHOLDS = {
     RARE = 40,
