@@ -9,6 +9,7 @@ end
 
 function ketchum.events:PET_BATTLE_OPENING_START()
   ketchum.battleUi:UpdateShinyFrames()
+  ketchum.battleUi:RecordEncounterData()
 end
 
 function ketchum.events:PET_BATTLE_OVER()
