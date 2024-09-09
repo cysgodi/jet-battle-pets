@@ -1,5 +1,8 @@
 local _, ketchum = ...
 
+-- init addon settings to empty table
+ketchum.settings = {}
+
 -- init saved variables on first run
 KetchumSettings = {}
 
@@ -15,6 +18,8 @@ local DEFAULT_SETTINGS = {
   }
 }
 
+-- Fetch key from saved vars. Init the saved var to a default if it
+-- doesn't exist yet.
 local function getter(self, key)
   if KetchumSettings[key] == nil then
     if DEFAULT_SETTINGS[key] and type(DEFAULT_SETTINGS[key] == "table") then
@@ -27,11 +32,12 @@ local function getter(self, key)
   return KetchumSettings[key]
 end
 
+-- Set a saved var.
 local function setter(self, key, value)
   KetchumSettings[key] = value
 end
 
-ketchum.settings = setmetatable({}, {
+setmetatable(ketchum.settings, {
   __index = getter,
-  __newIndex = setter
+  __newindex = setter
 })
