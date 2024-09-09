@@ -4,8 +4,45 @@ ketchum.battleUi = {
   alertsFired = false
 }
 
+-- cleanup after a pet battle is finished
 function ketchum.battleUi:AfterBattle() 
   ketchum.battleUi.alertsFired = false
+end
+
+-- save data about a specific encountered enemy pet to disk
+function ketchum.battleUi:RecordEncounterSlotData(slot, location)
+  ketchum.encounters:AddEncounter({
+    speciesID = C_PetBattles.GetPetSpeciesID(
+      Enum.BattlePetOwner.Enemy,
+      slot
+    ),
+    displayID = C_PetBattles.GetDisplayID(
+      Enum.BattlePetOwner.Enemy,
+      slot
+    ),
+    position = slot,
+    rarity = C_PetBattles.GetBreedQuality(
+      Enum.BattlePetOwner.Enemy,
+      slot
+    ),
+    HP = C_PetBattles.GetMaxHealth(
+      Enum.BattlePetOwner.Enemy,
+      slot
+    ),
+    power = C_PetBattles.GetPower(
+      Enum.BattlePetOwner.Enemy,
+      slot
+    ),
+    speed = C_PetBattles.GetSpeed(
+      Enum.BattlePetOwner.Enemy,
+      slot
+    ),
+    level = C_PetBattles.GetLevel(
+      Enum.BattlePetOwner.Enemy,
+      slot
+    ),
+    location = location,
+  })
 end
 
 -- print an alert to the chat box that a shiny is in the battle
@@ -53,6 +90,38 @@ function ketchum.battleUi:UpdateShinyFrames()
         ketchum.battleUi:TagShinyBackPet(i)
       end
     end
+  end
+end
+
+-- save data about encountered pets to disk
+function ketchum.battleUi:RecordEncounterData()
+  if 
+    not ketchum.settings.ENABLE_DATA_COLLECTION 
+    or not C_PetBattles.IsWildBattle() 
+  then
+    return 
+  end
+
+  local enemyCount = C_PetBattles.GetNumPets(
+    Enum.BattlePetOwner.Enemy
+  )
+
+  local mapID = C_Map.GetBestMapForUnit("player")
+  local playerPosition = C_Map.GetPlayerMapPosition(mapID, "player")
+  local areaIDs = C_MapExplorationInfo.GetExploredAreaIDsAtPosition(
+    mapID, 
+    playerPosition
+  )
+
+  for i = 1, enemyCount do 
+    ketchum.battleUi:RecordEncounterSlotData(i, {
+      areaIDs = areaIDs,
+      mapID = mapID,
+      playerPosition = {
+        x = playerPosition.x,
+        y = playerPosition.y
+      },
+    })
   end
 end
 
