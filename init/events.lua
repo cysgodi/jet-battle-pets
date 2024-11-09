@@ -6,6 +6,11 @@ function ketchum.events:OnEvent(event, ...)
   self[event](self, event, ...)
 end
 
+function ketchum.events:ADDON_LOADED(_, addonName)
+  if addonName == "Ketchum" then
+    ketchum.options:InitializeOptions()
+  end
+end
 
 function ketchum.events:PET_BATTLE_OPENING_START()
   ketchum.battleUi:UpdateShinyFrames()
@@ -22,6 +27,7 @@ function ketchum.events:PET_BATTLE_PET_CHANGED(_, owner)
   end
 end
 
+ketchum.events:RegisterEvent("ADDON_LOADED")
 ketchum.events:RegisterEvent("PET_BATTLE_OPENING_START")
 ketchum.events:RegisterEvent("PET_BATTLE_OVER")
 ketchum.events:RegisterEvent("PET_BATTLE_PET_CHANGED")
