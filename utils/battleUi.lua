@@ -5,7 +5,7 @@ ketchum.battleUi = {
 }
 
 -- cleanup after a pet battle is finished
-function ketchum.battleUi:AfterBattle() 
+function ketchum.battleUi:AfterBattle()
   ketchum.battleUi.alertsFired = false
 end
 
@@ -47,10 +47,10 @@ end
 
 -- print an alert to the chat box that a shiny is in the battle
 function ketchum.battleUi:PrintShinyAlert(speciesID)
-  local pet = ketchum.pets.GetPet(speciesID)  
-  local shinyIcon = CreateAtlasMarkup("rare-elite-star") 
-      
-  print('|c00ffff00'..shinyIcon..' A shiny '..pet.name..' appears! '..shinyIcon..'|r')
+  local pet = ketchum.pets.GetPet(speciesID)
+  local shinyIcon = CreateAtlasMarkup("rare-elite-star")
+
+  print('|c00ffff00' .. shinyIcon .. ' A shiny ' .. pet.name .. ' appears! ' .. shinyIcon .. '|r')
 end
 
 -- attach the shiny icon to appropriate battle pet UI frames
@@ -64,15 +64,13 @@ function ketchum.battleUi:UpdateShinyFrames()
 
     local displayID = C_PetBattles.GetDisplayID(Enum.BattlePetOwner.Enemy, i)
 
-    local displayIdIndex = ketchum.journal:GetDisplayIndex(speciesID, displayID)
-
     local probability = ketchum.journal:GetDisplayProbability(
       speciesID,
       displayID
     )
 
     if not probability then
-      return 
+      return
     end
 
     if probability <= ketchum.settings.THRESHOLDS.SHINY then
@@ -95,11 +93,11 @@ end
 
 -- save data about encountered pets to disk
 function ketchum.battleUi:RecordEncounterData()
-  if 
-    not ketchum.settings.ENABLE_DATA_COLLECTION 
-    or not C_PetBattles.IsWildBattle() 
+  if
+      not ketchum.settings.ENABLE_DATA_COLLECTION
+      or not C_PetBattles.IsWildBattle()
   then
-    return 
+    return
   end
 
   local enemyCount = C_PetBattles.GetNumPets(
@@ -109,11 +107,11 @@ function ketchum.battleUi:RecordEncounterData()
   local mapID = C_Map.GetBestMapForUnit("player")
   local playerPosition = C_Map.GetPlayerMapPosition(mapID, "player")
   local areaIDs = C_MapExplorationInfo.GetExploredAreaIDsAtPosition(
-    mapID, 
+    mapID,
     playerPosition
   )
 
-  for i = 1, enemyCount do 
+  for i = 1, enemyCount do
     ketchum.battleUi:RecordEncounterSlotData(i, {
       areaIDs = areaIDs,
       mapID = mapID,
@@ -170,7 +168,7 @@ end
 
 -- add a shiny icon to back row pets that are shiny
 function ketchum.battleUi:TagShinyBackPet(slot)
-  if(slot < 2 or slot > 3) then
+  if (slot < 2 or slot > 3) then
     return
   end
 
@@ -178,11 +176,11 @@ function ketchum.battleUi:TagShinyBackPet(slot)
 
   local f = CreateFrame(
     "Frame",
-    "Enemy"..slot.."ShinyIcon",
+    "Enemy" .. slot .. "ShinyIcon",
     PetBattleFrame.ActiveEnemy
   )
 
-  f:SetPoint("TOPLEFT", PetBattleFrame['Enemy'..slot].Icon, -4, 4)
+  f:SetPoint("TOPLEFT", PetBattleFrame['Enemy' .. slot].Icon, -4, 4)
   f:SetSize(14, 14)
   f.tex = f:CreateTexture()
   f.tex:SetAllPoints()
@@ -194,5 +192,5 @@ function ketchum.battleUi:TagShinyBackPet(slot)
     atlas.bottomTexCoord
   )
 
-  ketchum.battleUi['Enemy'..slot..'ShinyFrame'] = f
+  ketchum.battleUi['Enemy' .. slot .. 'ShinyFrame'] = f
 end
