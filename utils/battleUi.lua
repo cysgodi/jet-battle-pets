@@ -18,8 +18,9 @@ local function ShouldAlert(speciesID, displayID)
   local maxProbability = ketchum.journal:GetMaxDisplayProbability(speciesID)
 
   local alertThreshold = ketchum.settings.ALERT_THRESHOLD
+  local rarityName = ketchum.constants.RARITY_NAMES[alertThreshold]
   local ratio = maxProbability / probability
-  local alertRatio = ketchum.settings.RARITY_RATIO[alertThreshold]
+  local alertRatio = ketchum.settings.RARITY_RATIO[rarityName]
 
   return ratio >= alertRatio
 end

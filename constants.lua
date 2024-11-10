@@ -4,13 +4,18 @@ Ketchum = ketchum -- global namespace
 
 ketchum.constants = {}
 
--- valid color names to use in utility functions
-ketchum.constants.COLOR_NAMES = {
-  COMMON = "COMMON",
-  RARE = "RARE",
-  SHINY = "SHINY",
-  UNCOMMON = "UNCOMMON"
+-- valid rarity names to use in utility functions
+ketchum.constants.RARITY_NAMES = {
+  "COMMON",
+  "UNCOMMON",
+  "RARE",
+  "SHINY"
 }
+
+-- an enum representation of valid rarities
+ketchum.constants.RARITIES = EnumUtil.MakeEnum(
+  unpack(ketchum.constants.RARITY_NAMES)
+)
 
 -- IDs of species that will always show 1 model
 ketchum.constants.IGNORED_SPECIES = {
