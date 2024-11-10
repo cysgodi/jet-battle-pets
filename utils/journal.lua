@@ -2,10 +2,32 @@ local _, ketchum = ...
 
 ketchum.journal = {}
 
+-- return all model encounter rates of a species as a table
+function ketchum.journal:GetDisplayProbabilities(speciesID)
+  local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
+
+  if not numDisplays or numDisplays == 0 then
+    return { 100 }
+  end
+
+  local probabilities = {}
+
+  for i = 1, numDisplays do
+    local probability = C_PetJournal.GetDisplayProbabilityByIndex(
+      speciesID,
+      i
+    ) or 100
+
+    table.insert(probabilities, probability)
+  end
+
+  return probabilities
+end
+
 -- return the probability of encountering a specific skin in a species
 function ketchum.journal:GetDisplayProbability(speciesID, displayID)
   local displayIdIndex = ketchum.journal:GetDisplayIndex(
-    speciesID, 
+    speciesID,
     displayID
   )
 
@@ -13,7 +35,7 @@ function ketchum.journal:GetDisplayProbability(speciesID, displayID)
 
   if displayIdIndex then
     probability = C_PetJournal.GetDisplayProbabilityByIndex(
-      speciesID, 
+      speciesID,
       displayIdIndex
     )
   end
@@ -40,4 +62,11 @@ function ketchum.journal:GetDisplayIndex(speciesID, displayID)
   end
 
   return displayIdIndex
+end
+
+-- get the encounter probability of the most common model of a species
+function ketchum.journal:GetMaxDisplayProbability(speciesID)
+  local probabilities = ketchum.journal:GetDisplayProbabilities(speciesID)
+
+  return math.max(unpack(probabilities))
 end
