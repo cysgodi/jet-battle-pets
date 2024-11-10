@@ -10,12 +10,6 @@ KetchumSettings = {}
 local DEFAULT_SETTINGS = {
   -- flag to turn encounter data collection on/off
   ENABLE_DATA_COLLECTION = false,
-  -- encounter rate ceilings (inclusive) for model rarities
-  THRESHOLDS = {
-    RARE = 40,
-    SHINY = 10,
-    UNCOMMON = 70
-  },
   -- ratios for determining rarity of a model relative to the most commonly
   -- encountered model of a species
   RARITY_RATIO = {
