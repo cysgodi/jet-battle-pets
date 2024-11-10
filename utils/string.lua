@@ -5,7 +5,7 @@ ketchum.text = {}
 -- Given a number representing a percentage return a string literal in the
 -- form `XX.YY%`.
 function ketchum.text:FormatProbability(probability)
-  return format (
+  return string.format(
     ketchum.constants.TEXT_FORMAT.PATTERNS.PROBABILITY,
     probability
   )
@@ -13,15 +13,16 @@ end
 
 -- Given a number representing a probability as a percent, format it to
 -- two decimal places of precision and color it by rarity.
-function ketchum.text:GetRarityText(probability)
+function ketchum.text:GetRarityText(probability, maxProbability)
+  local ratio = maxProbability / probability
   local probabilityColor = ketchum.constants.COLOR_NAMES.COMMON
   local probabilityText = ketchum.text:FormatProbability(probability)
 
-  if probability <= ketchum.settings.THRESHOLDS.SHINY then
+  if ratio >= ketchum.settings.RARITY_RATIO.SHINY then
     probabilityColor = ketchum.constants.COLOR_NAMES.SHINY
-  elseif probability <= ketchum.settings.THRESHOLDS.RARE then
+  elseif ratio >= ketchum.settings.RARITY_RATIO.RARE then
     probabilityColor = ketchum.constants.COLOR_NAMES.RARE
-  elseif probability <= ketchum.settings.THRESHOLDS.UNCOMMON then
+  elseif ratio >= ketchum.settings.RARITY_RATIO.UNCOMMON then
     probabilityColor = ketchum.constants.COLOR_NAMES.UNCOMMON
   end
 
@@ -34,7 +35,7 @@ end
 -- Given the hex value of a color and some text, return a string literal
 -- in the form `|c00XXYYZZProvidedTextr|`.
 function ketchum.text:SetColor(colorHexString, text)
-  return format(
+  return string.format(
     "%s%s%s%s",
     ketchum.constants.TEXT_FORMAT.COLOR_PREFIX,
     colorHexString,

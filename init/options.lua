@@ -2,11 +2,6 @@ local _, ketchum = ...
 
 ketchum.options = {}
 
--- handle click event when user toggles the data collection option
-local function HandleClickRecordCheckbox(_, btn, down)
-  ketchum.settings.ENABLE_DATA_COLLECTION = btn:GetChecked()
-end
-
 -- init addon options on load
 function ketchum.options:InitializeOptions()
   local category, layout = Settings.RegisterVerticalLayoutCategory("Ketchum")

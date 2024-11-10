@@ -15,6 +15,13 @@ local DEFAULT_SETTINGS = {
     RARE = 40,
     SHINY = 10,
     UNCOMMON = 70
+  },
+  -- ratios for determining rarity of a model relative to the most commonly
+  -- encountered model of a species
+  RARITY_RATIO = {
+    RARE = 4,
+    SHINY = 8,
+    UNCOMMON = 2
   }
 }
 
