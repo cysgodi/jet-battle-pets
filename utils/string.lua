@@ -29,11 +29,11 @@ function ketchum.text:GetRarityText(probability, maxProbability)
   local probabilityColor = ketchum.constants.RARITIES.COMMON
   local probabilityText = ketchum.text:FormatProbability(probability)
 
-  if ratio >= ketchum.settings.RARITY_RATIO.SHINY then
+  if ratio >= ketchum.constants.RARITY_RATIOS.SHINY then
     probabilityColor = ketchum.constants.RARITIES.SHINY
-  elseif ratio >= ketchum.settings.RARITY_RATIO.RARE then
+  elseif ratio >= ketchum.constants.RARITY_RATIOS.RARE then
     probabilityColor = ketchum.constants.RARITIES.RARE
-  elseif ratio >= ketchum.settings.RARITY_RATIO.UNCOMMON then
+  elseif ratio >= ketchum.constants.RARITY_RATIOS.UNCOMMON then
     probabilityColor = ketchum.constants.RARITIES.UNCOMMON
   end
 

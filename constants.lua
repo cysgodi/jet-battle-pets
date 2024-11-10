@@ -17,6 +17,14 @@ ketchum.constants.RARITIES = EnumUtil.MakeEnum(
   unpack(ketchum.constants.RARITY_NAMES)
 )
 
+-- ratios for determining rarity of a model relative to the most commonly
+-- encountered model of a species
+ketchum.constants.RARITY_RATIOS = {
+  RARE = 3,
+  SHINY = 8,
+  UNCOMMON = 2
+}
+
 -- IDs of species that will always show 1 model
 ketchum.constants.IGNORED_SPECIES = {
   [2622] = {
