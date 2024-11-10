@@ -13,7 +13,7 @@ local function ToggleDataCollection(switch)
 end
 
 local SlashCommands = {
-   record = ToggleDataCollection
+  record = ToggleDataCollection
 }
 
 SlashCmdList["KETCHUM"] = function(message)
