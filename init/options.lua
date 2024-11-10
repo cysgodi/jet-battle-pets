@@ -2,10 +2,8 @@ local _, ketchum = ...
 
 ketchum.options = {}
 
--- init addon options on load
-function ketchum.options:InitializeOptions()
-  local category = Settings.RegisterVerticalLayoutCategory("Ketchum")
-
+-- init checkbox to toggle encounter recording
+local function InitRecordEncountersOption(category)
   local isRecordingSetting = Settings.RegisterProxySetting(
     category,
     "KETCHUM_IS_RECORDING",
@@ -17,5 +15,13 @@ function ketchum.options:InitializeOptions()
   )
 
   Settings.CreateCheckbox(category, isRecordingSetting)
+end
+
+-- init addon options on load
+function ketchum.options:InitializeOptions()
+  local category = Settings.RegisterVerticalLayoutCategory("Ketchum")
+
+  InitRecordEncountersOption(category)
+
   Settings.RegisterAddOnCategory(category)
 end
