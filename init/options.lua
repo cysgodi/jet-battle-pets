@@ -4,7 +4,7 @@ ketchum.options = {}
 
 -- init addon options on load
 function ketchum.options:InitializeOptions()
-  local category, layout = Settings.RegisterVerticalLayoutCategory("Ketchum")
+  local category = Settings.RegisterVerticalLayoutCategory("Ketchum")
 
   local isRecordingSetting = Settings.RegisterProxySetting(
     category,
