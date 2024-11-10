@@ -30,6 +30,10 @@ local function DisplayVariantCount(_, petInfo)
     return ""
   end
 
+  if ketchum.journal:IsIgnored(petInfo.speciesID) then
+    return 1
+  end
+
   local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
 
   if numDisplays < 1 then
@@ -78,7 +82,10 @@ end
 
 -- should variant stats be shown for a pet?
 local function ShouldShowVariants(_, petInfo)
-  if not petInfo or not petInfo.speciesID then
+  if not petInfo
+      or not petInfo.speciesID
+      or ketchum.journal:IsIgnored(petInfo.speciesID)
+  then
     return false
   end
 
@@ -89,10 +96,9 @@ end
 
 -- does a species of pet have a shiny variant?
 local function HasShiny(petInfo)
-  if (
-        not petInfo.speciesID
-        or not petInfo.isWild
-      ) then
+  if not petInfo.speciesID
+      or ketchum.journal:IsIgnored(petInfo.speciesID)
+  then
     return false
   end
 
