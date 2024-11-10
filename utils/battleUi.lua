@@ -73,7 +73,11 @@ function ketchum.battleUi:UpdateShinyFrames()
       return
     end
 
-    if probability <= ketchum.settings.THRESHOLDS.SHINY then
+    local maxProbability = ketchum.journal:GetMaxDisplayProbability(speciesID)
+
+    local ratio = maxProbability / probability
+
+    if ratio >= ketchum.settings.RARITY_RATIO.SHINY then
       if not ketchum.battleUi.alertsFired then
         PlaySoundFile("Interface\\AddOns\\Ketchum\\assets\\pla-shiny.mp3")
         ketchum.battleUi:PrintShinyAlert(speciesID)
