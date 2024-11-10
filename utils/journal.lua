@@ -4,13 +4,19 @@ ketchum.journal = {}
 
 -- return all model encounter rates of a species as a table
 function ketchum.journal:GetDisplayProbabilities(speciesID)
+  local probabilities = { 100 }
+
+  if (ketchum.journal:IsIgnored(speciesID)) then
+    return probabilities
+  end
+
   local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
 
   if not numDisplays or numDisplays == 0 then
-    return { 100 }
+    return probabilities
   end
 
-  local probabilities = {}
+  probabilities = {}
 
   for i = 1, numDisplays do
     local probability = C_PetJournal.GetDisplayProbabilityByIndex(
@@ -26,6 +32,10 @@ end
 
 -- return the probability of encountering a specific skin in a species
 function ketchum.journal:GetDisplayProbability(speciesID, displayID)
+  if (ketchum.journal:IsIgnored(speciesID)) then
+    return 100
+  end
+
   local displayIdIndex = ketchum.journal:GetDisplayIndex(
     speciesID,
     displayID
@@ -69,4 +79,9 @@ function ketchum.journal:GetMaxDisplayProbability(speciesID)
   local probabilities = ketchum.journal:GetDisplayProbabilities(speciesID)
 
   return math.max(unpack(probabilities))
+end
+
+-- is the species with the given ID on the ignore list?
+function ketchum.journal:IsIgnored(speciesID)
+  return not not ketchum.constants.IGNORED_SPECIES[speciesID]
 end

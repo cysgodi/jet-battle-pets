@@ -12,6 +12,14 @@ ketchum.constants.COLOR_NAMES = {
   UNCOMMON = "UNCOMMON"
 }
 
+-- IDs of species that will always show 1 model
+ketchum.constants.IGNORED_SPECIES = {
+  [2622] = {
+    reason =
+    "The API shows two models at 75/25% rarity. However, the model that's used is randomized whenever the pet is summoned."
+  }
+}
+
 ketchum.constants.GRAPHICS = {
   MODEL_RARITY_ATLAS = C_Texture.GetAtlasInfo("groupfinder-eye-frame"),
   SHINY_ATLAS = C_Texture.GetAtlasInfo("rare-elite-star")

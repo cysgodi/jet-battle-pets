@@ -1,5 +1,5 @@
 ## Interface: 110005
-## Version: 0.5.0
+## Version: 0.5.1
 ## Title: Ketchum
 ## Author: Cysgodi
 ## Notes: Never miss a shiny battle pet.
