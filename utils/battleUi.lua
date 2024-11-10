@@ -4,7 +4,9 @@ ketchum.battleUi = {
   alertsFired = false
 }
 
--- determine whether an alert should fire based on user preferences
+-- determine whether an alert should fire based on user preferences and
+-- also reports whether the model is actually shiny (as opposed to an
+-- alert that's firing due to a lower rarity threshold)
 local function ShouldAlert(speciesID, displayID)
   local probability = ketchum.journal:GetDisplayProbability(
     speciesID,
@@ -22,7 +24,8 @@ local function ShouldAlert(speciesID, displayID)
   local ratio = maxProbability / probability
   local alertRatio = ketchum.settings.RARITY_RATIO[rarityName]
 
-  return ratio >= alertRatio
+  return ratio >= alertRatio,
+      alertRatio >= ketchum.settings.RARITY_RATIO.SHINY
 end
 
 -- cleanup after a pet battle is finished
@@ -71,7 +74,7 @@ function ketchum.battleUi:PrintShinyAlert(speciesID)
   local pet = ketchum.pets.GetPet(speciesID)
   local shinyIcon = CreateAtlasMarkup("rare-elite-star")
 
-  print('|c00ffff00' .. shinyIcon .. ' A shiny ' .. pet.name .. ' appears! ' .. shinyIcon .. '|r')
+  print('|c00ffff00' .. shinyIcon .. ' An unusual ' .. pet.name .. ' appears! ' .. shinyIcon .. '|r')
 end
 
 -- attach the shiny icon to appropriate battle pet UI frames
@@ -85,12 +88,18 @@ function ketchum.battleUi:UpdateShinyFrames()
 
     local displayID = C_PetBattles.GetDisplayID(Enum.BattlePetOwner.Enemy, i)
 
-    if ShouldAlert(speciesID, displayID) then
+    local shouldFireAlerts, isShiny = ShouldAlert(speciesID, displayID)
+
+    if shouldFireAlerts then
       if not ketchum.battleUi.alertsFired then
         PlaySoundFile("Interface\\AddOns\\Ketchum\\assets\\pla-shiny.mp3")
         ketchum.battleUi:PrintShinyAlert(speciesID)
         ketchum.battleUi.alertsFired = true
       end
+
+      -- don't draw the shiny icon on frames unless the model is actually
+      -- shiny
+      if not isShiny then return end
 
       local activePetIndex = C_PetBattles.GetActivePet(Enum.BattlePetOwner.Enemy)
 
