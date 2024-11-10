@@ -33,9 +33,9 @@ ketchum.constants.GRAPHICS = {
 -- string literals to define color hex values
 local TEXT_COLORS = {
   COMMON = "ffffff",
-  RARE = "0000ff",
-  SHINY = "ffff00",
-  UNCOMMON = "00ff00"
+  RARE = "88bbff",
+  SHINY = "ffd200",
+  UNCOMMON = "20ff20"
 }
 
 -- icons that can be used in/as strings
