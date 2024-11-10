@@ -115,7 +115,7 @@ local function HasShiny(petInfo)
 
     local ratio = maxProbability / probability
 
-    if (ratio >= ketchum.settings.RARITY_RATIO.SHINY) then
+    if (ratio >= ketchum.constants.RARITY_RATIOS.SHINY) then
       return true
     end
   end
@@ -154,7 +154,7 @@ local function IsShiny(petInfo)
 
   local ratio = maxProbability / probability
 
-  return ratio >= ketchum.settings.RARITY_RATIO.SHINY
+  return ratio >= ketchum.constants.RARITY_RATIOS.SHINY
 end
 
 -- does the pet with the provided ID have a shiny variant?

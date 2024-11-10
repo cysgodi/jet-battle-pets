@@ -22,10 +22,10 @@ local function ShouldAlert(speciesID, displayID)
   local alertThreshold = ketchum.settings.ALERT_THRESHOLD
   local rarityName = ketchum.constants.RARITY_NAMES[alertThreshold]
   local ratio = maxProbability / probability
-  local alertRatio = ketchum.settings.RARITY_RATIO[rarityName]
+  local alertRatio = ketchum.constants.RARITY_RATIOS[rarityName]
 
   return ratio >= alertRatio,
-      alertRatio >= ketchum.settings.RARITY_RATIO.SHINY
+      alertRatio >= ketchum.constants.RARITY_RATIOS.SHINY
 end
 
 -- cleanup after a pet battle is finished

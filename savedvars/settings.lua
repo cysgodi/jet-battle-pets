@@ -11,13 +11,6 @@ local DEFAULT_SETTINGS = {
   ALERT_THRESHOLD = ketchum.constants.RARITIES.SHINY,
   -- flag to turn encounter data collection on/off
   ENABLE_DATA_COLLECTION = false,
-  -- ratios for determining rarity of a model relative to the most commonly
-  -- encountered model of a species
-  RARITY_RATIO = {
-    RARE = 3,
-    SHINY = 8,
-    UNCOMMON = 2
-  }
 }
 
 -- Fetch key from saved vars. Init the saved var to a default if it
