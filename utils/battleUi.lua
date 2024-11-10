@@ -4,6 +4,26 @@ ketchum.battleUi = {
   alertsFired = false
 }
 
+-- determine whether an alert should fire based on user preferences
+local function ShouldAlert(speciesID, displayID)
+  local probability = ketchum.journal:GetDisplayProbability(
+    speciesID,
+    displayID
+  )
+
+  if not probability then
+    return
+  end
+
+  local maxProbability = ketchum.journal:GetMaxDisplayProbability(speciesID)
+
+  local alertThreshold = ketchum.settings.ALERT_THRESHOLD
+  local ratio = maxProbability / probability
+  local alertRatio = ketchum.settings.RARITY_RATIO[alertThreshold]
+
+  return ratio >= alertRatio
+end
+
 -- cleanup after a pet battle is finished
 function ketchum.battleUi:AfterBattle()
   ketchum.battleUi.alertsFired = false
@@ -64,20 +84,7 @@ function ketchum.battleUi:UpdateShinyFrames()
 
     local displayID = C_PetBattles.GetDisplayID(Enum.BattlePetOwner.Enemy, i)
 
-    local probability = ketchum.journal:GetDisplayProbability(
-      speciesID,
-      displayID
-    )
-
-    if not probability then
-      return
-    end
-
-    local maxProbability = ketchum.journal:GetMaxDisplayProbability(speciesID)
-
-    local ratio = maxProbability / probability
-
-    if ratio >= ketchum.settings.RARITY_RATIO.SHINY then
+    if ShouldAlert(speciesID, displayID) then
       if not ketchum.battleUi.alertsFired then
         PlaySoundFile("Interface\\AddOns\\Ketchum\\assets\\pla-shiny.mp3")
         ketchum.battleUi:PrintShinyAlert(speciesID)

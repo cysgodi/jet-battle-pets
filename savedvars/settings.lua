@@ -8,6 +8,7 @@ KetchumSettings = {}
 
 -- default settings to apply on init
 local DEFAULT_SETTINGS = {
+  ALERT_THRESHOLD = 'SHINY',
   -- flag to turn encounter data collection on/off
   ENABLE_DATA_COLLECTION = false,
   -- ratios for determining rarity of a model relative to the most commonly
@@ -23,7 +24,7 @@ local DEFAULT_SETTINGS = {
 -- doesn't exist yet.
 local function getter(self, key)
   if KetchumSettings[key] == nil then
-    if DEFAULT_SETTINGS[key] and type(DEFAULT_SETTINGS[key] == "table") then
+    if DEFAULT_SETTINGS[key] and type(DEFAULT_SETTINGS[key]) == "table" then
       KetchumSettings[key] = CopyTable(DEFAULT_SETTINGS[key])
     else
       KetchumSettings[key] = DEFAULT_SETTINGS[key]
