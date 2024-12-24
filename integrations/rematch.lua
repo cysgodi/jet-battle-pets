@@ -32,7 +32,6 @@ local function DisplayVariantCount(_, petInfo)
 
   local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
 
-
   if numDisplays < 1 then
     numDisplays = 1
   end
@@ -47,8 +46,80 @@ local function DisplayVariantCount(_, petInfo)
   return numDisplays
 end
 
+-- create a model scene to display a variant of a battle pet
+local function DisplayVariantModel(self, speciesID, modelSlot)
+  if not self.VariantModelFrames[modelSlot] then
+    self.VariantModelFrames[modelSlot] = CreateFrame(
+      "ModelScene",
+      "VariantModelFrame" .. modelSlot,
+      self,
+      "WrappedAndUnwrappedModelScene"
+    )
+
+    self.VariantModelFrames[modelSlot]:SetPoint("BOTTOMLEFT", 168 * (modelSlot - 1), 0)
+    self.VariantModelFrames[modelSlot]:SetSize(168, 172)
+  end
+
+  local VariantModelFrame = self.VariantModelFrames[modelSlot]
+
+  local modelSceneID = C_PetJournal.GetPetModelSceneInfoBySpeciesID(speciesID)
+
+  VariantModelFrame:TransitionToModelSceneID(
+    modelSceneID,
+    CAMERA_TRANSITION_TYPE_IMMEDIATE,
+    CAMERA_MODIFICATION_TYPE_MAINTAIN,
+    false
+  )
+
+  local actor = VariantModelFrame:GetActorByTag("unwrapped")
+
+  if actor then
+    local displayID = C_PetJournal.GetDisplayIDByIndex(speciesID, modelSlot)
+
+    actor:SetModelByCreatureDisplayID(displayID)
+    actor:SetAnimation(0, -1)
+  end
+
+  VariantModelFrame:Show()
+end
+
+local function ResetVariantModels(self)
+  if not self.VariantModelFrames then
+    return
+  end
+
+  for _, frame in pairs(self.VariantModelFrames) do
+    if frame and frame:IsShown() then
+      frame:Hide()
+    end
+  end
+end
+
+-- create a frame to display all variant models of a pet species
+local function DisplayVariantModels(_, petInfo)
+  local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
+
+  ketchum.VariantModelsFrame = ketchum.VariantModelsFrame or CreateFrame(
+    "Frame",
+    "VariantModels",
+    UIParent
+  )
+
+  ketchum.VariantModelsFrame:SetSize(400, 300)
+  ketchum.VariantModelsFrame:SetPoint("CENTER")
+  ketchum.VariantModelsFrame.VariantModelFrames = ketchum.VariantModelsFrame.VariantModelFrames or {}
+
+  ResetVariantModels(ketchum.VariantModelsFrame)
+
+  for slot = 1, numDisplays do
+    DisplayVariantModel(ketchum.VariantModelsFrame, petInfo.speciesID, slot)
+  end
+
+  ketchum.VariantModelsFrame:Show()
+end
+
 -- get text to display on the tooltip for pet card variant stats
-local function DisplayVariantCountTooltip(_, petInfo)
+local function DisplayVariantCountTooltip(self, petInfo)
   local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
   local variantCount = numDisplays > 0 and numDisplays or 1
   local variantText = variantCount > 1 and "Variants" or "Variant"
@@ -222,6 +293,7 @@ function ketchum.rematch:AddVariantStats()
   local atlas = ketchum.constants.GRAPHICS.SHINY_ATLAS
 
   table.insert(Rematch.petCardStats, {
+    click = DisplayVariantModels,
     icon = atlas.file,
     iconCoords = ketchum.atlas:GetTexCoords(atlas),
     tooltipTitle = "Variants",
