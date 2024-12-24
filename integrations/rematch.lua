@@ -99,23 +99,41 @@ end
 local function DisplayVariantModels(_, petInfo)
   local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
 
-  ketchum.VariantModelsFrame = ketchum.VariantModelsFrame or CreateFrame(
-    "Frame",
-    "VariantModels",
-    UIParent
-  )
+  local VariantModels = ketchum.VariantModelsFrame
 
-  ketchum.VariantModelsFrame:SetSize(400, 300)
-  ketchum.VariantModelsFrame:SetPoint("CENTER")
-  ketchum.VariantModelsFrame.VariantModelFrames = ketchum.VariantModelsFrame.VariantModelFrames or {}
+  if not VariantModels then
+    VariantModels = CreateFrame(
+      "Frame",
+      "VariantModels",
+      UIParent
+    )
 
-  ResetVariantModels(ketchum.VariantModelsFrame)
-
-  for slot = 1, numDisplays do
-    DisplayVariantModel(ketchum.VariantModelsFrame, petInfo.speciesID, slot)
+    VariantModels:SetSize(400, 300)
+    VariantModels:SetPoint("CENTER")
+    VariantModels.VariantModelFrames = VariantModels.VariantModelFrames or {}
   end
 
-  ketchum.VariantModelsFrame:Show()
+  if VariantModels:IsShown()
+      and VariantModels.speciesID == petInfo.speciesID
+  then
+    VariantModels:Hide()
+    return
+  end
+
+  if VariantModels.speciesID ~= petInfo.speciesID
+  then
+    ResetVariantModels(VariantModels)
+    VariantModels.speciesID = petInfo.speciesID
+  end
+
+
+  for slot = 1, numDisplays do
+    DisplayVariantModel(VariantModels, petInfo.speciesID, slot)
+  end
+
+  VariantModels:Show()
+
+  ketchum.VariantModelsFrame = VariantModels
 end
 
 -- get text to display on the tooltip for pet card variant stats
