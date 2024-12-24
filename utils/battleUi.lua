@@ -25,7 +25,7 @@ local function ShouldAlert(speciesID, displayID)
   local alertRatio = ketchum.constants.RARITY_RATIOS[rarityName]
 
   return ratio >= alertRatio,
-      alertRatio >= ketchum.constants.RARITY_RATIOS.SHINY
+      rarityName == ketchum.constants.RARITY_NAMES.SHINY
 end
 
 -- cleanup after a pet battle is finished
