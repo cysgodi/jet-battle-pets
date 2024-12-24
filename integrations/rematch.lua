@@ -30,14 +30,18 @@ local function DisplayVariantCount(_, petInfo)
     return ""
   end
 
-  if ketchum.journal:IsIgnored(petInfo.speciesID) then
-    return 1
-  end
-
   local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
 
+
   if numDisplays < 1 then
-    return 1
+    numDisplays = 1
+  end
+
+  if C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
+  then
+    local randomIcon = CreateAtlasMarkup("lootroll-icon-need")
+
+    numDisplays = string.format("%d %s", numDisplays, randomIcon)
   end
 
   return numDisplays
@@ -56,6 +60,16 @@ local function DisplayVariantCountTooltip(_, petInfo)
   end
 
   local tooltipBody = baseText
+
+  if C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
+  then
+    local randomIcon = CreateAtlasMarkup("lootroll-icon-need")
+    local randomDisclaimer = "When this pet is summoned, its model is randomly chosen from all possible species models."
+
+    local randomText = string.format("\n\n%s %s\n\n", randomIcon, randomDisclaimer)
+
+    tooltipBody = tooltipBody .. randomText
+  end
 
   for slot = 1, numDisplays do
     if slot ~= 1 then
@@ -77,6 +91,8 @@ local function DisplayVariantCountTooltip(_, petInfo)
     tooltipBody = tooltipBody .. probabilityText
   end
 
+  tooltipBody = tooltipBody .. "\n\n"
+
   return tooltipBody
 end
 
@@ -84,7 +100,6 @@ end
 local function ShouldShowVariants(_, petInfo)
   if not petInfo
       or not petInfo.speciesID
-      or ketchum.journal:IsIgnored(petInfo.speciesID)
   then
     return false
   end
