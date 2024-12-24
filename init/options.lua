@@ -14,8 +14,6 @@ local function InitAlertThresholdOption(category)
     function(value) ketchum.settings.ALERT_THRESHOLD = value end
   )
 
-
-
   local function GetOptions()
     local container = Settings.CreateControlTextContainer()
 
