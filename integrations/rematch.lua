@@ -231,6 +231,22 @@ function ketchum.rematch:AddVariantStats()
   })
 end
 
+-- add filter to find species that use a random model
+local function AddHasRandomModelFilter()
+  Rematch.menus:AddToMenu("PetOther", {
+    check = true,
+    func = Rematch.petFilterMenu.ToggleChecked,
+    group = "Other",
+    isChecked = Rematch.petFilterMenu.GetChecked,
+    key = "HasRandomModel",
+    text = "Uses Random Model"
+  })
+
+  function Rematch.filters.otherFuncs:HasRandomModel(petInfo)
+    return petInfo.speciesID and C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
+  end
+end
+
 -- add filter to find species that have a shiny variant
 local function AddHasShinyFilter()
   Rematch.menus:AddToMenu("PetOther", {
@@ -271,4 +287,5 @@ function ketchum.rematch:AddVariantFilters()
 
   AddIsShinyFilter()
   AddHasShinyFilter()
+  AddHasRandomModelFilter()
 end
