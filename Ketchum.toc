@@ -14,6 +14,7 @@ savedvars/settings.lua
 savedvars/encounters.lua
 
 # init
+init/frames.lua
 init/main.lua
 init/options.lua
 init/events.lua
@@ -21,9 +22,13 @@ init/slash.lua
 
 # utility functions
 utils/atlas.lua
+utils/grid.lua
 utils/string.lua
 utils/journal.lua
 utils/battleUi.lua
+
+# frames
+frames/variant-models.xml
 
 # 3rd party integrations
 integrations/events.lua
