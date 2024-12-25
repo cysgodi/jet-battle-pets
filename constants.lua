@@ -4,6 +4,14 @@ Ketchum = ketchum -- global namespace
 
 ketchum.constants = {}
 
+-- dimensions of common UI elements
+ketchum.constants.DIMENSIONS = {
+  VARIANT_MODEL_FRAME = {
+    HEIGHT = 172,
+    WIDTH = 168
+  }
+}
+
 -- valid rarity names to use in utility functions
 ketchum.constants.RARITY_NAMES = {
   "COMMON",

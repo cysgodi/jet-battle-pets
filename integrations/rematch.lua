@@ -56,8 +56,16 @@ local function DisplayVariantModel(self, speciesID, modelSlot)
       "WrappedAndUnwrappedModelScene"
     )
 
-    self.VariantModelFrames[modelSlot]:SetPoint("BOTTOMLEFT", 168 * (modelSlot - 1), 0)
-    self.VariantModelFrames[modelSlot]:SetSize(168, 172)
+    self.VariantModelFrames[modelSlot]:SetPoint(
+      "TOPLEFT",
+      ketchum.constants.DIMENSIONS.VARIANT_MODEL_FRAME.WIDTH * ((modelSlot + 2) % 3),
+      ketchum.constants.DIMENSIONS.VARIANT_MODEL_FRAME.HEIGHT * math.floor((modelSlot - 1) / 3) * -1
+    )
+
+    self.VariantModelFrames[modelSlot]:SetSize(
+      ketchum.constants.DIMENSIONS.VARIANT_MODEL_FRAME.WIDTH,
+      ketchum.constants.DIMENSIONS.VARIANT_MODEL_FRAME.HEIGHT
+    )
   end
 
   local VariantModelFrame = self.VariantModelFrames[modelSlot]
@@ -107,11 +115,27 @@ local function DisplayVariantModels(_, petInfo)
       "VariantModels",
       UIParent
     )
-
-    VariantModels:SetSize(400, 300)
     VariantModels:SetPoint("CENTER")
+
     VariantModels.VariantModelFrames = VariantModels.VariantModelFrames or {}
   end
+
+  local variantModelsHeight = ketchum.constants.DIMENSIONS.VARIANT_MODEL_FRAME.HEIGHT * math.floor((numDisplays + 2) / 3)
+
+  local variantModelsWidth =
+      ketchum.constants.DIMENSIONS.VARIANT_MODEL_FRAME.WIDTH * math.min(numDisplays, 3)
+
+  VariantModels:SetSize(
+    variantModelsWidth,
+    variantModelsHeight
+  )
+
+  local bgAtlas = C_Texture.GetAtlasInfo("auctionhouse-background-buy-commodities")
+
+  VariantModels.Background = VariantModels:CreateTexture()
+  VariantModels.Background:SetAllPoints(VariantModels)
+  VariantModels.Background:SetTexture(bgAtlas.file)
+  VariantModels.Background:SetTexCoord(ketchum.atlas:GetTexCoords(bgAtlas))
 
   if VariantModels:IsShown()
       and VariantModels.speciesID == petInfo.speciesID
@@ -283,7 +307,7 @@ function ketchum.rematch:AddIsShinyBadge()
     "pets",
     "IsShiny",
     atlas.file,
-    ketchum.atlas:GetTexCoords(atlas),
+    { ketchum.atlas:GetTexCoords(atlas) },
     JournalEntryIsShiny
   )
 
@@ -298,7 +322,7 @@ function ketchum.rematch:AddModelRarity()
 
   table.insert(Rematch.petCardStats, {
     icon = atlas.file,
-    iconCoords = ketchum.atlas:GetTexCoords(atlas),
+    iconCoords = { ketchum.atlas:GetTexCoords(atlas) },
     tooltipTitle = "Model Rarity",
     tooltipBody = "How rare is this specific model?",
     show = true,
@@ -313,7 +337,7 @@ function ketchum.rematch:AddVariantStats()
   table.insert(Rematch.petCardStats, {
     click = DisplayVariantModels,
     icon = atlas.file,
-    iconCoords = ketchum.atlas:GetTexCoords(atlas),
+    iconCoords = { ketchum.atlas:GetTexCoords(atlas) },
     tooltipTitle = "Variants",
     tooltipBody = DisplayVariantCountTooltip,
     show = ShouldShowVariants,
