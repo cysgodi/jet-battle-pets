@@ -177,12 +177,7 @@ function ketchum.battleUi:TagShinyActivePet()
   f.tex = f:CreateTexture()
   f.tex:SetAllPoints()
   f.tex:SetTexture(atlas.file)
-  f.tex:SetTexCoord(
-    atlas.leftTexCoord,
-    atlas.rightTexCoord,
-    atlas.topTexCoord,
-    atlas.bottomTexCoord
-  )
+  f.tex:SetTexCoord(ketchum.atlas:GetTexCoords(atlas))
 
   ketchum.battleUi.ActiveShinyFrame = f
 end
