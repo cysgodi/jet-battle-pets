@@ -6,9 +6,18 @@ ketchum.constants = {}
 
 -- dimensions of common UI elements
 ketchum.constants.DIMENSIONS = {
-  VARIANT_MODEL_FRAME = {
+  VARIANT_MODEL = {
     HEIGHT = 172,
     WIDTH = 168
+  },
+  VARIANT_MODEL_GRID = {
+    MAX_COLS = 3,
+  },
+  VARIANT_MODEL_WINDOW = {
+    MARGIN_BOTTOM = 32,
+    MARGIN_LEFT = 16,
+    MARGIN_RIGHT = 16,
+    MARGIN_TOP = 32,
   }
 }
 
