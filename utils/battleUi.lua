@@ -127,16 +127,20 @@ function ketchum.battleUi:RecordEncounterData()
 
   local mapID = C_Map.GetBestMapForUnit("player")
   local playerPosition = C_Map.GetPlayerMapPosition(mapID, "player")
-  local areaIDs = C_MapExplorationInfo.GetExploredAreaIDsAtPosition(
-    mapID,
-    playerPosition
-  )
+  local areaIDs = nil
+
+  if (playerPosition) then
+    areaIDs = C_MapExplorationInfo.GetExploredAreaIDsAtPosition(
+      mapID,
+      playerPosition
+    )
+  end
 
   for i = 1, enemyCount do
     ketchum.battleUi:RecordEncounterSlotData(i, {
       areaIDs = areaIDs,
       mapID = mapID,
-      playerPosition = {
+      playerPosition = playerPosition and {
         x = playerPosition.x,
         y = playerPosition.y
       },
