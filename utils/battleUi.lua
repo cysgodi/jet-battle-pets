@@ -84,6 +84,19 @@ function ketchum.battleUi:UpdateShinyFrames()
   local numEnemies = C_PetBattles.GetNumPets(Enum.BattlePetOwner.Enemy)
 
   for i = 1, numEnemies do
+    -- print out all enemy abilities so that you can avoid things
+    -- like explosion
+
+    -- TODO: turn this into a warning if certain abilities are present
+
+    -- print('Slot ' .. i)
+
+    -- for j = 1, 3 do
+    --   local _, abilityName = C_PetBattles.GetAbilityInfo(Enum.BattlePetOwner.Enemy, i, j)
+
+    --   print(' > ' .. abilityName)
+    -- end
+
     local speciesID = C_PetBattles.GetPetSpeciesID(Enum.BattlePetOwner.Enemy, i)
 
     local displayID = C_PetBattles.GetDisplayID(Enum.BattlePetOwner.Enemy, i)
