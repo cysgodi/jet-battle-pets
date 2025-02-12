@@ -11,6 +11,8 @@ local DEFAULT_SETTINGS = {
   ALERT_THRESHOLD = ketchum.constants.RARITIES.SHINY,
   -- flag to turn encounter data collection on/off
   ENABLE_DATA_COLLECTION = false,
+  -- flag to enable/disable the variant model viewer feature
+  SHOW_VARIANT_MODEL_VIEWER = false,
 }
 
 -- Fetch key from saved vars. Init the saved var to a default if it
