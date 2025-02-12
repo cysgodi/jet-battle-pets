@@ -40,6 +40,8 @@ local function InitAlertThresholdOption(category)
   )
 end
 
+------ DEVELOPER FEATURE FLAGS ------
+
 -- init checkbox to toggle encounter recording
 local function InitRecordEncountersOption(category)
   local isRecordingSetting = Settings.RegisterProxySetting(
@@ -55,12 +57,51 @@ local function InitRecordEncountersOption(category)
   Settings.CreateCheckbox(category, isRecordingSetting)
 end
 
+----- init developer settings section
+local function InitDeveloperSettingsSection(category, layout)
+  layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(
+    "Developer",
+    "These are features that are only useful for the developer. You probably don't want to change them unless you need to collect logs."
+  ))
+
+  InitRecordEncountersOption(category)
+end
+
+------ EXPERIMENTAL FEATURE FLAGS ------
+
+-- init checkbox to toggle variant model viewer
+local function InitVariantModelViewerOption(category)
+  local setting = Settings.RegisterProxySetting(
+    category,
+    "SHOW_VARIANT_MODEL_VIEWER",
+    Settings.VarType.Boolean,
+    "Variant Model Viewer",
+    Settings.Default.False,
+    function() return ketchum.settings.SHOW_VARIANT_MODEL_VIEWER end,
+    function(value) ketchum.settings.SHOW_VARIANT_MODEL_VIEWER = value end
+  )
+
+  Settings.CreateCheckbox(category, setting,
+    "Enable the variant model viewer, which lets you look at all variants of a battle pet side-by-side.")
+end
+
+-- init experimental settings section
+local function InitExperimentalSettingsSection(category, layout)
+  layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(
+    "Experimental",
+    "These are features that are in development. They may make the addon unstable."
+  ))
+
+  InitVariantModelViewerOption(category)
+end
+
 -- init addon options on load
 function ketchum.options:InitializeOptions()
-  local category = Settings.RegisterVerticalLayoutCategory("Ketchum")
+  local category, layout = Settings.RegisterVerticalLayoutCategory("Ketchum")
 
   InitAlertThresholdOption(category)
-  InitRecordEncountersOption(category)
+  InitExperimentalSettingsSection(category, layout)
+  InitDeveloperSettingsSection(category, layout)
 
   Settings.RegisterAddOnCategory(category)
 end
