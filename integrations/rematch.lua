@@ -48,6 +48,10 @@ end
 
 -- create a frame to display all variant models of a pet species
 local function DisplayVariantModels(_, petInfo)
+  if not ketchum.settings.SHOW_VARIANT_MODEL_VIEWER then
+    return
+  end
+
   local VariantModels = ketchum.frames.VariantModelsWindow
 
   if VariantModels:IsShown()
