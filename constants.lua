@@ -51,6 +51,10 @@ ketchum.constants.IGNORED_SPECIES = {
 }
 
 ketchum.constants.GRAPHICS = {
+  MODEL_OUTLINE_COMMON_ATLAS = C_Texture.GetAtlasInfo("bags-glow-white"),
+  MODEL_OUTLINE_RARE_ATLAS = C_Texture.GetAtlasInfo("bags-glow-heirloom"),
+  MODEL_OUTLINE_SHINY_ATLAS = C_Texture.GetAtlasInfo("bags-glow-artifact"),
+  MODEL_OUTLINE_UNCOMMON_ATLAS = C_Texture.GetAtlasInfo("bags-glow-green"),
   MODEL_RARITY_ATLAS = C_Texture.GetAtlasInfo("groupfinder-eye-frame"),
   SHINY_ATLAS = C_Texture.GetAtlasInfo("rare-elite-star")
 }
