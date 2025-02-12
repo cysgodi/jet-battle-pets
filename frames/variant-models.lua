@@ -128,6 +128,14 @@ function VariantModelMixin:SetDimensions(modelSlot)
     modelDimensions.HEIGHT
   )
 
+  self.Border:SetSize(
+    modelDimensions.WIDTH,
+    modelDimensions.HEIGHT
+  )
+  self.Border:SetPoint("TOPLEFT")
+  self.Border:SetTexCoord(0, 0.171875, 0, 0.171875)
+  self.Border:SetAllPoints()
+
   local column = ketchum.grid:GetColumn(modelSlot, gridDimensions.MAX_COLS)
   local row = ketchum.grid:GetRow(modelSlot, gridDimensions.MAX_COLS)
 
@@ -141,9 +149,29 @@ function VariantModelMixin:SetDimensions(modelSlot)
   self:SetPoint("TOPLEFT", xOffset, yOffset)
 end
 
+-- get the atlas for the background texture of a model
+local function GetBorderColor(speciesID, modelSlot)
+  local modelRarity = ketchum.journal:GetDisplayRarityByIndex(
+    speciesID,
+    modelSlot
+  )
+
+  if modelRarity == 'SHINY' then
+    return 0, 1, 1
+  elseif modelRarity == 'RARE' then
+    return 0.25, 0.25, 1
+  elseif modelRarity == 'UNCOMMON' then
+    return 0, 1, 0
+  end
+
+  return 1, 1, 1
+end
+
 -- set the 3D model displayed and animated by the frame
 function VariantModelMixin:SetModel(speciesID, modelSlot)
   local modelSceneID = C_PetJournal.GetPetModelSceneInfoBySpeciesID(speciesID)
+
+  self.Border:SetVertexColor(GetBorderColor(speciesID, modelSlot))
 
   self:TransitionToModelSceneID(
     modelSceneID,
