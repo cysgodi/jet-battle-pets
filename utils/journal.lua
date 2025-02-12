@@ -78,11 +78,6 @@ function ketchum.journal:GetDisplayRarity(speciesID, displayID)
   local RARITIES = ketchum.constants.RARITIES
   local RARITY_NAMES = ketchum.constants.RARITY_NAMES
   local RARITY_RATIOS = ketchum.constants.RARITY_RATIOS
-
-  print(maxProbability)
-  print(displayProbability)
-  print(ratio)
-
   local rarityIndex = RARITIES.COMMON
 
   if ratio >= RARITY_RATIOS.SHINY then
