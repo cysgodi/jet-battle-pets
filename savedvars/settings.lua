@@ -9,8 +9,10 @@ KetchumSettings = {}
 -- default settings to apply on init
 local DEFAULT_SETTINGS = {
   ALERT_THRESHOLD = ketchum.constants.RARITIES.SHINY,
+
   -- flag to turn encounter data collection on/off
   ENABLE_DATA_COLLECTION = false,
+
   -- flag to enable/disable the variant model viewer feature
   SHOW_VARIANT_MODEL_VIEWER = false,
 }
