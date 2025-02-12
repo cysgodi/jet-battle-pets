@@ -6,10 +6,6 @@ ketchum.journal = {}
 function ketchum.journal:GetDisplayProbabilities(speciesID)
   local probabilities = { 100 }
 
-  if (ketchum.journal:IsIgnored(speciesID)) then
-    return probabilities
-  end
-
   local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
 
   if not numDisplays or numDisplays == 0 then
@@ -32,10 +28,6 @@ end
 
 -- return the probability of encountering a specific skin in a species
 function ketchum.journal:GetDisplayProbability(speciesID, displayID)
-  if (ketchum.journal:IsIgnored(speciesID)) then
-    return 100
-  end
-
   local displayIdIndex = ketchum.journal:GetDisplayIndex(
     speciesID,
     displayID
@@ -72,6 +64,43 @@ function ketchum.journal:GetDisplayIndex(speciesID, displayID)
   end
 
   return displayIdIndex
+end
+
+-- get the rarity of a variant model
+function ketchum.journal:GetDisplayRarity(speciesID, displayID)
+  local maxProbability = self:GetMaxDisplayProbability(speciesID)
+  local displayProbability = self:GetDisplayProbability(
+    speciesID,
+    displayID
+  )
+
+  local ratio = maxProbability / displayProbability
+  local RARITIES = ketchum.constants.RARITIES
+  local RARITY_NAMES = ketchum.constants.RARITY_NAMES
+  local RARITY_RATIOS = ketchum.constants.RARITY_RATIOS
+
+  print(maxProbability)
+  print(displayProbability)
+  print(ratio)
+
+  local rarityIndex = RARITIES.COMMON
+
+  if ratio >= RARITY_RATIOS.SHINY then
+    rarityIndex = RARITIES.SHINY
+  elseif ratio >= RARITY_RATIOS.RARE then
+    rarityIndex = RARITIES.RARE
+  elseif ratio >= RARITY_RATIOS.UNCOMMON then
+    rarityIndex = RARITIES.UNCOMMON
+  end
+
+  return RARITY_NAMES[rarityIndex]
+end
+
+-- get the rarity of a variant model by the model display index
+function ketchum.journal:GetDisplayRarityByIndex(speciesID, slot)
+  local displayID = C_PetJournal.GetDisplayIDByIndex(speciesID, slot)
+
+  return self:GetDisplayRarity(speciesID, displayID)
 end
 
 -- get the encounter probability of the most common model of a species
