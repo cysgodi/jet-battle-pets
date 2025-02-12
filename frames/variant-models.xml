@@ -3,6 +3,14 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
   <Script file="variant-models.lua" />
 
-  <ModelScene inherits="WrappedAndUnwrappedModelScene" mixin="VariantModelMixin" name="VariantModelTemplate" virtual="true" />
+  <ModelScene inherits="WrappedAndUnwrappedModelScene" mixin="VariantModelMixin" name="VariantModelTemplate" virtual="true">
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture
+          file="Interface\AddOns\Rematch\textures\borders"
+          parentKey="Border" />
+      </Layer>
+    </Layers>
+  </ModelScene>
 
 </Ui>
