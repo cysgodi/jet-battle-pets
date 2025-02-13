@@ -1,5 +1,5 @@
-local _, ketchum = ...
+local _, JetBattlePets = ...
 
-ketchum.state = {
+JetBattlePets.state = {
   REMATCH_INIT_COMPLETE = false
 }

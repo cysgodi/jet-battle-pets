@@ -1,6 +1,6 @@
 local _, JetBattlePets = ...
 
-Ketchum = JetBattlePets -- global namespace
+JetBattlePets = JetBattlePets -- global namespace
 
 JetBattlePets.constants = {}
 
@@ -46,7 +46,7 @@ JetBattlePets.constants.RARITY_RATIOS = {
 JetBattlePets.constants.IGNORED_SPECIES = {
   [2622] = {
     reason =
-    "The API shows two models at 75/25% rarity. However, the model that's used is randomized whenever the pet is summoned."
+    "The API shows two or more models with different rarities. However, the model that's used is randomized whenever the pet is summoned."
   }
 }
 

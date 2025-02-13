@@ -6,7 +6,7 @@ JetBattlePets.options = {}
 local function InitAlertThresholdOption(category)
   local alertThresholdSetting = Settings.RegisterProxySetting(
     category,
-    "KETCHUM_ALERT_THRESHOLD",
+    "JET_BATTLE_PETS_ALERT_THRESHOLD",
     Settings.VarType.Number,
     "Alert Rarity",
     JetBattlePets.constants.RARITIES.SHINY,
@@ -46,7 +46,7 @@ end
 local function InitRecordEncountersOption(category)
   local isRecordingSetting = Settings.RegisterProxySetting(
     category,
-    "KETCHUM_IS_RECORDING",
+    "JET_BATTLE_PETS_IS_RECORDING",
     Settings.VarType.Boolean,
     "Record Encounters",
     Settings.Default.False,
@@ -97,7 +97,7 @@ end
 
 -- init addon options on load
 function JetBattlePets.options:InitializeOptions()
-  local category, layout = Settings.RegisterVerticalLayoutCategory("Ketchum")
+  local category, layout = Settings.RegisterVerticalLayoutCategory("JET Battle Pets")
 
   InitAlertThresholdOption(category)
   InitExperimentalSettingsSection(category, layout)

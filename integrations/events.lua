@@ -1,25 +1,25 @@
-local _, ketchum = ...
+local _, JetBattlePets = ...
 
 --[[
   This file hooks into any events necessary for 3rd party integrations.
 ]]
 
-function ketchum.events:PLAYER_ENTERING_WORLD()
-  if not C_AddOns.IsAddOnLoaded("Ketchum") then
+function JetBattlePets.events:PLAYER_ENTERING_WORLD()
+  if not C_AddOns.IsAddOnLoaded("JetBattlePets") then
     return
   end
 
   if C_AddOns.IsAddOnLoaded("Rematch") then
-    if ketchum.state.REMATCH_INIT_COMPLETE then
+    if JetBattlePets.state.REMATCH_INIT_COMPLETE then
       return
     end
 
-    ketchum.rematch:AddIsShinyBadge()
-    ketchum.rematch:AddVariantFilters()
-    ketchum.rematch:AddVariantStats()
-    ketchum.rematch:AddModelRarity()
-    ketchum.state.REMATCH_INIT_COMPLETE = true
+    JetBattlePets.rematch:AddIsShinyBadge()
+    JetBattlePets.rematch:AddVariantFilters()
+    JetBattlePets.rematch:AddVariantStats()
+    JetBattlePets.rematch:AddModelRarity()
+    JetBattlePets.state.REMATCH_INIT_COMPLETE = true
   end
 end
 
-ketchum.events:RegisterEvent("PLAYER_ENTERING_WORLD")
+JetBattlePets.events:RegisterEvent("PLAYER_ENTERING_WORLD")

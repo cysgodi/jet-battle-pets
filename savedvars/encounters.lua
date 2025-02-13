@@ -1,10 +1,10 @@
-local _, ketchum = ...
+local _, JetBattlePets = ...
 
 -- init saved variables on first run
-KetchumEncounters = {}
+JetBattlePetsEncounters = {}
 
-ketchum.encounters = {}
+JetBattlePets.encounters = {}
 
-function ketchum.encounters:AddEncounter(encounter)
-  table.insert(KetchumEncounters, encounter)
+function JetBattlePets.encounters:AddEncounter(encounter)
+  table.insert(JetBattlePetsEncounters, encounter)
 end
