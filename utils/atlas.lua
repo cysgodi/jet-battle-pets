@@ -1,9 +1,9 @@
-local _, ketchum = ...
+local _, JetBattlePets = ...
 
-ketchum.atlas = {}
+JetBattlePets.atlas = {}
 
 -- get tex coords from a provided atlas
-function ketchum.atlas:GetTexCoords(atlas)
+function JetBattlePets.atlas:GetTexCoords(atlas)
   return atlas.leftTexCoord,
       atlas.rightTexCoord,
       atlas.topTexCoord,

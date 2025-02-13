@@ -7,7 +7,7 @@ function JetBattlePets.events:OnEvent(event, ...)
 end
 
 function JetBattlePets.events:ADDON_LOADED(_, addonName)
-  if addonName == "Ketchum" then
+  if addonName == "JetBattlePets" then
     JetBattlePets.options:InitializeOptions()
   end
 end

@@ -4,7 +4,7 @@ local _, JetBattlePets = ...
 JetBattlePets.settings = {}
 
 -- init saved variables on first run
-KetchumSettings = {}
+JetBattlePetsSettings = {}
 
 -- default settings to apply on init
 local DEFAULT_SETTINGS = {
@@ -20,20 +20,20 @@ local DEFAULT_SETTINGS = {
 -- Fetch key from saved vars. Init the saved var to a default if it
 -- doesn't exist yet.
 local function getter(self, key)
-  if KetchumSettings[key] == nil then
+  if JetBattlePetsSettings[key] == nil then
     if DEFAULT_SETTINGS[key] and type(DEFAULT_SETTINGS[key]) == "table" then
-      KetchumSettings[key] = CopyTable(DEFAULT_SETTINGS[key])
+      JetBattlePetsSettings[key] = CopyTable(DEFAULT_SETTINGS[key])
     else
-      KetchumSettings[key] = DEFAULT_SETTINGS[key]
+      JetBattlePetsSettings[key] = DEFAULT_SETTINGS[key]
     end
   end
 
-  return KetchumSettings[key]
+  return JetBattlePetsSettings[key]
 end
 
 -- Set a saved var.
 local function setter(self, key, value)
-  KetchumSettings[key] = value
+  JetBattlePetsSettings[key] = value
 end
 
 setmetatable(JetBattlePets.settings, {
