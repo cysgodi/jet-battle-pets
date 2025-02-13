@@ -1,14 +1,14 @@
-local _, ketchum = ...
+local _, JetBattlePets = ...
 
 -- init addon settings to empty table
-ketchum.settings = {}
+JetBattlePets.settings = {}
 
 -- init saved variables on first run
 KetchumSettings = {}
 
 -- default settings to apply on init
 local DEFAULT_SETTINGS = {
-  ALERT_THRESHOLD = ketchum.constants.RARITIES.SHINY,
+  ALERT_THRESHOLD = JetBattlePets.constants.RARITIES.SHINY,
 
   -- flag to turn encounter data collection on/off
   ENABLE_DATA_COLLECTION = false,
@@ -36,7 +36,7 @@ local function setter(self, key, value)
   KetchumSettings[key] = value
 end
 
-setmetatable(ketchum.settings, {
+setmetatable(JetBattlePets.settings, {
   __index = getter,
   __newindex = setter
 })
