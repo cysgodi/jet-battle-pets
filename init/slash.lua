@@ -17,9 +17,9 @@ local SlashCommands = {
 }
 
 SlashCmdList["JET_BATTLE_PETS"] = function(message)
-  local arg1, arg2, arg3 = strsplit(" ", message)
+  local arg1, arg2 = strsplit(" ", message)
 
   if SlashCommands[arg1] then
-    SlashCommands[arg1](arg2, arg3)
+    SlashCommands[arg1](arg2)
   end
 end
