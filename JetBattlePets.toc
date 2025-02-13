@@ -2,7 +2,7 @@
 ## Version: 0.7.0
 ## Title: JET Battle Pets
 ## Author: Cysgodi
-## Notes: Never miss a shiny battle pet.
+## Notes: Just Enough Battle Pets
 ## SavedVariables: JetBattlePetsEncounters, JetBattlePetsSettings
 
 # globals
