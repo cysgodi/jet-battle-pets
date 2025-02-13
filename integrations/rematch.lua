@@ -1,6 +1,6 @@
-local _, ketchum = ...
+local _, JetBattlePets = ...
 
-ketchum.rematch = {}
+JetBattlePets.rematch = {}
 
 -- get model rarity text to display on a pet card
 local function DisplayModelRarity(_, petInfo)
@@ -10,15 +10,15 @@ local function DisplayModelRarity(_, petInfo)
 
   local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
   local probability = numDisplays and numDisplays > 1 and
-      ketchum.journal:GetDisplayProbability(
+      JetBattlePets.journal:GetDisplayProbability(
         petInfo.speciesID,
         petInfo.displayID
       ) or 100
-  local maxProbability = ketchum.journal:GetMaxDisplayProbability(
+  local maxProbability = JetBattlePets.journal:GetMaxDisplayProbability(
     petInfo.speciesID
   )
 
-  return ketchum.text:GetRarityText(
+  return JetBattlePets.text:GetRarityText(
     probability,
     maxProbability
   )
@@ -48,11 +48,11 @@ end
 
 -- create a frame to display all variant models of a pet species
 local function DisplayVariantModels(_, petInfo)
-  if not ketchum.settings.SHOW_VARIANT_MODEL_VIEWER then
+  if not JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER then
     return
   end
 
-  local VariantModels = ketchum.frames.VariantModelsWindow
+  local VariantModels = JetBattlePets.frames.VariantModelsWindow
 
   if VariantModels:IsShown()
       and VariantModels.displayedSpeciesID == petInfo.speciesID
@@ -74,7 +74,7 @@ local function DisplayVariantCountTooltip(self, petInfo)
   local baseText = "How many unique models does this pet species have?\n\n"
       .. string.format("%d %s: ", variantCount, variantText)
   if numDisplays <= 1 then
-    return baseText .. ketchum.text:GetRarityText(100, 100)
+    return baseText .. JetBattlePets.text:GetRarityText(100, 100)
   end
 
   local tooltipBody = baseText
@@ -99,9 +99,9 @@ local function DisplayVariantCountTooltip(self, petInfo)
       slot
     ) or 100
 
-    local maxProbability = ketchum.journal:GetMaxDisplayProbability(petInfo.speciesID)
+    local maxProbability = JetBattlePets.journal:GetMaxDisplayProbability(petInfo.speciesID)
 
-    local probabilityText = ketchum.text:GetRarityText(
+    local probabilityText = JetBattlePets.text:GetRarityText(
       probability,
       maxProbability
     )
@@ -130,7 +130,7 @@ end
 -- does a species of pet have a shiny variant?
 local function HasShiny(petInfo)
   if not petInfo.speciesID
-      or ketchum.journal:IsIgnored(petInfo.speciesID)
+      or JetBattlePets.journal:IsIgnored(petInfo.speciesID)
   then
     return false
   end
@@ -141,14 +141,14 @@ local function HasShiny(petInfo)
     return false
   end
 
-  local maxProbability = ketchum.journal:GetMaxDisplayProbability(petInfo.speciesID)
+  local maxProbability = JetBattlePets.journal:GetMaxDisplayProbability(petInfo.speciesID)
 
   for i = 1, numVariants do
     local probability = C_PetJournal.GetDisplayProbabilityByIndex(petInfo.speciesID, i)
 
     local ratio = maxProbability / probability
 
-    if (ratio >= ketchum.constants.RARITY_RATIOS.SHINY) then
+    if (ratio >= JetBattlePets.constants.RARITY_RATIOS.SHINY) then
       return true
     end
   end
@@ -172,7 +172,7 @@ local function IsShiny(petInfo)
     return false
   end
 
-  local displayIdIndex = ketchum.journal:GetDisplayIndex(
+  local displayIdIndex = JetBattlePets.journal:GetDisplayIndex(
     petInfo.speciesID,
     petInfo.displayID
   )
@@ -181,13 +181,13 @@ local function IsShiny(petInfo)
     return false
   end
 
-  local maxProbability = ketchum.journal:GetMaxDisplayProbability(petInfo.speciesID)
+  local maxProbability = JetBattlePets.journal:GetMaxDisplayProbability(petInfo.speciesID)
 
   local probability = C_PetJournal.GetDisplayProbabilityByIndex(petInfo.speciesID, displayIdIndex)
 
   local ratio = maxProbability / probability
 
-  return ratio >= ketchum.constants.RARITY_RATIOS.SHINY
+  return ratio >= JetBattlePets.constants.RARITY_RATIOS.SHINY
 end
 
 -- does the pet with the provided ID have a shiny variant?
@@ -205,14 +205,14 @@ local function JournalEntryIsShiny(_, petID)
 end
 
 -- register a badge to Rematch that displays on shiny pets
-function ketchum.rematch:AddIsShinyBadge()
+function JetBattlePets.rematch:AddIsShinyBadge()
   local atlas = C_Texture.GetAtlasInfo("rare-elite-star")
 
   Rematch.badges:RegisterBadge(
     "pets",
     "IsShiny",
     atlas.file,
-    { ketchum.atlas:GetTexCoords(atlas) },
+    { JetBattlePets.atlas:GetTexCoords(atlas) },
     JournalEntryIsShiny
   )
 
@@ -222,12 +222,12 @@ function ketchum.rematch:AddIsShinyBadge()
 end
 
 -- add model rarity to Rematch pet cards
-function ketchum.rematch:AddModelRarity()
-  local atlas = ketchum.constants.GRAPHICS.MODEL_RARITY_ATLAS
+function JetBattlePets.rematch:AddModelRarity()
+  local atlas = JetBattlePets.constants.GRAPHICS.MODEL_RARITY_ATLAS
 
   table.insert(Rematch.petCardStats, {
     icon = atlas.file,
-    iconCoords = { ketchum.atlas:GetTexCoords(atlas) },
+    iconCoords = { JetBattlePets.atlas:GetTexCoords(atlas) },
     tooltipTitle = "Model Rarity",
     tooltipBody = "How rare is this specific model?",
     show = true,
@@ -236,13 +236,13 @@ function ketchum.rematch:AddModelRarity()
 end
 
 -- add variant stats to Rematch pet cards
-function ketchum.rematch:AddVariantStats()
-  local atlas = ketchum.constants.GRAPHICS.SHINY_ATLAS
+function JetBattlePets.rematch:AddVariantStats()
+  local atlas = JetBattlePets.constants.GRAPHICS.SHINY_ATLAS
 
   table.insert(Rematch.petCardStats, {
     click = DisplayVariantModels,
     icon = atlas.file,
-    iconCoords = { ketchum.atlas:GetTexCoords(atlas) },
+    iconCoords = { JetBattlePets.atlas:GetTexCoords(atlas) },
     tooltipTitle = "Variants",
     tooltipBody = DisplayVariantCountTooltip,
     show = ShouldShowVariants,
@@ -301,7 +301,7 @@ local function AddIsShinyFilter()
 end
 
 -- add rematch filters for pet variants
-function ketchum.rematch:AddVariantFilters()
+function JetBattlePets.rematch:AddVariantFilters()
   Rematch.menus:AddToMenu("PetOther", { spacer = true, text = "" })
 
   AddIsShinyFilter()

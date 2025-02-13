@@ -1,34 +1,34 @@
-local _, ketchum = ...
+local _, JetBattlePets = ...
 
-ketchum.events = CreateFrame("Frame")
+JetBattlePets.events = CreateFrame("Frame")
 
-function ketchum.events:OnEvent(event, ...)
+function JetBattlePets.events:OnEvent(event, ...)
   self[event](self, event, ...)
 end
 
-function ketchum.events:ADDON_LOADED(_, addonName)
+function JetBattlePets.events:ADDON_LOADED(_, addonName)
   if addonName == "Ketchum" then
-    ketchum.options:InitializeOptions()
+    JetBattlePets.options:InitializeOptions()
   end
 end
 
-function ketchum.events:PET_BATTLE_OPENING_START()
-  ketchum.battleUi:UpdateShinyFrames()
-  ketchum.battleUi:RecordEncounterData()
+function JetBattlePets.events:PET_BATTLE_OPENING_START()
+  JetBattlePets.battleUi:UpdateShinyFrames()
+  JetBattlePets.battleUi:RecordEncounterData()
 end
 
-function ketchum.events:PET_BATTLE_OVER()
-  ketchum.battleUi:AfterBattle()
+function JetBattlePets.events:PET_BATTLE_OVER()
+  JetBattlePets.battleUi:AfterBattle()
 end
 
-function ketchum.events:PET_BATTLE_PET_CHANGED(_, owner)
+function JetBattlePets.events:PET_BATTLE_PET_CHANGED(_, owner)
   if owner == Enum.BattlePetOwner.Enemy then
-    ketchum.battleUi:UpdateShinyFrames()
+    JetBattlePets.battleUi:UpdateShinyFrames()
   end
 end
 
-ketchum.events:RegisterEvent("ADDON_LOADED")
-ketchum.events:RegisterEvent("PET_BATTLE_OPENING_START")
-ketchum.events:RegisterEvent("PET_BATTLE_OVER")
-ketchum.events:RegisterEvent("PET_BATTLE_PET_CHANGED")
-ketchum.events:SetScript("OnEvent", ketchum.events.OnEvent)
+JetBattlePets.events:RegisterEvent("ADDON_LOADED")
+JetBattlePets.events:RegisterEvent("PET_BATTLE_OPENING_START")
+JetBattlePets.events:RegisterEvent("PET_BATTLE_OVER")
+JetBattlePets.events:RegisterEvent("PET_BATTLE_PET_CHANGED")
+JetBattlePets.events:SetScript("OnEvent", JetBattlePets.events.OnEvent)

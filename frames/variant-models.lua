@@ -1,37 +1,37 @@
-local _, ketchum = ...
+local _, JetBattlePets = ...
 
 -- a window for displaying battle pet variant models
-ketchum.frames.VariantModelsWindow = ketchum.frames.VariantModelsWindow or CreateFrame(
+JetBattlePets.frames.VariantModelsWindow = JetBattlePets.frames.VariantModelsWindow or CreateFrame(
   "Frame",
   "VariantModels",
   UIParent,
   "PortraitFrameTemplate"
 )
 
-ketchum.frames.VariantModelsWindow:SetPoint("CENTER")
-ketchum.frames.VariantModelsWindow:SetClampedToScreen(true)
-ketchum.frames.VariantModelsWindow:SetMovable(true)
-ketchum.frames.VariantModelsWindow:EnableMouse(true)
-ketchum.frames.VariantModelsWindow:RegisterForDrag("LeftButton")
+JetBattlePets.frames.VariantModelsWindow:SetPoint("CENTER")
+JetBattlePets.frames.VariantModelsWindow:SetClampedToScreen(true)
+JetBattlePets.frames.VariantModelsWindow:SetMovable(true)
+JetBattlePets.frames.VariantModelsWindow:EnableMouse(true)
+JetBattlePets.frames.VariantModelsWindow:RegisterForDrag("LeftButton")
 
-ketchum.frames.VariantModelsWindow:SetScript("OnMouseDown", function(self)
+JetBattlePets.frames.VariantModelsWindow:SetScript("OnMouseDown", function(self)
   self:StartMoving()
 end)
 
-ketchum.frames.VariantModelsWindow:SetScript("OnMouseUp", function(self)
+JetBattlePets.frames.VariantModelsWindow:SetScript("OnMouseUp", function(self)
   self:StopMovingOrSizing()
 end)
 
-ketchum.frames.VariantModelsWindow:Hide()
+JetBattlePets.frames.VariantModelsWindow:Hide()
 
-ButtonFrameTemplate_HidePortrait(ketchum.frames.VariantModelsWindow)
+ButtonFrameTemplate_HidePortrait(JetBattlePets.frames.VariantModelsWindow)
 
-ketchum.frames.VariantModelsWindow.VariantModels = {}
-ketchum.frames.VariantModelsWindow.initDone = true
+JetBattlePets.frames.VariantModelsWindow.VariantModels = {}
+JetBattlePets.frames.VariantModelsWindow.initDone = true
 
 
 -- hide any existing variant models
-function ketchum.frames.VariantModelsWindow:ResetVariantModels()
+function JetBattlePets.frames.VariantModelsWindow:ResetVariantModels()
   if not self.VariantModels then
     return
   end
@@ -44,7 +44,7 @@ function ketchum.frames.VariantModelsWindow:ResetVariantModels()
 end
 
 -- update the models that are shown in the window
-function ketchum.frames.VariantModelsWindow:UpdateModels(petInfo)
+function JetBattlePets.frames.VariantModelsWindow:UpdateModels(petInfo)
   if self.displayedSpeciesID == petInfo.speciesID then
     return
   end
@@ -64,20 +64,20 @@ function ketchum.frames.VariantModelsWindow:UpdateModels(petInfo)
 end
 
 -- update window size based on the species being displayed
-function ketchum.frames.VariantModelsWindow:UpdateSize(speciesID)
-  local gridDimensions = ketchum.constants.DIMENSIONS.VARIANT_MODEL_GRID
-  local modelDimensions = ketchum.constants.DIMENSIONS.VARIANT_MODEL
-  local windowDimensions = ketchum.constants.DIMENSIONS.VARIANT_MODEL_WINDOW
+function JetBattlePets.frames.VariantModelsWindow:UpdateSize(speciesID)
+  local gridDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_GRID
+  local modelDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL
+  local windowDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW
 
   local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
 
-  local gridHeight = ketchum.grid:GetHeight(
+  local gridHeight = JetBattlePets.grid:GetHeight(
     modelDimensions.HEIGHT,
     numDisplays,
     gridDimensions.MAX_COLS
   )
 
-  local gridWidth = ketchum.grid:GetWidth(
+  local gridWidth = JetBattlePets.grid:GetWidth(
     modelDimensions.WIDTH,
     numDisplays,
     gridDimensions.MAX_COLS
@@ -97,7 +97,7 @@ function ketchum.frames.VariantModelsWindow:UpdateSize(speciesID)
   )
 end
 
-function ketchum.frames.VariantModelsWindow:UpdateVariantModel(
+function JetBattlePets.frames.VariantModelsWindow:UpdateVariantModel(
     speciesID,
     modelSlot
 )
@@ -119,9 +119,9 @@ VariantModelMixin = {}
 
 -- set frame size and offset based on the display slot
 function VariantModelMixin:SetDimensions(modelSlot)
-  local modelDimensions = ketchum.constants.DIMENSIONS.VARIANT_MODEL
-  local gridDimensions = ketchum.constants.DIMENSIONS.VARIANT_MODEL_GRID
-  local windowDimensions = ketchum.constants.DIMENSIONS.VARIANT_MODEL_WINDOW
+  local modelDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL
+  local gridDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_GRID
+  local windowDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW
 
   self:SetSize(
     modelDimensions.WIDTH,
@@ -136,8 +136,8 @@ function VariantModelMixin:SetDimensions(modelSlot)
   self.Border:SetTexCoord(0, 0.171875, 0, 0.171875)
   self.Border:SetAllPoints()
 
-  local column = ketchum.grid:GetColumn(modelSlot, gridDimensions.MAX_COLS)
-  local row = ketchum.grid:GetRow(modelSlot, gridDimensions.MAX_COLS)
+  local column = JetBattlePets.grid:GetColumn(modelSlot, gridDimensions.MAX_COLS)
+  local row = JetBattlePets.grid:GetRow(modelSlot, gridDimensions.MAX_COLS)
 
   local xOffset = windowDimensions.MARGIN_LEFT + modelDimensions.WIDTH * column
 
@@ -151,7 +151,7 @@ end
 
 -- get the atlas for the background texture of a model
 local function GetBorderColor(speciesID, modelSlot)
-  local modelRarity = ketchum.journal:GetDisplayRarityByIndex(
+  local modelRarity = JetBattlePets.journal:GetDisplayRarityByIndex(
     speciesID,
     modelSlot
   )

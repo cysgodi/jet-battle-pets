@@ -1,9 +1,9 @@
 ## Interface: 110007
 ## Version: 0.7.0
-## Title: Ketchum
+## Title: JET Battle Pets
 ## Author: Cysgodi
 ## Notes: Never miss a shiny battle pet.
-## SavedVariables: KetchumEncounters, KetchumSettings
+## SavedVariables: JetBattlePetsEncounters, JetBattlePetsSettings
 
 # globals
 constants.lua

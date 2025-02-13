@@ -1,6 +1,6 @@
-local _, ketchum = ...
+local _, JetBattlePets = ...
 
-ketchum.options = {}
+JetBattlePets.options = {}
 
 -- init dropdown to choose alert threshold rarity
 local function InitAlertThresholdOption(category)
@@ -9,18 +9,18 @@ local function InitAlertThresholdOption(category)
     "KETCHUM_ALERT_THRESHOLD",
     Settings.VarType.Number,
     "Alert Rarity",
-    ketchum.constants.RARITIES.SHINY,
-    function() return ketchum.settings.ALERT_THRESHOLD end,
-    function(value) ketchum.settings.ALERT_THRESHOLD = value end
+    JetBattlePets.constants.RARITIES.SHINY,
+    function() return JetBattlePets.settings.ALERT_THRESHOLD end,
+    function(value) JetBattlePets.settings.ALERT_THRESHOLD = value end
   )
 
   local function GetOptions()
     local container = Settings.CreateControlTextContainer()
 
-    for value, rarity in ipairs(ketchum.constants.RARITY_NAMES) do
-      if value ~= ketchum.constants.RARITIES.COMMON then
-        local prettyRarity = ketchum.text:FormatRarityName(rarity)
-        local label = ketchum.text:SetColorByName(value, prettyRarity)
+    for value, rarity in ipairs(JetBattlePets.constants.RARITY_NAMES) do
+      if value ~= JetBattlePets.constants.RARITIES.COMMON then
+        local prettyRarity = JetBattlePets.text:FormatRarityName(rarity)
+        local label = JetBattlePets.text:SetColorByName(value, prettyRarity)
 
         container:Add(
           value,
@@ -50,8 +50,8 @@ local function InitRecordEncountersOption(category)
     Settings.VarType.Boolean,
     "Record Encounters",
     Settings.Default.False,
-    function() return ketchum.settings.ENABLE_DATA_COLLECTION end,
-    function(value) ketchum.settings.ENABLE_DATA_COLLECTION = value end
+    function() return JetBattlePets.settings.ENABLE_DATA_COLLECTION end,
+    function(value) JetBattlePets.settings.ENABLE_DATA_COLLECTION = value end
   )
 
   Settings.CreateCheckbox(category, isRecordingSetting)
@@ -77,8 +77,8 @@ local function InitVariantModelViewerOption(category)
     Settings.VarType.Boolean,
     "Variant Model Viewer",
     Settings.Default.False,
-    function() return ketchum.settings.SHOW_VARIANT_MODEL_VIEWER end,
-    function(value) ketchum.settings.SHOW_VARIANT_MODEL_VIEWER = value end
+    function() return JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER end,
+    function(value) JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER = value end
   )
 
   Settings.CreateCheckbox(category, setting,
@@ -96,7 +96,7 @@ local function InitExperimentalSettingsSection(category, layout)
 end
 
 -- init addon options on load
-function ketchum.options:InitializeOptions()
+function JetBattlePets.options:InitializeOptions()
   local category, layout = Settings.RegisterVerticalLayoutCategory("Ketchum")
 
   InitAlertThresholdOption(category)

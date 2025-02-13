@@ -1,9 +1,9 @@
-local _, ketchum = ...
+local _, JetBattlePets = ...
 
-ketchum.journal = {}
+JetBattlePets.journal = {}
 
 -- return all model encounter rates of a species as a table
-function ketchum.journal:GetDisplayProbabilities(speciesID)
+function JetBattlePets.journal:GetDisplayProbabilities(speciesID)
   local probabilities = { 100 }
 
   local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
@@ -27,8 +27,8 @@ function ketchum.journal:GetDisplayProbabilities(speciesID)
 end
 
 -- return the probability of encountering a specific skin in a species
-function ketchum.journal:GetDisplayProbability(speciesID, displayID)
-  local displayIdIndex = ketchum.journal:GetDisplayIndex(
+function JetBattlePets.journal:GetDisplayProbability(speciesID, displayID)
+  local displayIdIndex = JetBattlePets.journal:GetDisplayIndex(
     speciesID,
     displayID
   )
@@ -46,7 +46,7 @@ function ketchum.journal:GetDisplayProbability(speciesID, displayID)
 end
 
 -- determine the index of a specific display ID of a specific species
-function ketchum.journal:GetDisplayIndex(speciesID, displayID)
+function JetBattlePets.journal:GetDisplayIndex(speciesID, displayID)
   local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
 
   if not numDisplays then
@@ -67,7 +67,7 @@ function ketchum.journal:GetDisplayIndex(speciesID, displayID)
 end
 
 -- get the rarity of a variant model
-function ketchum.journal:GetDisplayRarity(speciesID, displayID)
+function JetBattlePets.journal:GetDisplayRarity(speciesID, displayID)
   local maxProbability = self:GetMaxDisplayProbability(speciesID)
   local displayProbability = self:GetDisplayProbability(
     speciesID,
@@ -75,9 +75,9 @@ function ketchum.journal:GetDisplayRarity(speciesID, displayID)
   )
 
   local ratio = maxProbability / displayProbability
-  local RARITIES = ketchum.constants.RARITIES
-  local RARITY_NAMES = ketchum.constants.RARITY_NAMES
-  local RARITY_RATIOS = ketchum.constants.RARITY_RATIOS
+  local RARITIES = JetBattlePets.constants.RARITIES
+  local RARITY_NAMES = JetBattlePets.constants.RARITY_NAMES
+  local RARITY_RATIOS = JetBattlePets.constants.RARITY_RATIOS
   local rarityIndex = RARITIES.COMMON
 
   if ratio >= RARITY_RATIOS.SHINY then
@@ -92,20 +92,20 @@ function ketchum.journal:GetDisplayRarity(speciesID, displayID)
 end
 
 -- get the rarity of a variant model by the model display index
-function ketchum.journal:GetDisplayRarityByIndex(speciesID, slot)
+function JetBattlePets.journal:GetDisplayRarityByIndex(speciesID, slot)
   local displayID = C_PetJournal.GetDisplayIDByIndex(speciesID, slot)
 
   return self:GetDisplayRarity(speciesID, displayID)
 end
 
 -- get the encounter probability of the most common model of a species
-function ketchum.journal:GetMaxDisplayProbability(speciesID)
-  local probabilities = ketchum.journal:GetDisplayProbabilities(speciesID)
+function JetBattlePets.journal:GetMaxDisplayProbability(speciesID)
+  local probabilities = JetBattlePets.journal:GetDisplayProbabilities(speciesID)
 
   return math.max(unpack(probabilities))
 end
 
 -- is the species with the given ID on the ignore list?
-function ketchum.journal:IsIgnored(speciesID)
-  return not not ketchum.constants.IGNORED_SPECIES[speciesID]
+function JetBattlePets.journal:IsIgnored(speciesID)
+  return not not JetBattlePets.constants.IGNORED_SPECIES[speciesID]
 end

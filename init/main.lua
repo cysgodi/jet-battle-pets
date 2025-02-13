@@ -1,9 +1,9 @@
-local _, ketchum = ...
+local _, JetBattlePets = ...
 
-ketchum.pets = {}
+JetBattlePets.pets = {}
 
 -- fetch info for a pet, using Rematch if possible
-function ketchum.pets.GetPet(petID)
+function JetBattlePets.pets.GetPet(petID)
   if C_AddOns.IsAddOnLoaded("Rematch") then
     return Rematch.petInfo:Fetch(petID)
   end

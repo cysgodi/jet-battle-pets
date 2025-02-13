@@ -1,6 +1,6 @@
-local _, ketchum = ...
+local _, JetBattlePets = ...
 
-ketchum.battleUi = {
+JetBattlePets.battleUi = {
   alertsFired = false
 }
 
@@ -8,7 +8,7 @@ ketchum.battleUi = {
 -- also reports whether the model is actually shiny (as opposed to an
 -- alert that's firing due to a lower rarity threshold)
 local function ShouldAlert(speciesID, displayID)
-  local probability = ketchum.journal:GetDisplayProbability(
+  local probability = JetBattlePets.journal:GetDisplayProbability(
     speciesID,
     displayID
   )
@@ -17,25 +17,25 @@ local function ShouldAlert(speciesID, displayID)
     return
   end
 
-  local maxProbability = ketchum.journal:GetMaxDisplayProbability(speciesID)
+  local maxProbability = JetBattlePets.journal:GetMaxDisplayProbability(speciesID)
 
-  local alertThreshold = ketchum.settings.ALERT_THRESHOLD
-  local rarityName = ketchum.constants.RARITY_NAMES[alertThreshold]
+  local alertThreshold = JetBattlePets.settings.ALERT_THRESHOLD
+  local rarityName = JetBattlePets.constants.RARITY_NAMES[alertThreshold]
   local ratio = maxProbability / probability
-  local alertRatio = ketchum.constants.RARITY_RATIOS[rarityName]
+  local alertRatio = JetBattlePets.constants.RARITY_RATIOS[rarityName]
 
   return ratio >= alertRatio,
-      rarityName == ketchum.constants.RARITY_NAMES.SHINY
+      rarityName == JetBattlePets.constants.RARITY_NAMES.SHINY
 end
 
 -- cleanup after a pet battle is finished
-function ketchum.battleUi:AfterBattle()
-  ketchum.battleUi.alertsFired = false
+function JetBattlePets.battleUi:AfterBattle()
+  JetBattlePets.battleUi.alertsFired = false
 end
 
 -- save data about a specific encountered enemy pet to disk
-function ketchum.battleUi:RecordEncounterSlotData(slot, location)
-  ketchum.encounters:AddEncounter({
+function JetBattlePets.battleUi:RecordEncounterSlotData(slot, location)
+  JetBattlePets.encounters:AddEncounter({
     speciesID = C_PetBattles.GetPetSpeciesID(
       Enum.BattlePetOwner.Enemy,
       slot
@@ -70,16 +70,16 @@ function ketchum.battleUi:RecordEncounterSlotData(slot, location)
 end
 
 -- print an alert to the chat box that a shiny is in the battle
-function ketchum.battleUi:PrintShinyAlert(speciesID)
-  local pet = ketchum.pets.GetPet(speciesID)
+function JetBattlePets.battleUi:PrintShinyAlert(speciesID)
+  local pet = JetBattlePets.pets.GetPet(speciesID)
   local shinyIcon = CreateAtlasMarkup("rare-elite-star")
 
   print('|c00ffff00' .. shinyIcon .. ' An unusual ' .. pet.name .. ' appears! ' .. shinyIcon .. '|r')
 end
 
 -- attach the shiny icon to appropriate battle pet UI frames
-function ketchum.battleUi:UpdateShinyFrames()
-  ketchum.battleUi:ResetShinyFrames()
+function JetBattlePets.battleUi:UpdateShinyFrames()
+  JetBattlePets.battleUi:ResetShinyFrames()
 
   local numEnemies = C_PetBattles.GetNumPets(Enum.BattlePetOwner.Enemy)
 
@@ -104,10 +104,10 @@ function ketchum.battleUi:UpdateShinyFrames()
     local shouldFireAlerts, isShiny = ShouldAlert(speciesID, displayID)
 
     if shouldFireAlerts then
-      if not ketchum.battleUi.alertsFired then
+      if not JetBattlePets.battleUi.alertsFired then
         PlaySoundFile("Interface\\AddOns\\Ketchum\\assets\\pla-shiny.mp3")
-        ketchum.battleUi:PrintShinyAlert(speciesID)
-        ketchum.battleUi.alertsFired = true
+        JetBattlePets.battleUi:PrintShinyAlert(speciesID)
+        JetBattlePets.battleUi.alertsFired = true
       end
 
       -- don't draw the shiny icon on frames unless the model is actually
@@ -117,18 +117,18 @@ function ketchum.battleUi:UpdateShinyFrames()
       local activePetIndex = C_PetBattles.GetActivePet(Enum.BattlePetOwner.Enemy)
 
       if i == activePetIndex then
-        ketchum.battleUi:TagShinyActivePet()
+        JetBattlePets.battleUi:TagShinyActivePet()
       else
-        ketchum.battleUi:TagShinyBackPet(i)
+        JetBattlePets.battleUi:TagShinyBackPet(i)
       end
     end
   end
 end
 
 -- save data about encountered pets to disk
-function ketchum.battleUi:RecordEncounterData()
+function JetBattlePets.battleUi:RecordEncounterData()
   if
-      not ketchum.settings.ENABLE_DATA_COLLECTION
+      not JetBattlePets.settings.ENABLE_DATA_COLLECTION
       or not C_PetBattles.IsWildBattle()
   then
     return
@@ -150,7 +150,7 @@ function ketchum.battleUi:RecordEncounterData()
   end
 
   for i = 1, enemyCount do
-    ketchum.battleUi:RecordEncounterSlotData(i, {
+    JetBattlePets.battleUi:RecordEncounterSlotData(i, {
       areaIDs = areaIDs,
       mapID = mapID,
       playerPosition = playerPosition and {
@@ -162,25 +162,25 @@ function ketchum.battleUi:RecordEncounterData()
 end
 
 -- hide any shiny frames that are currently shown
-function ketchum.battleUi:ResetShinyFrames()
-  if ketchum.battleUi.ActiveShinyFrame then
-    ketchum.battleUi.ActiveShinyFrame:Hide()
-    ketchum.battleUi.ActiveShinyFrame = nil
+function JetBattlePets.battleUi:ResetShinyFrames()
+  if JetBattlePets.battleUi.ActiveShinyFrame then
+    JetBattlePets.battleUi.ActiveShinyFrame:Hide()
+    JetBattlePets.battleUi.ActiveShinyFrame = nil
   end
 
-  if ketchum.battleUi.Enemy1ShinyFrame then
-    ketchum.battleUi.Enemy1ShinyFrame:Hide()
-    ketchum.battleUi.Enemy1ShinyFrame = nil
+  if JetBattlePets.battleUi.Enemy1ShinyFrame then
+    JetBattlePets.battleUi.Enemy1ShinyFrame:Hide()
+    JetBattlePets.battleUi.Enemy1ShinyFrame = nil
   end
 
-  if ketchum.battleUi.Enemy2ShinyFrame then
-    ketchum.battleUi.Enemy2ShinyFrame:Hide()
-    ketchum.battleUi.Enemy2ShinyFrame = nil
+  if JetBattlePets.battleUi.Enemy2ShinyFrame then
+    JetBattlePets.battleUi.Enemy2ShinyFrame:Hide()
+    JetBattlePets.battleUi.Enemy2ShinyFrame = nil
   end
 end
 
 -- add a shiny icon to the active enemy pet that's shiny
-function ketchum.battleUi:TagShinyActivePet()
+function JetBattlePets.battleUi:TagShinyActivePet()
   local atlas = C_Texture.GetAtlasInfo("rare-elite-star")
 
   local f = CreateFrame(
@@ -194,13 +194,13 @@ function ketchum.battleUi:TagShinyActivePet()
   f.tex = f:CreateTexture()
   f.tex:SetAllPoints()
   f.tex:SetTexture(atlas.file)
-  f.tex:SetTexCoord(ketchum.atlas:GetTexCoords(atlas))
+  f.tex:SetTexCoord(JetBattlePets.atlas:GetTexCoords(atlas))
 
-  ketchum.battleUi.ActiveShinyFrame = f
+  JetBattlePets.battleUi.ActiveShinyFrame = f
 end
 
 -- add a shiny icon to back row pets that are shiny
-function ketchum.battleUi:TagShinyBackPet(slot)
+function JetBattlePets.battleUi:TagShinyBackPet(slot)
   if (slot < 2 or slot > 3) then
     return
   end
@@ -225,5 +225,5 @@ function ketchum.battleUi:TagShinyBackPet(slot)
     atlas.bottomTexCoord
   )
 
-  ketchum.battleUi['Enemy' .. slot .. 'ShinyFrame'] = f
+  JetBattlePets.battleUi['Enemy' .. slot .. 'ShinyFrame'] = f
 end

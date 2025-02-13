@@ -1,11 +1,11 @@
-local _, ketchum = ...
+local _, JetBattlePets = ...
 
-Ketchum = ketchum -- global namespace
+Ketchum = JetBattlePets -- global namespace
 
-ketchum.constants = {}
+JetBattlePets.constants = {}
 
 -- dimensions of common UI elements
-ketchum.constants.DIMENSIONS = {
+JetBattlePets.constants.DIMENSIONS = {
   VARIANT_MODEL = {
     HEIGHT = 172,
     WIDTH = 168
@@ -22,7 +22,7 @@ ketchum.constants.DIMENSIONS = {
 }
 
 -- valid rarity names to use in utility functions
-ketchum.constants.RARITY_NAMES = {
+JetBattlePets.constants.RARITY_NAMES = {
   "COMMON",
   "UNCOMMON",
   "RARE",
@@ -30,27 +30,27 @@ ketchum.constants.RARITY_NAMES = {
 }
 
 -- an enum representation of valid rarities
-ketchum.constants.RARITIES = EnumUtil.MakeEnum(
-  unpack(ketchum.constants.RARITY_NAMES)
+JetBattlePets.constants.RARITIES = EnumUtil.MakeEnum(
+  unpack(JetBattlePets.constants.RARITY_NAMES)
 )
 
 -- ratios for determining rarity of a model relative to the most commonly
 -- encountered model of a species
-ketchum.constants.RARITY_RATIOS = {
+JetBattlePets.constants.RARITY_RATIOS = {
   RARE = 3,
   SHINY = 8,
   UNCOMMON = 2
 }
 
 -- IDs of species that will always show 1 model
-ketchum.constants.IGNORED_SPECIES = {
+JetBattlePets.constants.IGNORED_SPECIES = {
   [2622] = {
     reason =
     "The API shows two models at 75/25% rarity. However, the model that's used is randomized whenever the pet is summoned."
   }
 }
 
-ketchum.constants.GRAPHICS = {
+JetBattlePets.constants.GRAPHICS = {
   MODEL_OUTLINE_COMMON_ATLAS = C_Texture.GetAtlasInfo("bags-glow-white"),
   MODEL_OUTLINE_RARE_ATLAS = C_Texture.GetAtlasInfo("bags-glow-heirloom"),
   MODEL_OUTLINE_SHINY_ATLAS = C_Texture.GetAtlasInfo("bags-glow-artifact"),
@@ -78,7 +78,7 @@ local TEXT_FORMAT_PATTERNS = {
 }
 
 -- constants related to text formatting
-ketchum.constants.TEXT_FORMAT = {
+JetBattlePets.constants.TEXT_FORMAT = {
   COLOR_PREFIX = "|c00",
   COLOR_TERMINATOR = "|r",
   COLORS = TEXT_COLORS,
