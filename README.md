@@ -10,6 +10,7 @@ Get notified when a wild battle pet is shiny with:
 Extended Rematch functionality:
 - new filters related to battle pet models
 - a special badge in the Pet Journal for shiny pets that you own
+- model rarity information added to pet cards
 
 ## Configuration
 
