@@ -69,6 +69,23 @@ end
 
 ------ EXPERIMENTAL FEATURE FLAGS ------
 
+-- init checkbox to toggle capture threat warnings
+local function InitCaptureThreatWarningsOption(category)
+  local setting = Settings.RegisterProxySetting(
+    category,
+    "ENABLE_CAPTURE_THREAT_WARNINGS",
+    Settings.VarType.Boolean,
+    "Capture Threat Warnings",
+    Settings.Default.False,
+    function() return JetBattlePets.settings.ENABLE_CAPTURE_THREAT_WARNINGS end,
+    function(value) JetBattlePets.settings.ENABLE_CAPTURE_THREAT_WARNINGS = value end
+  )
+
+  Settings.CreateCheckbox(category, setting,
+    "Trigger an audio alert and a message warning if an enemy pet in a wild battle has an ability that could prevent you from capturing it or one of its teammates (e.g. recoil damage, friendly fire, etc.)."
+  )
+end
+
 -- init checkbox to toggle variant model viewer
 local function InitVariantModelViewerOption(category)
   local setting = Settings.RegisterProxySetting(
@@ -93,6 +110,7 @@ local function InitExperimentalSettingsSection(category, layout)
   ))
 
   InitVariantModelViewerOption(category)
+  InitCaptureThreatWarningsOption(category)
 end
 
 -- init addon options on load

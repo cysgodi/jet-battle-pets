@@ -15,6 +15,10 @@ local DEFAULT_SETTINGS = {
 
   -- flag to enable/disable the variant model viewer feature
   SHOW_VARIANT_MODEL_VIEWER = false,
+
+  -- flag to enable/disable warnings when a battle pet on the enemy team has
+  -- an ability that might screw up a capture
+  ENABLE_CAPTURE_THREAT_WARNINGS = false,
 }
 
 -- Fetch key from saved vars. Init the saved var to a default if it
