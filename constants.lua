@@ -85,3 +85,56 @@ JetBattlePets.constants.TEXT_FORMAT = {
   ICONS = TEXT_ICONS,
   PATTERNS = TEXT_FORMAT_PATTERNS
 }
+
+--------------------------------------------
+----------- Categorize Abilities -----------
+--------------------------------------------
+
+-- IDs of abilities that have recoil damage
+local RECOIL_ABILITIES = {
+  263,  -- Crystal Overload
+  621,  -- Stone Rush
+  649,  -- BONESTORM
+  1003, -- Gold Rush
+  1761, -- BONESTORM!
+  1762, -- BONESTORM!!
+  1787, -- Feral Strike
+  1912, -- Void Portal
+}
+
+-- IDs of self-destruct abilities
+local SELF_DESTRUCT_ABILITIES = {
+  282,  -- Explode
+  663,  -- Corpse Explosion
+  836,  -- Baneling Burst
+  1025, -- Armageddon
+  2099, -- Sting
+  2209, -- Burst
+  2429, -- Massive Explosion
+}
+
+-- IDs of abilities that create an environmental DoT
+local ENVIRONMENTAL_DOT_ABILITIES = {
+  172,  -- Scorched Earth
+  2349, -- Toxic Fumes
+}
+
+-- IDs of abilities that negatively affect the user's team
+local FRIENDLY_FIRE_ABILITIES = {
+  519,  -- Apocalypse
+  2366, -- MAYHEM
+}
+
+-- IDs of abilities that are a threat to a battle pet you might
+-- want to capture
+local CAPTURE_THREAT_ABILITIES = {
+  unpack(RECOIL_ABILITIES),
+  unpack(SELF_DESTRUCT_ABILITIES),
+  unpack(ENVIRONMENTAL_DOT_ABILITIES),
+  unpack(FRIENDLY_FIRE_ABILITIES),
+}
+
+-- specialized lists of ability IDs
+JetBattlePets.constants.ABILITIES = {
+  CAPTURE_THREATS = CAPTURE_THREAT_ABILITIES,
+}
