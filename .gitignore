@@ -1,2 +1,4 @@
 .vscode
+rematchapi.lua
 wowapi.lua
+wowenums.lua
