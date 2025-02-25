@@ -36,14 +36,16 @@ local function DisplayVariantCount(_, petInfo)
     numDisplays = 1
   end
 
+  local variantCountString = tostring(numDisplays)
+
   if C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
   then
     local randomIcon = CreateAtlasMarkup("lootroll-icon-need")
 
-    numDisplays = string.format("%d %s", numDisplays, randomIcon)
+    variantCountString = string.format("%d %s", numDisplays, randomIcon)
   end
 
-  return numDisplays
+  return variantCountString
 end
 
 -- create a frame to display all variant models of a pet species
@@ -188,13 +190,6 @@ local function IsShiny(petInfo)
   local ratio = maxProbability / probability
 
   return ratio >= JetBattlePets.constants.RARITY_RATIOS.SHINY
-end
-
--- does the pet with the provided ID have a shiny variant?
-local function JournalEntryHasShiny(_, petID)
-  local petInfo = Rematch.petInfo:Fetch(petID)
-
-  return HasShinyAndNoneOwned(petInfo)
 end
 
 -- is the pet with the provided ID a shiny?
