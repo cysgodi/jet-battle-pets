@@ -4,28 +4,31 @@ JetBattlePets.battleUi = {
   alertsFired = false
 }
 
--- determine whether an alert should fire based on user preferences and
--- also reports whether the model is actually shiny (as opposed to an
--- alert that's firing due to a lower rarity threshold)
+---determine whether an alert should fire based on user preferences
+---@param speciesID number
+---@param displayID number
+---@return boolean fireAlert Should an alert be fired?
+---@return boolean isShiny Is the pet model actually shiny?
 local function ShouldAlert(speciesID, displayID)
   local probability = JetBattlePets.journal:GetDisplayProbability(
     speciesID,
     displayID
   )
 
+  local alertThreshold = JetBattlePets.settings.ALERT_THRESHOLD
+  local rarityName = JetBattlePets.constants.RARITY_NAMES[alertThreshold]
+  local isShiny = rarityName == JetBattlePets.constants.RARITY_NAMES.SHINY
+
   if not probability then
-    return
+    return false, isShiny
   end
 
   local maxProbability = JetBattlePets.journal:GetMaxDisplayProbability(speciesID)
 
-  local alertThreshold = JetBattlePets.settings.ALERT_THRESHOLD
-  local rarityName = JetBattlePets.constants.RARITY_NAMES[alertThreshold]
   local ratio = maxProbability / probability
   local alertRatio = JetBattlePets.constants.RARITY_RATIOS[rarityName]
 
-  return ratio >= alertRatio,
-      rarityName == JetBattlePets.constants.RARITY_NAMES.SHINY
+  return ratio >= alertRatio, isShiny
 end
 
 -- cleanup after a pet battle is finished
