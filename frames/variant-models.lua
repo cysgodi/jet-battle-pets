@@ -1,6 +1,7 @@
 local _, JetBattlePets = ...
 
--- a window for displaying battle pet variant models
+---@class VariantModelsWindow : Frame A window for displaying battle pet variant models
+---@field VariantModels VariantModelMixin[]
 JetBattlePets.frames.VariantModelsWindow = JetBattlePets.frames.VariantModelsWindow or CreateFrame(
   "Frame",
   "VariantModels",
@@ -107,13 +108,13 @@ function JetBattlePets.frames.VariantModelsWindow:UpdateVariantModel(
       "VariantModel" .. modelSlot,
       self,
       "VariantModelTemplate"
-    )
+    ) --[[@as VariantModelMixin]]
   end
 
   self.VariantModels[modelSlot]:ShowModel(speciesID, modelSlot)
 end
 
--- a template for frames displaying battle pet variant models
+---@class VariantModelMixin : ModelScene A template for frames displaying battle pet variant models
 VariantModelMixin = {}
 
 
