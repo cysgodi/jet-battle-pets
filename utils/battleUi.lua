@@ -220,7 +220,7 @@ function JetBattlePets.battleUi:TagShinyActivePet()
   local atlas = C_Texture.GetAtlasInfo("rare-elite-star")
 
   ---@class LocalFrame : Frame
-  ---@field tex Texture
+  ---@field tex TextureBase
   local f = CreateFrame(
     "Frame",
     "ActiveEnemyShinyIcon",
