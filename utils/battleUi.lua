@@ -69,6 +69,24 @@ function JetBattlePets.battleUi:RecordEncounterSlotData(slot, location)
   })
 end
 
+---Print an alert message that an enemy pet contains a problematic ability
+---@param abilityName string
+---@param petSlot SlotNumber
+function JetBattlePets.battleUi:PrintThreatAlert(
+    abilityName,
+    petSlot
+)
+  local speciesID = C_PetBattles.GetPetSpeciesID(
+    Enum.BattlePetOwner.Enemy,
+    petSlot
+  )
+
+  local pet = JetBattlePets.pets.GetPet(speciesID)
+
+  -- TODO: add an icon to this
+  print('|cff333300WARNING: ' .. pet.name .. ' can use ' .. abilityName)
+end
+
 -- print an alert to the chat box that a shiny is in the battle
 function JetBattlePets.battleUi:PrintShinyAlert(speciesID)
   local pet = JetBattlePets.pets.GetPet(speciesID)
@@ -84,19 +102,6 @@ function JetBattlePets.battleUi:UpdateShinyFrames()
   local numEnemies = C_PetBattles.GetNumPets(Enum.BattlePetOwner.Enemy)
 
   for i = 1, numEnemies do
-    -- print out all enemy abilities so that you can avoid things
-    -- like explosion
-
-    -- TODO: turn this into a warning if certain abilities are present
-
-    -- print('Slot ' .. i)
-
-    -- for j = 1, 3 do
-    --   local _, abilityName = C_PetBattles.GetAbilityInfo(Enum.BattlePetOwner.Enemy, i, j)
-
-    --   print(' > ' .. abilityName)
-    -- end
-
     local speciesID = C_PetBattles.GetPetSpeciesID(Enum.BattlePetOwner.Enemy, i)
 
     local displayID = C_PetBattles.GetDisplayID(Enum.BattlePetOwner.Enemy, i)
@@ -120,6 +125,34 @@ function JetBattlePets.battleUi:UpdateShinyFrames()
         JetBattlePets.battleUi:TagShinyActivePet()
       else
         JetBattlePets.battleUi:TagShinyBackPet(i)
+      end
+    end
+  end
+end
+
+-- play an audio alert and display a warning message if an enemy pet
+-- has an ability that could ruin the player's attempts to capture it
+-- or one of its teammates
+function JetBattlePets.battleUi:DisplayCaptureThreatWarnings()
+  if not JetBattlePets.settings.ENABLE_CAPTURE_THREAT_WARNINGS then
+    return
+  end
+
+  local numEnemies = C_PetBattles.GetNumPets(Enum.BattlePetOwner.Enemy)
+
+  for teamSlot = 1, numEnemies do
+    for abilitySlot = 1, 3 do
+      local abilityID, abilityName = C_PetBattles.GetAbilityInfo(
+        Enum.BattlePetOwner.Enemy,
+        teamSlot,
+        abilitySlot
+      )
+
+      if tContains(
+            JetBattlePets.constants.ABILITIES.CAPTURE_THREATS,
+            abilityID
+          ) then
+        JetBattlePets.battleUi:PrintThreatAlert(abilityName, teamSlot)
       end
     end
   end
@@ -183,6 +216,8 @@ end
 function JetBattlePets.battleUi:TagShinyActivePet()
   local atlas = C_Texture.GetAtlasInfo("rare-elite-star")
 
+  ---@class LocalFrame : Frame
+  ---@field tex Texture
   local f = CreateFrame(
     "Frame",
     "ActiveEnemyShinyIcon",
@@ -207,6 +242,7 @@ function JetBattlePets.battleUi:TagShinyBackPet(slot)
 
   local atlas = C_Texture.GetAtlasInfo("rare-elite-star")
 
+  ---@class LocalFrame : Frame
   local f = CreateFrame(
     "Frame",
     "Enemy" .. slot .. "ShinyIcon",
