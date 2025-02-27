@@ -113,7 +113,7 @@ function JetBattlePets.battleUi:UpdateShinyFrames()
 
     if shouldFireAlerts then
       if not JetBattlePets.battleUi.alertsFired then
-        PlaySoundFile("Interface\\AddOns\\Ketchum\\assets\\pla-shiny.mp3")
+        PlaySoundFile("Interface\\AddOns\\JetBattlePets\\assets\\pla-shiny.mp3")
         JetBattlePets.battleUi:PrintShinyAlert(speciesID)
         JetBattlePets.battleUi.alertsFired = true
       end
