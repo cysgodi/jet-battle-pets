@@ -85,9 +85,10 @@ function JetBattlePets.battleUi:PrintThreatAlert(
   )
 
   local pet = JetBattlePets.pets.GetPet(speciesID)
+  local threatIcon = CreateAtlasMarkup("Ping_Chat_Warning")
 
-  -- TODO: add an icon to this
-  print('|cff333300WARNING: ' .. pet.name .. ' can use ' .. abilityName)
+  print('|c00ff3333' ..
+  threatIcon .. ' WARNING: ' .. pet.name .. ' is using ' .. abilityName .. ' ' .. threatIcon .. '|r')
 end
 
 -- print an alert to the chat box that a shiny is in the battle
@@ -156,6 +157,7 @@ function JetBattlePets.battleUi:DisplayCaptureThreatWarnings()
             abilityID
           ) then
         JetBattlePets.battleUi:PrintThreatAlert(abilityName, teamSlot)
+        PlaySound(JetBattlePets.constants.SOUNDS.ALERT_THREAT)
       end
     end
   end

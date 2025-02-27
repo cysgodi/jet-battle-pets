@@ -56,7 +56,12 @@ JetBattlePets.constants.GRAPHICS = {
   MODEL_OUTLINE_SHINY_ATLAS = C_Texture.GetAtlasInfo("bags-glow-artifact"),
   MODEL_OUTLINE_UNCOMMON_ATLAS = C_Texture.GetAtlasInfo("bags-glow-green"),
   MODEL_RARITY_ATLAS = C_Texture.GetAtlasInfo("groupfinder-eye-frame"),
-  SHINY_ATLAS = C_Texture.GetAtlasInfo("rare-elite-star")
+  SHINY_ATLAS = C_Texture.GetAtlasInfo("rare-elite-star"),
+  THREAT_ICON_ATLAS = C_Texture.GetAtlasInfo("Ping_Chat_Warning"),
+}
+
+JetBattlePets.constants.SOUNDS = {
+  ALERT_THREAT = 233591
 }
 
 -- string literals to define color hex values

@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.1.1
+
+- add a notification sound when enemy pets are using abilities are capture threats
+- add an icon to the capture threat notification message
+
+## v1.1.0
+
+- documented experimental features in README
+- added experimental feature that triggers notifications when enemy pets are using abilities that jeapordize captures
+
 ## v1.0.2
 
 - fixed an issue that prevented the shiny alert sound from playing

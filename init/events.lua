@@ -14,6 +14,7 @@ end
 
 function JetBattlePets.events:PET_BATTLE_OPENING_START()
   JetBattlePets.battleUi:UpdateShinyFrames()
+  JetBattlePets.battleUi:DisplayCaptureThreatWarnings()
   JetBattlePets.battleUi:RecordEncounterData()
 end
 
