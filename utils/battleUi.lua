@@ -88,7 +88,7 @@ function JetBattlePets.battleUi:PrintThreatAlert(
   local threatIcon = CreateAtlasMarkup("Ping_Chat_Warning")
 
   print('|c00ff3333' ..
-  threatIcon .. ' WARNING: ' .. pet.name .. ' is using ' .. abilityName .. ' ' .. threatIcon .. '|r')
+    threatIcon .. ' WARNING: ' .. pet.name .. ' is using ' .. abilityName .. ' ' .. threatIcon .. '|r')
 end
 
 -- print an alert to the chat box that a shiny is in the battle
@@ -138,7 +138,8 @@ end
 -- has an ability that could ruin the player's attempts to capture it
 -- or one of its teammates
 function JetBattlePets.battleUi:DisplayCaptureThreatWarnings()
-  if not JetBattlePets.settings.ENABLE_CAPTURE_THREAT_WARNINGS then
+  if not JetBattlePets.settings.ENABLE_CAPTURE_THREAT_WARNINGS
+      or not C_PetBattles.IsWildBattle() then
     return
   end
 
