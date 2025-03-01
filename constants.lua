@@ -6,6 +6,9 @@ JetBattlePets.constants = {}
 
 -- dimensions of common UI elements
 JetBattlePets.constants.DIMENSIONS = {
+  TITLE_BAR_BUTTON = {
+    SIZE = 24
+  },
   VARIANT_MODEL = {
     HEIGHT = 172,
     WIDTH = 168

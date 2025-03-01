@@ -12,15 +12,35 @@ JetBattlePets.frames.VariantModelsWindow = JetBattlePets.frames.VariantModelsWin
 JetBattlePets.frames.VariantModelsWindow:SetPoint("CENTER")
 JetBattlePets.frames.VariantModelsWindow:SetClampedToScreen(true)
 JetBattlePets.frames.VariantModelsWindow:SetMovable(true)
-JetBattlePets.frames.VariantModelsWindow:EnableMouse(true)
-JetBattlePets.frames.VariantModelsWindow:RegisterForDrag("LeftButton")
 
-JetBattlePets.frames.VariantModelsWindow:SetScript("OnMouseDown", function(self)
-  self:StartMoving()
+JetBattlePets.frames.VariantModelsWindow.DragHandle = JetBattlePets.frames.VariantModelsWindow.DragHandle or CreateFrame(
+  "Frame",
+  "VariantModelsDragHandle",
+  JetBattlePets.frames.VariantModelsWindow
+)
+JetBattlePets.frames.VariantModelsWindow.DragHandle:SetPoint("TOPLEFT")
+
+JetBattlePets.frames.VariantModelsWindow.DragHandle:EnableMouse(true)
+JetBattlePets.frames.VariantModelsWindow.DragHandle:RegisterForDrag("LeftButton")
+
+JetBattlePets.frames.VariantModelsWindow.DragHandle:SetScript("OnMouseDown", function(self)
+  local parent = self:GetParent() --[[@as Frame]]
+
+  if not parent then
+    return
+  end
+
+  parent:StartMoving()
 end)
 
-JetBattlePets.frames.VariantModelsWindow:SetScript("OnMouseUp", function(self)
-  self:StopMovingOrSizing()
+JetBattlePets.frames.VariantModelsWindow.DragHandle:SetScript("OnMouseUp", function(self)
+  local parent = self:GetParent() --[[@as Frame]]
+
+  if not parent then
+    return
+  end
+
+  parent:StopMovingOrSizing()
 end)
 
 JetBattlePets.frames.VariantModelsWindow:Hide()
@@ -69,6 +89,7 @@ function JetBattlePets.frames.VariantModelsWindow:UpdateSize(speciesID)
   local gridDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_GRID
   local modelDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL
   local windowDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW
+  local titleBarButtonSize = JetBattlePets.constants.DIMENSIONS.TITLE_BAR_BUTTON.SIZE
 
   local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
 
@@ -91,6 +112,12 @@ function JetBattlePets.frames.VariantModelsWindow:UpdateSize(speciesID)
   local windowWidth = gridWidth
       + windowDimensions.MARGIN_LEFT
       + windowDimensions.MARGIN_RIGHT
+
+
+  self.DragHandle:SetSize(
+    windowWidth - titleBarButtonSize,
+    titleBarButtonSize
+  )
 
   self:SetSize(
     windowWidth,
