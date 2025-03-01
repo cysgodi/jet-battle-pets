@@ -199,7 +199,11 @@ end
 function VariantModelMixin:SetModel(speciesID, modelSlot)
   local modelSceneID = C_PetJournal.GetPetModelSceneInfoBySpeciesID(speciesID)
 
-  self.Border:SetVertexColor(GetBorderColor(speciesID, modelSlot))
+  self.BorderTexture = self.BorderTexture or self:CreateTexture()
+  self.BorderTexture:SetAtlas("transmog-wardrobe-border-collected")
+  self.BorderTexture:SetAllPoints()
+
+  self.Border:SetTexture(self.BorderTexture)
 
   self:TransitionToModelSceneID(
     modelSceneID,
