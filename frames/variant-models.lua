@@ -135,7 +135,7 @@ function JetBattlePets.frames.VariantModelsWindow:UpdateVariantModel(
 )
   if not self.VariantModels[modelSlot] then
     self.VariantModels[modelSlot] = CreateFrame(
-      "ModelScene",
+      "Frame",
       "VariantModel" .. modelSlot,
       self,
       "VariantModelTemplate"
@@ -146,8 +146,9 @@ function JetBattlePets.frames.VariantModelsWindow:UpdateVariantModel(
 end
 
 ---@class VariantModelMixin : ModelScene A template for frames displaying battle pet variant models
----@field Background Frame
----@field Border Frame
+---@field Background TextureBase
+---@field Border TextureBase
+---@field VariantModel ModelScene
 VariantModelMixin = {}
 
 
@@ -180,6 +181,11 @@ function VariantModelMixin:SetDimensions(modelSlot)
       * row
       - windowDimensions.MARGIN_TOP
 
+  self.VariantModel:SetPoint("CENTER")
+  self.VariantModel:SetSize(
+    modelDimensions.WIDTH - 26,
+    modelDimensions.HEIGHT - 30
+  )
   self:SetPoint("TOPLEFT", xOffset, yOffset)
 end
 
@@ -232,14 +238,21 @@ end
 function VariantModelMixin:SetModel(speciesID, displayID)
   local modelSceneID = C_PetJournal.GetPetModelSceneInfoBySpeciesID(speciesID)
 
-  self:TransitionToModelSceneID(
+  self.VariantModel = CreateFrame(
+    "ModelScene",
+    "VariantModel",
+    self,
+    "VariantModelSceneTemplate"
+  ) --[[@as ModelScene]]
+
+  self.VariantModel:TransitionToModelSceneID(
     modelSceneID,
     CAMERA_TRANSITION_TYPE_IMMEDIATE,
     CAMERA_MODIFICATION_TYPE_MAINTAIN,
     false
   )
 
-  local actor = self:GetActorByTag("unwrapped")
+  local actor = self.VariantModel:GetActorByTag("unwrapped")
 
   if actor then
     actor:SetModelByCreatureDisplayID(displayID)
@@ -253,9 +266,9 @@ end
 function VariantModelMixin:ShowModel(speciesID, modelSlot)
   local displayID = C_PetJournal.GetDisplayIDByIndex(speciesID, modelSlot)
 
-  self:SetDimensions(modelSlot)
   self:SetBorder(speciesID, displayID)
   self:SetBackground(speciesID, displayID)
   self:SetModel(speciesID, displayID)
+  self:SetDimensions(modelSlot)
   self:Show()
 end

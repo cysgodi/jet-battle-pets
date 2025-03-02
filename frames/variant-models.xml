@@ -3,7 +3,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
   <Script file="variant-models.lua" />
 
-  <ModelScene inherits="WrappedAndUnwrappedModelScene" mixin="VariantModelMixin" name="VariantModelTemplate" virtual="true">
+  <ModelScene 
+      inherits="WrappedAndUnwrappedModelScene"
+      name="VariantModelSceneTemplate"
+      virtual="true"
+  />
+
+  <Frame mixin="VariantModelMixin" name="VariantModelTemplate" virtual="true">
     <Layers>
       <Layer level="BACKGROUND">
         <Texture parentKey="Background">
@@ -18,6 +24,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         <Texture parentKey="Border" />
       </Layer>
     </Layers>
-  </ModelScene>
+
+    <Frames>
+      <ModelScene 
+        inherits="VariantModelSceneTemplate"
+        parentKey="VariantModel"
+      /> 
+    </Frames>
+  </Frame>
 
 </Ui>
