@@ -51,7 +51,7 @@ end
 
 function JetBattlePets.text:SetColorByName(rarity, text)
   local rarityName = JetBattlePets.constants.RARITY_NAMES[rarity]
-  local color = JetBattlePets.constants.TEXT_FORMAT.COLORS[rarityName]
+  local color = JetBattlePets.constants.COLORS[rarityName]
 
   if color == nil then
     return text

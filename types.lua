@@ -24,6 +24,7 @@ JetBattlePets = {}
 ---@class JetBattlePetsConstants
 ---@field ABILITIES Dictionary<number[]>
 ---@field ATLAS_NAMES AtlasNames
+---@field COLORS Colors
 ---@field DIMENSIONS DimensionConstants
 ---@field SOUNDS SoundFileIDs
 ---@field TEXT_FORMAT TextFormatConstants

@@ -10,7 +10,7 @@ local JetBattlePets = _JetBattlePets
 JetBattlePets.color = JetBattlePets.color or {}
 
 function JetBattlePets.color:GetRarityColor(rarityName)
-  local rarityColor = JetBattlePets.constants.TEXT_FORMAT.COLORS[rarityName]
+  local rarityColor = JetBattlePets.constants.COLORS.RARITY[rarityName]
 
   return CreateColorFromHexString('ff' .. rarityColor)
 end

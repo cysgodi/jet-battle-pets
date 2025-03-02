@@ -90,14 +90,6 @@ local SOUNDS = {
 ----------------------- Text ------------------------
 -----------------------------------------------------
 
----@class TextColors
-local TEXT_COLORS = {
-  COMMON = "ffffff",
-  RARE = "2090fd",
-  SHINY = "ffd200",
-  UNCOMMON = "20ff20"
-}
-
 ---@class TextIcons
 local TEXT_ICONS = {
   SHINY = CreateAtlasMarkup("rare-elite-star")
@@ -112,9 +104,25 @@ local TEXT_FORMAT_PATTERNS = {
 local TEXT_FORMAT_CONSTANTS = {
   COLOR_PREFIX = "|c00",
   COLOR_TERMINATOR = "|r",
-  COLORS = TEXT_COLORS,
   ICONS = TEXT_ICONS,
   PATTERNS = TEXT_FORMAT_PATTERNS
+}
+
+-----------------------------------------------------
+---------------------- Colors -----------------------
+-----------------------------------------------------
+
+---@class RarityColors
+local RARITY_COLORS = {
+  COMMON = "ffffff",
+  RARE = "2090fd",
+  SHINY = "ffd200",
+  UNCOMMON = "20ff20"
+}
+
+---@class Colors
+local COLORS = {
+  RARITY = RARITY_COLORS
 }
 
 -----------------------------------------------------
@@ -179,6 +187,7 @@ local ABILITY_CONSTANTS = {
 JetBattlePets.constants = JetBattlePets.constants or {
   ABILITIES = ABILITY_CONSTANTS,
   ATLAS_NAMES = ATLAS_NAMES,
+  COLORS = COLORS,
   DIMENSIONS = DIMENSION_CONSTANTS,
   RARITIES = RARITIES,
   RARITY_NAMES = RARITY_NAMES,
