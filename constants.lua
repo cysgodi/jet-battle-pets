@@ -165,3 +165,13 @@ local CAPTURE_THREAT_ABILITIES = {
 JetBattlePets.constants.ABILITIES = {
   CAPTURE_THREATS = CAPTURE_THREAT_ABILITIES,
 }
+
+---Throw an error if an attempt is made to modify a constant
+local function setter()
+  error("Attempt to modify read-only table 'constants'", 2)
+end
+
+setmetatable(JetBattlePets.constants, {
+  __index = JetBattlePets.constants,
+  __newindex = setter
+})
