@@ -218,7 +218,7 @@ function VariantModelMixin:SetBackground(speciesID, displayID)
   )
   local rarityColor = JetBattlePets.color:GetRarityColor(rarityName)
   local r, g, b = rarityColor:GetRGBA()
-  self.Background:SetColorTexture(r, g, b, 0.2)
+  self.Background:SetColorTexture(r, g, b, 0.1)
 end
 
 ---Add the appropriate border to the frame
