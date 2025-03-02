@@ -202,17 +202,10 @@ local function GetVariantBorderAtlasName(speciesID, displayID)
   return ATLAS_NAMES.VARIANT_OUTLINE_UNOWNED
 end
 
--- set the 3D model displayed and animated by the frame
-function VariantModelMixin:SetModel(speciesID, modelSlot)
-  local displayID = C_PetJournal.GetDisplayIDByIndex(speciesID, modelSlot)
-  local modelSceneID = C_PetJournal.GetPetModelSceneInfoBySpeciesID(speciesID)
-
-  self.BorderTexture = self.BorderTexture or self:CreateTexture()
-  local atlasName = GetVariantBorderAtlasName(speciesID, displayID)
-  self.BorderTexture:SetAtlas(atlasName)
-  self.BorderTexture:SetAllPoints()
-  self.Border:SetTexture(self.BorderTexture)
-
+---Add the appropriate background to the frame
+---@param speciesID integer
+---@param displayID integer
+function VariantModelMixin:SetBackground(speciesID, displayID)
   local rarityName = JetBattlePets.journal:GetDisplayRarityName(
     speciesID,
     displayID
@@ -220,6 +213,24 @@ function VariantModelMixin:SetModel(speciesID, modelSlot)
   local rarityColor = JetBattlePets.color:GetRarityColor(rarityName)
   local r, g, b = rarityColor:GetRGBA()
   self.Background:SetColorTexture(r, g, b, 0.2)
+end
+
+---Add the appropriate border to the frame
+---@param speciesID integer
+---@param displayID integer
+function VariantModelMixin:SetBorder(speciesID, displayID)
+  self.BorderTexture = self.BorderTexture or self:CreateTexture()
+  local atlasName = GetVariantBorderAtlasName(speciesID, displayID)
+  self.BorderTexture:SetAtlas(atlasName)
+  self.BorderTexture:SetAllPoints()
+  self.Border:SetTexture(self.BorderTexture)
+end
+
+---Set the 3D model displayed and animated by the frame
+---@param speciesID integer
+---@param displayID integer
+function VariantModelMixin:SetModel(speciesID, displayID)
+  local modelSceneID = C_PetJournal.GetPetModelSceneInfoBySpeciesID(speciesID)
 
   self:TransitionToModelSceneID(
     modelSceneID,
@@ -236,9 +247,15 @@ function VariantModelMixin:SetModel(speciesID, modelSlot)
   end
 end
 
--- show the actual variant model
+---Show the actual variant model
+---@param speciesID integer
+---@param modelSlot integer
 function VariantModelMixin:ShowModel(speciesID, modelSlot)
+  local displayID = C_PetJournal.GetDisplayIDByIndex(speciesID, modelSlot)
+
   self:SetDimensions(modelSlot)
-  self:SetModel(speciesID, modelSlot)
+  self:SetBorder(speciesID, displayID)
+  self:SetBackground(speciesID, displayID)
+  self:SetModel(speciesID, displayID)
   self:Show()
 end
