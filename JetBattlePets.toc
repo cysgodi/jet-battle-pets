@@ -35,6 +35,7 @@ init/slash.lua
 
 # utility functions
 utils/atlas.lua
+utils/color.lua
 utils/grid.lua
 utils/string.lua
 utils/journal.lua
