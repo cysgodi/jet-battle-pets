@@ -1,6 +1,10 @@
-local _, JetBattlePets = ...
+local _, _JetBattlePets = ...
+
+---@type JetBattlePets
+local JetBattlePets = _JetBattlePets
 
 ---@class VariantModelsWindow : Frame A window for displaying battle pet variant models
+---@field displayedSpeciesID integer
 ---@field VariantModels VariantModelMixin[]
 JetBattlePets.frames.VariantModelsWindow = JetBattlePets.frames.VariantModelsWindow or CreateFrame(
   "Frame",
@@ -181,6 +185,8 @@ end
 
 -- get the atlas for the background texture of a model
 local function GetVariantBorderAtlasName(speciesID, displayID)
+  local ATLAS_NAMES = JetBattlePets.constants.ATLAS_NAMES
+
   for index = 1, C_PetJournal.GetNumPets() do
     local petID, _speciesID = C_PetJournal.GetPetInfoByIndex(index)
 
@@ -188,12 +194,12 @@ local function GetVariantBorderAtlasName(speciesID, displayID)
       local petInfo = JetBattlePets.pets.GetPet(petID)
 
       if petInfo.displayID == displayID then
-        return JetBattlePets.constants.GRAPHICS.OWNED_VARIANT_OUTLINE_ATLAS_NAME
+        return ATLAS_NAMES.VARIANT_OUTLINE_OWNED
       end
     end
   end
 
-  return JetBattlePets.constants.GRAPHICS.UNOWNED_VARIANT_OUTLINE_ATLAS_NAME
+  return ATLAS_NAMES.VARIANT_OUTLINE_UNOWNED
 end
 
 -- set the 3D model displayed and animated by the frame
@@ -207,7 +213,7 @@ function VariantModelMixin:SetModel(speciesID, modelSlot)
   self.BorderTexture:SetAllPoints()
   self.Border:SetTexture(self.BorderTexture)
 
-  local rarityName = JetBattlePets.journal:GetDisplayRarity(
+  local rarityName = JetBattlePets.journal:GetDisplayRarityName(
     speciesID,
     displayID
   )

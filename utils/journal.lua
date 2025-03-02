@@ -1,8 +1,10 @@
-local _, JetBattlePets = ...
+local _, _JetBattlePets = ...
 
-JetBattlePets.journal = {}
+---@type JetBattlePets
+local JetBattlePets = _JetBattlePets
 
--- return all model encounter rates of a species as a table
+JetBattlePets.journal = JetBattlePets.journal or {}
+
 function JetBattlePets.journal:GetDisplayProbabilities(speciesID)
   local probabilities = { 100 }
 
@@ -26,7 +28,6 @@ function JetBattlePets.journal:GetDisplayProbabilities(speciesID)
   return probabilities
 end
 
--- return the probability of encountering a specific skin in a species
 function JetBattlePets.journal:GetDisplayProbability(speciesID, displayID)
   local displayIdIndex = JetBattlePets.journal:GetDisplayIndex(
     speciesID,
@@ -45,7 +46,6 @@ function JetBattlePets.journal:GetDisplayProbability(speciesID, displayID)
   return probability
 end
 
--- determine the index of a specific display ID of a specific species
 function JetBattlePets.journal:GetDisplayIndex(speciesID, displayID)
   local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
 
@@ -66,7 +66,6 @@ function JetBattlePets.journal:GetDisplayIndex(speciesID, displayID)
   return displayIdIndex
 end
 
--- get the rarity of a variant model
 function JetBattlePets.journal:GetDisplayRarity(speciesID, displayID)
   local maxProbability = self:GetMaxDisplayProbability(speciesID)
   local displayProbability = self:GetDisplayProbability(
@@ -76,36 +75,33 @@ function JetBattlePets.journal:GetDisplayRarity(speciesID, displayID)
 
   local ratio = maxProbability / displayProbability
   local RARITIES = JetBattlePets.constants.RARITIES
-  local RARITY_NAMES = JetBattlePets.constants.RARITY_NAMES
   local RARITY_RATIOS = JetBattlePets.constants.RARITY_RATIOS
-  local rarityIndex = RARITIES.COMMON
 
   if ratio >= RARITY_RATIOS.SHINY then
-    rarityIndex = RARITIES.SHINY
+    return RARITIES.SHINY
   elseif ratio >= RARITY_RATIOS.RARE then
-    rarityIndex = RARITIES.RARE
+    return RARITIES.RARE
   elseif ratio >= RARITY_RATIOS.UNCOMMON then
-    rarityIndex = RARITIES.UNCOMMON
+    return RARITIES.UNCOMMON
   end
 
-  return RARITY_NAMES[rarityIndex]
+  return RARITIES.COMMON
 end
 
--- get the rarity of a variant model by the model display index
 function JetBattlePets.journal:GetDisplayRarityByIndex(speciesID, slot)
   local displayID = C_PetJournal.GetDisplayIDByIndex(speciesID, slot)
 
   return self:GetDisplayRarity(speciesID, displayID)
 end
 
--- get the encounter probability of the most common model of a species
+function JetBattlePets.journal:GetDisplayRarityName(speciesID, displayID)
+  local rarity = JetBattlePets.journal:GetDisplayRarity(speciesID, displayID)
+
+  return JetBattlePets.constants.RARITY_NAMES[rarity]
+end
+
 function JetBattlePets.journal:GetMaxDisplayProbability(speciesID)
   local probabilities = JetBattlePets.journal:GetDisplayProbabilities(speciesID)
 
   return math.max(unpack(probabilities))
-end
-
--- is the species with the given ID on the ignore list?
-function JetBattlePets.journal:IsIgnored(speciesID)
-  return not not JetBattlePets.constants.IGNORED_SPECIES[speciesID]
 end

@@ -1,3 +1,6 @@
-local _, JetBattlePets = ...
+local _, _JetBattlePets = ...
 
-JetBattlePets.frames = {}
+---@type JetBattlePets
+local JetBattlePets = _JetBattlePets
+
+JetBattlePets.frames = JetBattlePets.frames or {}

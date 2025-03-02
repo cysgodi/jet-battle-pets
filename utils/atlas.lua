@@ -1,6 +1,9 @@
-local _, JetBattlePets = ...
+local _, _JetBattlePets = ...
 
-JetBattlePets.atlas = {}
+---@type JetBattlePets
+local JetBattlePets = _JetBattlePets
+
+JetBattlePets.atlas = JetBattlePets.atlas or {}
 
 -- get tex coords from a provided atlas
 function JetBattlePets.atlas:GetTexCoords(atlas)

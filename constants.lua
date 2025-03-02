@@ -1,83 +1,96 @@
-local _, JetBattlePets = ...
+local _, _JetBattlePets = ...
 
----@class JetBattlePets
-JetBattlePets = JetBattlePets -- global namespace
+---@type JetBattlePets
+JetBattlePets = _JetBattlePets
 
----@type table<string, table<string, any>>
-JetBattlePets.constants = {}
+-----------------------------------------------------
+------------------- Dimensions ----------------------
+-----------------------------------------------------
 
----Dimensions of common UI elements
----@type table<string, table<string, number>>
-JetBattlePets.constants.DIMENSIONS = {
-  TITLE_BAR_BUTTON = {
-    SIZE = 24
-  },
-  VARIANT_MODEL = {
-    HEIGHT = 172,
-    WIDTH = 168
-  },
-  VARIANT_MODEL_GRID = {
-    MAX_COLS = 3,
-  },
-  VARIANT_MODEL_WINDOW = {
-    MARGIN_BOTTOM = 32,
-    MARGIN_LEFT = 16,
-    MARGIN_RIGHT = 16,
-    MARGIN_TOP = 32,
-  }
+---@class TitleBarButtonDimensions Dimensions of buttons in the variant model viewer title bar
+local TITLE_BAR_BUTTON_DIMENSIONS = {
+  SIZE = 24 -- Button height and width (buttons are square)
 }
 
+---@class VariantModelDimensions Dimensions of models displayed in the variant model viewer
+local VARIANT_MODEL_DIMENSIONS = {
+  HEIGHT = 172,
+  WIDTH = 168,
+}
+
+---@class VariantModelGridDimensions Dimensions of the grid that variant models are displayed in
+local VARIANT_MODEL_GRID_DIMENSIONS = {
+  MAX_COLS = 3,
+}
+
+---@class VariantModelWindowDimensions Dimensions of the window that variant models are displayed in
+local VARIANT_MODEL_WINDOW_DIMENSIONS = {
+  MARGIN_BOTTOM = 32,
+  MARGIN_LEFT = 16,
+  MARGIN_RIGHT = 16,
+  MARGIN_TOP = 32,
+}
+
+---@class DimensionConstants Dimensions of common UI elements
+local DIMENSION_CONSTANTS = {
+  TITLE_BAR_BUTTON = TITLE_BAR_BUTTON_DIMENSIONS,
+  VARIANT_MODEL = VARIANT_MODEL_DIMENSIONS,
+  VARIANT_MODEL_GRID = VARIANT_MODEL_GRID_DIMENSIONS,
+  VARIANT_MODEL_WINDOW = VARIANT_MODEL_WINDOW_DIMENSIONS,
+}
+
+-----------------------------------------------------
+---------------------- Rarity -----------------------
+-----------------------------------------------------
+
 ---@enum Rarity
----@enum (key) RarityName
-JetBattlePets.constants.RARITIES = {
+local RARITIES = {
   COMMON = 0,
   UNCOMMON = 1,
   RARE = 2,
   SHINY = 3
 }
 
----@type table<RarityName, Rarity>
-JetBattlePets.constants.RARITY_NAMES = tInvert(JetBattlePets.constants.RARITIES)
+---@enum RarityName
+local RARITY_NAMES = {
+  [RARITIES.COMMON] = "COMMON",
+  [RARITIES.UNCOMMON] = "UNCOMMON",
+  [RARITIES.RARE] = "RARE",
+  [RARITIES.SHINY] = "SHINY",
+}
 
 ---Ratios for determining rarity of a model relative to the most commonly
 ---encountered model of a species
 ---@enum RarityRatio
-JetBattlePets.constants.RARITY_RATIOS = {
+local RARITY_RATIOS = {
   RARE = 3,
   SHINY = 8,
   UNCOMMON = 2
 }
 
----Names of atlases used for various UI elements
----@type table<string, string>
+-----------------------------------------------------
+------------------- WoW Assets ----------------------
+-----------------------------------------------------
+
+---@class AtlasNames Names of atlases used for various UI elements
 local ATLAS_NAMES = {
-  OWNED_VARIANT_OUTLINE = "transmog-wardrobe-border-collected",
-  UNOWNED_VARIANT_OUTLINE = "transmog-wardrobe-border-unusable",
+  MODEL_RARITY_ICON = "groupfinder-eye-frame",
+  SHINY_ICON = "rare-elite-star",
+  THREAT_ICON = "Ping_Chat_Warning",
+  VARIANT_OUTLINE_OWNED = "transmog-wardrobe-border-collected",
+  VARIANT_OUTLINE_UNOWNED = "transmog-wardrobe-border-unusable",
 }
 
----Atlas info used for various UI elements
----@type table<string, AtlasInfo>
-local ATLASES = {
-  MODEL_RARITY_ICON = C_Texture.GetAtlasInfo("groupfinder-eye-frame"),
-  SHINY_ICON = C_Texture.GetAtlasInfo("rare-elite-star"),
-  THREAT_ICON = C_Texture.GetAtlasInfo("Ping_Chat_Warning"),
-}
-
----Constants related to various UI elements
----@type table<string, AtlasInfo|string>
-JetBattlePets.constants.GRAPHICS = {
-  ATLAS_NAMES = ATLAS_NAMES,
-  ATLASES = ATLASES,
-}
-
----IDs of sound files
----@type table<string, number>
-JetBattlePets.constants.SOUNDS = {
+---@class SoundFileIDs IDs of sound files
+local SOUNDS = {
   ALERT_THREAT = 233591
 }
 
----String literals to define color hex values
----@type table<string, string>
+-----------------------------------------------------
+----------------------- Text ------------------------
+-----------------------------------------------------
+
+---@class TextColors
 local TEXT_COLORS = {
   COMMON = "ffffff",
   RARE = "2090fd",
@@ -85,21 +98,18 @@ local TEXT_COLORS = {
   UNCOMMON = "20ff20"
 }
 
----Icons that can be used in/as strings
----@type table<string, string>
+---@class TextIcons
 local TEXT_ICONS = {
   SHINY = CreateAtlasMarkup("rare-elite-star")
 }
 
----String literal patterns to use in the `format` function
----@type table<string, string>
+---@class TextFormatPatterns
 local TEXT_FORMAT_PATTERNS = {
   PROBABILITY = "%.2f%%"
 }
 
----Constants related to text formatting
----@type table<string, string|table<string, any>>
-JetBattlePets.constants.TEXT_FORMAT = {
+---@class TextFormatConstants
+local TEXT_FORMAT_CONSTANTS = {
   COLOR_PREFIX = "|c00",
   COLOR_TERMINATOR = "|r",
   COLORS = TEXT_COLORS,
@@ -107,9 +117,9 @@ JetBattlePets.constants.TEXT_FORMAT = {
   PATTERNS = TEXT_FORMAT_PATTERNS
 }
 
---------------------------------------------
------------ Categorize Abilities -----------
---------------------------------------------
+-----------------------------------------------------
+-------------------- Abilities ----------------------
+-----------------------------------------------------
 
 ---IDs of abilities that have recoil damage
 ---@type number[]
@@ -160,10 +170,21 @@ local CAPTURE_THREAT_ABILITIES = {
   unpack(FRIENDLY_FIRE_ABILITIES),
 }
 
----Specialized lists of ability IDs
----@type table<string, number[]>
-JetBattlePets.constants.ABILITIES = {
+---@class AbilityConstants Specialized lists of ability IDs
+local ABILITY_CONSTANTS = {
   CAPTURE_THREATS = CAPTURE_THREAT_ABILITIES,
+}
+
+---@class JetBattlePetsConstants
+JetBattlePets.constants = JetBattlePets.constants or {
+  ABILITIES = ABILITY_CONSTANTS,
+  ATLAS_NAMES = ATLAS_NAMES,
+  DIMENSIONS = DIMENSION_CONSTANTS,
+  RARITIES = RARITIES,
+  RARITY_NAMES = RARITY_NAMES,
+  RARITY_RATIOS = RARITY_RATIOS,
+  SOUNDS = SOUNDS,
+  TEXT_FORMAT = TEXT_FORMAT_CONSTANTS
 }
 
 ---Throw an error if an attempt is made to modify a constant

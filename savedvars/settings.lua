@@ -1,12 +1,17 @@
-local _, JetBattlePets = ...
+local _, _JetBattlePets = ...
 
--- init addon settings to empty table
+---@type JetBattlePets
+local JetBattlePets = _JetBattlePets
+
+---Init addon settings to empty table
 JetBattlePets.settings = {}
 
--- init saved variables on first run
+---Init saved variables on first run
 JetBattlePetsSettings = {}
 
--- default settings to apply on init
+---@class JetBattlePetsSettings
+---@field [string] any
+---Default settings to apply on init
 local DEFAULT_SETTINGS = {
   ALERT_THRESHOLD = JetBattlePets.constants.RARITIES.SHINY,
 
@@ -21,8 +26,10 @@ local DEFAULT_SETTINGS = {
   ENABLE_CAPTURE_THREAT_WARNINGS = false,
 }
 
--- Fetch key from saved vars. Init the saved var to a default if it
--- doesn't exist yet.
+---Fetch key from saved vars. Init the saved var to a default if it
+---doesn't exist yet
+---@param self JetBattlePetsSettings
+---@param key string
 local function getter(self, key)
   if JetBattlePetsSettings[key] == nil then
     if DEFAULT_SETTINGS[key] and type(DEFAULT_SETTINGS[key]) == "table" then

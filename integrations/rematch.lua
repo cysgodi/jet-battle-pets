@@ -1,6 +1,9 @@
-local _, JetBattlePets = ...
+local _, _JetBattlePets = ...
 
-JetBattlePets.rematch = {}
+---@type JetBattlePets
+local JetBattlePets = _JetBattlePets
+
+JetBattlePets.rematch = JetBattlePets.rematch or {}
 
 -- get model rarity text to display on a pet card
 local function DisplayModelRarity(_, petInfo)
@@ -132,7 +135,6 @@ end
 -- does a species of pet have a shiny variant?
 local function HasShiny(petInfo)
   if not petInfo.speciesID
-      or JetBattlePets.journal:IsIgnored(petInfo.speciesID)
   then
     return false
   end
@@ -199,7 +201,6 @@ local function JournalEntryIsShiny(_, petID)
   return IsShiny(petInfo)
 end
 
--- register a badge to Rematch that displays on shiny pets
 function JetBattlePets.rematch:AddIsShinyBadge()
   local atlas = C_Texture.GetAtlasInfo("rare-elite-star")
 
@@ -216,9 +217,9 @@ function JetBattlePets.rematch:AddIsShinyBadge()
   end
 end
 
--- add model rarity to Rematch pet cards
 function JetBattlePets.rematch:AddModelRarity()
-  local atlas = JetBattlePets.constants.GRAPHICS.MODEL_RARITY_ATLAS
+  local atlasName = JetBattlePets.constants.ATLAS_NAMES.MODEL_RARITY_ICON
+  local atlas = C_Texture.GetAtlasInfo(atlasName)
 
   table.insert(Rematch.petCardStats, {
     icon = atlas.file,
@@ -230,9 +231,9 @@ function JetBattlePets.rematch:AddModelRarity()
   })
 end
 
--- add variant stats to Rematch pet cards
 function JetBattlePets.rematch:AddVariantStats()
-  local atlas = JetBattlePets.constants.GRAPHICS.SHINY_ATLAS
+  local atlasName = JetBattlePets.constants.ATLAS_NAMES.SHINY_ICON
+  local atlas = C_Texture.GetAtlasInfo(atlasName)
 
   table.insert(Rematch.petCardStats, {
     click = DisplayVariantModels,
@@ -295,7 +296,6 @@ local function AddIsShinyFilter()
   end
 end
 
--- add rematch filters for pet variants
 function JetBattlePets.rematch:AddVariantFilters()
   Rematch.menus:AddToMenu("PetOther", { spacer = true, text = "" })
 
