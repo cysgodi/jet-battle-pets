@@ -178,29 +178,42 @@ function VariantModelMixin:SetDimensions(modelSlot)
 end
 
 -- get the atlas for the background texture of a model
-local function GetBorderColor(speciesID, modelSlot)
-  local modelRarity = JetBattlePets.journal:GetDisplayRarityByIndex(
+local function GetVariantBorderAtlasName(speciesID, displayID)
+  local modelRarity = JetBattlePets.journal:GetDisplayRarity(
     speciesID,
-    modelSlot
+    displayID
   )
 
-  if modelRarity == 'SHINY' then
-    return 0, 1, 1
-  elseif modelRarity == 'RARE' then
-    return 0.25, 0.25, 1
-  elseif modelRarity == 'UNCOMMON' then
-    return 0, 1, 0
+  for index = 1, C_PetJournal.GetNumPets() do
+    local petID, _speciesID = C_PetJournal.GetPetInfoByIndex(index)
+
+    if _speciesID == speciesID then
+      local petInfo = JetBattlePets.pets.GetPet(petID)
+      if petInfo.displayID == displayID then
+        if modelRarity == "SHINY" then
+          return JetBattlePets.constants.GRAPHICS.OWNED_SHINY_VARIANT_OUTLINE_ATLAS_NAME
+        end
+
+        return JetBattlePets.constants.GRAPHICS.OWNED_VARIANT_OUTLINE_ATLAS_NAME
+      end
+    end
   end
 
-  return 1, 1, 1
+  if modelRarity == "SHINY" then
+    return JetBattlePets.constants.GRAPHICS.UNOWNED_SHINY_VARIANT_OUTLINE_ATLAS_NAME
+  end
+
+  return JetBattlePets.constants.GRAPHICS.UNOWNED_VARIANT_OUTLINE_ATLAS_NAME
 end
 
 -- set the 3D model displayed and animated by the frame
 function VariantModelMixin:SetModel(speciesID, modelSlot)
+  local displayID = C_PetJournal.GetDisplayIDByIndex(speciesID, modelSlot)
   local modelSceneID = C_PetJournal.GetPetModelSceneInfoBySpeciesID(speciesID)
 
   self.BorderTexture = self.BorderTexture or self:CreateTexture()
-  self.BorderTexture:SetAtlas("transmog-wardrobe-border-collected")
+  local atlasName = GetVariantBorderAtlasName(speciesID, displayID)
+  self.BorderTexture:SetAtlas(atlasName)
   self.BorderTexture:SetAllPoints()
 
   self.Border:SetTexture(self.BorderTexture)
@@ -215,8 +228,6 @@ function VariantModelMixin:SetModel(speciesID, modelSlot)
   local actor = self:GetActorByTag("unwrapped")
 
   if actor then
-    local displayID = C_PetJournal.GetDisplayIDByIndex(speciesID, modelSlot)
-
     actor:SetModelByCreatureDisplayID(displayID)
     actor:SetAnimation(0, -1)
   end

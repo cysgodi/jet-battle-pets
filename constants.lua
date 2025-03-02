@@ -54,13 +54,13 @@ JetBattlePets.constants.IGNORED_SPECIES = {
 }
 
 JetBattlePets.constants.GRAPHICS = {
-  MODEL_OUTLINE_COMMON_ATLAS = C_Texture.GetAtlasInfo("bags-glow-white"),
-  MODEL_OUTLINE_RARE_ATLAS = C_Texture.GetAtlasInfo("bags-glow-heirloom"),
-  MODEL_OUTLINE_SHINY_ATLAS = C_Texture.GetAtlasInfo("bags-glow-artifact"),
-  MODEL_OUTLINE_UNCOMMON_ATLAS = C_Texture.GetAtlasInfo("bags-glow-green"),
+  OWNED_SHINY_VARIANT_OUTLINE_ATLAS_NAME = "transmog-wardrobe-border-current",
+  OWNED_VARIANT_OUTLINE_ATLAS_NAME = "transmog-wardrobe-border-collected",
   MODEL_RARITY_ATLAS = C_Texture.GetAtlasInfo("groupfinder-eye-frame"),
   SHINY_ATLAS = C_Texture.GetAtlasInfo("rare-elite-star"),
   THREAT_ICON_ATLAS = C_Texture.GetAtlasInfo("Ping_Chat_Warning"),
+  UNOWNED_SHINY_VARIANT_OUTLINE_ATLAS_NAME = "transmog-wardrobe-border-unusable",
+  UNOWNED_VARIANT_OUTLINE_ATLAS_NAME = "transmog-wardrobe-border-uncollected",
 }
 
 JetBattlePets.constants.SOUNDS = {
