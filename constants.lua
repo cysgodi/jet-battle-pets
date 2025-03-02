@@ -68,7 +68,7 @@ JetBattlePets.constants.SOUNDS = {
 -- string literals to define color hex values
 local TEXT_COLORS = {
   COMMON = "ffffff",
-  RARE = "88bbff",
+  RARE = "0070dd",
   SHINY = "ffd200",
   UNCOMMON = "20ff20"
 }
