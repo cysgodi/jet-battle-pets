@@ -5,10 +5,17 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
   <ModelScene inherits="WrappedAndUnwrappedModelScene" mixin="VariantModelMixin" name="VariantModelTemplate" virtual="true">
     <Layers>
+      <Layer level="BACKGROUND">
+        <Texture parentKey="Background">
+          <Anchors>
+            <Anchor point="TOPLEFT" x="14" y="-7" />
+            <Anchor point="BOTTOMRIGHT" x="-14" y="15" />
+          </Anchors>
+        </Texture>
+      </Layer>
+
       <Layer level="ARTWORK">
-        <Texture
-          file="Interface\AddOns\Rematch\textures\borders"
-          parentKey="Border" />
+        <Texture parentKey="Border" />
       </Layer>
     </Layers>
   </ModelScene>

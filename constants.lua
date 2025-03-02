@@ -54,12 +54,10 @@ JetBattlePets.constants.IGNORED_SPECIES = {
 }
 
 JetBattlePets.constants.GRAPHICS = {
-  OWNED_SHINY_VARIANT_OUTLINE_ATLAS_NAME = "transmog-wardrobe-border-current",
   OWNED_VARIANT_OUTLINE_ATLAS_NAME = "transmog-wardrobe-border-collected",
   MODEL_RARITY_ATLAS = C_Texture.GetAtlasInfo("groupfinder-eye-frame"),
   SHINY_ATLAS = C_Texture.GetAtlasInfo("rare-elite-star"),
   THREAT_ICON_ATLAS = C_Texture.GetAtlasInfo("Ping_Chat_Warning"),
-  UNOWNED_SHINY_VARIANT_OUTLINE_ATLAS_NAME = "transmog-wardrobe-border-unusable",
   UNOWNED_VARIANT_OUTLINE_ATLAS_NAME = "transmog-wardrobe-border-uncollected",
 }
 

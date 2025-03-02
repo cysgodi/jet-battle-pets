@@ -142,6 +142,8 @@ function JetBattlePets.frames.VariantModelsWindow:UpdateVariantModel(
 end
 
 ---@class VariantModelMixin : ModelScene A template for frames displaying battle pet variant models
+---@field Background Frame
+---@field Border Frame
 VariantModelMixin = {}
 
 
@@ -179,28 +181,16 @@ end
 
 -- get the atlas for the background texture of a model
 local function GetVariantBorderAtlasName(speciesID, displayID)
-  local modelRarity = JetBattlePets.journal:GetDisplayRarity(
-    speciesID,
-    displayID
-  )
-
   for index = 1, C_PetJournal.GetNumPets() do
     local petID, _speciesID = C_PetJournal.GetPetInfoByIndex(index)
 
     if _speciesID == speciesID then
       local petInfo = JetBattlePets.pets.GetPet(petID)
-      if petInfo.displayID == displayID then
-        if modelRarity == "SHINY" then
-          return JetBattlePets.constants.GRAPHICS.OWNED_SHINY_VARIANT_OUTLINE_ATLAS_NAME
-        end
 
+      if petInfo.displayID == displayID then
         return JetBattlePets.constants.GRAPHICS.OWNED_VARIANT_OUTLINE_ATLAS_NAME
       end
     end
-  end
-
-  if modelRarity == "SHINY" then
-    return JetBattlePets.constants.GRAPHICS.UNOWNED_SHINY_VARIANT_OUTLINE_ATLAS_NAME
   end
 
   return JetBattlePets.constants.GRAPHICS.UNOWNED_VARIANT_OUTLINE_ATLAS_NAME
@@ -215,8 +205,15 @@ function VariantModelMixin:SetModel(speciesID, modelSlot)
   local atlasName = GetVariantBorderAtlasName(speciesID, displayID)
   self.BorderTexture:SetAtlas(atlasName)
   self.BorderTexture:SetAllPoints()
-
   self.Border:SetTexture(self.BorderTexture)
+
+  local rarityName = JetBattlePets.journal:GetDisplayRarity(
+    speciesID,
+    displayID
+  )
+  local rarityColor = JetBattlePets.color:GetRarityColor(rarityName)
+  local r, g, b = rarityColor:GetRGBA()
+  self.Background:SetColorTexture(r, g, b, 0.2)
 
   self:TransitionToModelSceneID(
     modelSceneID,
