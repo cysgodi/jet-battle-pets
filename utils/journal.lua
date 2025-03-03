@@ -105,3 +105,21 @@ function JetBattlePets.journal:GetMaxDisplayProbability(speciesID)
 
   return math.max(unpack(probabilities))
 end
+
+function JetBattlePets.journal:GetNumOwned(speciesID, displayID)
+  local ownedCount = 0
+
+  for index = 1, C_PetJournal.GetNumPets() do
+    local petID, _speciesID = C_PetJournal.GetPetInfoByIndex(index)
+
+    if _speciesID == speciesID then
+      local petInfo = JetBattlePets.pets.GetPet(petID)
+
+      if petInfo.displayID == displayID then
+        ownedCount = ownedCount + 1
+      end
+    end
+  end
+
+  return ownedCount
+end
