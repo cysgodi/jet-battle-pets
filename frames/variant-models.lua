@@ -91,20 +91,20 @@ end
 -- update window size based on the species being displayed
 function JetBattlePets.frames.VariantModelsWindow:UpdateSize(speciesID)
   local gridDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_GRID
-  local modelDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL
+  local modelFrameDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_FRAME
   local windowDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW
   local titleBarButtonSize = JetBattlePets.constants.DIMENSIONS.TITLE_BAR_BUTTON.SIZE
 
   local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
 
   local gridHeight = JetBattlePets.grid:GetHeight(
-    modelDimensions.HEIGHT,
+    modelFrameDimensions.HEIGHT,
     numDisplays,
     gridDimensions.MAX_COLS
   )
 
   local gridWidth = JetBattlePets.grid:GetWidth(
-    modelDimensions.WIDTH,
+    modelFrameDimensions.WIDTH,
     numDisplays,
     gridDimensions.MAX_COLS
   )
@@ -145,48 +145,63 @@ function JetBattlePets.frames.VariantModelsWindow:UpdateVariantModel(
   self.VariantModels[modelSlot]:ShowModel(speciesID, modelSlot)
 end
 
+---@class VariantModelBackground : Frame
+---@field BackgroundTexture TextureBase
+
+---@class VariantModelBorder: Frame
+---@field BorderTexture TextureBase
+
 ---@class VariantModelMixin : ModelScene A template for frames displaying battle pet variant models
----@field Background TextureBase
----@field Border TextureBase
+---@field Background VariantModelBackground
+---@field Border VariantModelBorder
 ---@field VariantModel ModelScene
+---@field VariantModelText Frame
 VariantModelMixin = {}
 
 
 -- set frame size and offset based on the display slot
 function VariantModelMixin:SetDimensions(modelSlot)
   local modelDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL
+  local modelFrameDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_FRAME
   local gridDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_GRID
   local windowDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW
-
-  self:SetSize(
-    modelDimensions.WIDTH,
-    modelDimensions.HEIGHT
-  )
-
-  self.Border:SetSize(
-    modelDimensions.WIDTH,
-    modelDimensions.HEIGHT
-  )
-  self.Border:SetPoint("TOPLEFT")
-  self.Border:SetTexCoord(0, 0.171875, 0, 0.171875)
-  self.Border:SetAllPoints()
 
   local column = JetBattlePets.grid:GetColumn(modelSlot, gridDimensions.MAX_COLS)
   local row = JetBattlePets.grid:GetRow(modelSlot, gridDimensions.MAX_COLS)
 
-  local xOffset = windowDimensions.MARGIN_LEFT + modelDimensions.WIDTH * column
+  local xOffset = windowDimensions.MARGIN_LEFT + modelFrameDimensions.WIDTH * column
 
   -- y offset has to be negative to downshift
-  local yOffset = -1 * modelDimensions.HEIGHT
+  local yOffset = -1 * modelFrameDimensions.HEIGHT
       * row
       - windowDimensions.MARGIN_TOP
 
-  self.VariantModel:SetPoint("CENTER")
-  self.VariantModel:SetSize(
-    modelDimensions.WIDTH - 26,
-    modelDimensions.HEIGHT - 30
+  self:SetSize(
+    modelFrameDimensions.WIDTH,
+    modelFrameDimensions.HEIGHT
   )
   self:SetPoint("TOPLEFT", xOffset, yOffset)
+
+  self.Background:SetFrameLevel(1)
+  self.Background:SetPoint("TOP")
+  self.Background:SetSize(
+    modelDimensions.HEIGHT,
+    modelDimensions.WIDTH
+  )
+
+  self.Border:SetFrameLevel(3)
+  self.Border:SetPoint("TOP")
+  self.Border:SetSize(
+    modelDimensions.HEIGHT,
+    modelDimensions.WIDTH
+  )
+
+  self.VariantModel:SetFrameLevel(2)
+  self.VariantModel:SetPoint("TOP")
+  self.VariantModel:SetSize(
+    modelDimensions.WIDTH,
+    modelDimensions.HEIGHT
+  )
 end
 
 -- get the atlas for the background texture of a model
@@ -216,20 +231,29 @@ function VariantModelMixin:SetBackground(speciesID, displayID)
     speciesID,
     displayID
   )
+
   local rarityColor = JetBattlePets.color:GetRarityColor(rarityName)
   local r, g, b = rarityColor:GetRGBA()
-  self.Background:SetColorTexture(r, g, b, 0.1)
+
+  self.Background.BackgroundTexture = self.Background.BackgroundTexture or self.Background:CreateTexture(
+    "BackgroundTexture",
+    "BACKGROUND"
+  )
+  self.Background.BackgroundTexture:SetColorTexture(r, g, b, 0.1)
+  self.Background.BackgroundTexture:SetPoint("TOPLEFT", 2, -2)
+  self.Background.BackgroundTexture:SetPoint("BOTTOMRIGHT", -2, 2)
 end
 
 ---Add the appropriate border to the frame
 ---@param speciesID integer
 ---@param displayID integer
 function VariantModelMixin:SetBorder(speciesID, displayID)
-  self.BorderTexture = self.BorderTexture or self:CreateTexture()
   local atlasName = GetVariantBorderAtlasName(speciesID, displayID)
-  self.BorderTexture:SetAtlas(atlasName)
-  self.BorderTexture:SetAllPoints()
-  self.Border:SetTexture(self.BorderTexture)
+
+  self.Border.BorderTexture = self.Border.BorderTexture or self:CreateTexture()
+  self.Border.BorderTexture:SetAtlas(atlasName)
+  self.Border.BorderTexture:SetPoint("TOPLEFT", -12, 4)
+  self.Border.BorderTexture:SetPoint("BOTTOMRIGHT", 12, -12)
 end
 
 ---Set the 3D model displayed and animated by the frame

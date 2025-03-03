@@ -14,6 +14,12 @@ local TITLE_BAR_BUTTON_DIMENSIONS = {
 
 ---@class VariantModelDimensions Dimensions of models displayed in the variant model viewer
 local VARIANT_MODEL_DIMENSIONS = {
+  HEIGHT = 142,
+  WIDTH = 142,
+}
+
+---@class VariantModelFrameDimensions
+local VARIANT_MODEL_FRAME_DIMENSIONS = {
   HEIGHT = 172,
   WIDTH = 168,
 }
@@ -35,6 +41,7 @@ local VARIANT_MODEL_WINDOW_DIMENSIONS = {
 local DIMENSION_CONSTANTS = {
   TITLE_BAR_BUTTON = TITLE_BAR_BUTTON_DIMENSIONS,
   VARIANT_MODEL = VARIANT_MODEL_DIMENSIONS,
+  VARIANT_MODEL_FRAME = VARIANT_MODEL_FRAME_DIMENSIONS,
   VARIANT_MODEL_GRID = VARIANT_MODEL_GRID_DIMENSIONS,
   VARIANT_MODEL_WINDOW = VARIANT_MODEL_WINDOW_DIMENSIONS,
 }
@@ -74,6 +81,16 @@ local RARITY_RATIOS = {
 
 ---@class AtlasNames Names of atlases used for various UI elements
 local ATLAS_NAMES = {
+  --[[
+    Icons to try for caged count:
+
+    - GarrMission_MissionIcon-Provision
+    - legionmission-icon-currency
+    - UI_Icon_Chest_NPCreward
+    - UI-HUD-MicroMenu-Collections-Up
+    - plunderstorm-icon-item
+  ]]
+  CAGED_ICON = "plunderstorm-icon-item",
   MODEL_RARITY_ICON = "groupfinder-eye-frame",
   SHINY_ICON = "rare-elite-star",
   THREAT_ICON = "Ping_Chat_Warning",
