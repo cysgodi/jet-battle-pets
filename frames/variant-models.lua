@@ -267,7 +267,7 @@ end
 function VariantModelMixin:SetModel(speciesID, displayID)
   local modelSceneID = C_PetJournal.GetPetModelSceneInfoBySpeciesID(speciesID)
 
-  self.VariantModel = CreateFrame(
+  self.VariantModel = self.VariantModel or CreateFrame(
     "ModelScene",
     "VariantModel",
     self,

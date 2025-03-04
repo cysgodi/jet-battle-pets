@@ -38,6 +38,9 @@ local VARIANT_MODEL_WINDOW_DIMENSIONS = {
   -- the window inside of frames created with "PortraitFrameTemplate"
   -- is offset 3 points to the right of the actual left edge of the frame
   TEMPLATE_HORIZONTAL_OFFSET = 3,
+  -- the title bar is part of the frame containing the grid, so we need
+  -- to subtract its height from the total window height
+  TITLE_BAR_HEIGHT = 24
 }
 
 ---@class DimensionConstants Dimensions of common UI elements
