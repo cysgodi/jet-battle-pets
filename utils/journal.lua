@@ -66,6 +66,26 @@ function JetBattlePets.journal:GetDisplayIndex(speciesID, displayID)
   return displayIdIndex
 end
 
+function JetBattlePets.journal:GetDisplayIndexProbabilityText(speciesID, displayIndex)
+  local probability = C_PetJournal.GetDisplayProbabilityByIndex(
+    speciesID,
+    displayIndex
+  ) or 100
+
+  local maxProbability = JetBattlePets.journal:GetMaxDisplayProbability(speciesID)
+
+  return JetBattlePets.text:GetRarityText(
+    probability,
+    maxProbability
+  )
+end
+
+function JetBattlePets.journal:GetDisplayProbabilityText(speciesID, displayID)
+  local displayIndex = JetBattlePets.journal:GetDisplayIndex(speciesID, displayID)
+
+  return JetBattlePets.journal:GetDisplayIndexProbabilityText(speciesID, displayIndex)
+end
+
 function JetBattlePets.journal:GetDisplayRarity(speciesID, displayID)
   local maxProbability = self:GetMaxDisplayProbability(speciesID)
   local displayProbability = self:GetDisplayProbability(

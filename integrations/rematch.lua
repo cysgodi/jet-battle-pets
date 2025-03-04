@@ -99,19 +99,10 @@ local function DisplayVariantCountTooltip(self, petInfo)
       tooltipBody = tooltipBody .. " / "
     end
 
-    local probability = C_PetJournal.GetDisplayProbabilityByIndex(
+    tooltipBody = tooltipBody .. JetBattlePets.journal:GetDisplayIndexProbabilityText(
       petInfo.speciesID,
       slot
-    ) or 100
-
-    local maxProbability = JetBattlePets.journal:GetMaxDisplayProbability(petInfo.speciesID)
-
-    local probabilityText = JetBattlePets.text:GetRarityText(
-      probability,
-      maxProbability
     )
-
-    tooltipBody = tooltipBody .. probabilityText
   end
 
   tooltipBody = tooltipBody .. "\n\n"
