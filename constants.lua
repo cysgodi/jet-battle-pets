@@ -35,6 +35,9 @@ local VARIANT_MODEL_WINDOW_DIMENSIONS = {
   MARGIN_LEFT = 16,
   MARGIN_RIGHT = 16,
   MARGIN_TOP = 32,
+  -- the window inside of frames created with "PortraitFrameTemplate"
+  -- is offset 3 points to the right of the actual left edge of the frame
+  TEMPLATE_HORIZONTAL_OFFSET = 3,
 }
 
 ---@class DimensionConstants Dimensions of common UI elements
@@ -90,7 +93,7 @@ local ATLAS_NAMES = {
     - UI-HUD-MicroMenu-Collections-Up
     - plunderstorm-icon-item
   ]]
-  CAGED_ICON = "plunderstorm-icon-item",
+  CAGED_ICON = "legionmission-icon-currency",
   MODEL_RARITY_ICON = "groupfinder-eye-frame",
   SHINY_ICON = "rare-elite-star",
   THREAT_ICON = "Ping_Chat_Warning",

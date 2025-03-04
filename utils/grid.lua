@@ -15,6 +15,7 @@ end
 
 function JetBattlePets.grid:GetHeight(itemHeight, numItems, maxColumns)
   return itemHeight * math.floor((numItems + maxColumns - 1) / maxColumns)
+      - JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW.TITLE_BAR_HEIGHT
 end
 
 function JetBattlePets.grid:GetWidth(itemWidth, numItems, maxColumns)

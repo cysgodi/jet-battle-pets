@@ -151,11 +151,16 @@ end
 ---@class VariantModelBorder: Frame
 ---@field BorderTexture TextureBase
 
+---@class VariantModelText : Frame
+---@field OwnedTextIcon FontString
+---@field OwnedText FontString
+---@field RarityText FontString
+
 ---@class VariantModelMixin : ModelScene A template for frames displaying battle pet variant models
 ---@field Background VariantModelBackground
 ---@field Border VariantModelBorder
 ---@field VariantModel ModelScene
----@field VariantModelText Frame
+---@field VariantModelText VariantModelText
 VariantModelMixin = {}
 
 
@@ -169,11 +174,12 @@ function VariantModelMixin:SetDimensions(modelSlot)
   local column = JetBattlePets.grid:GetColumn(modelSlot, gridDimensions.MAX_COLS)
   local row = JetBattlePets.grid:GetRow(modelSlot, gridDimensions.MAX_COLS)
 
-  local xOffset = windowDimensions.MARGIN_LEFT + modelFrameDimensions.WIDTH * column
+  local xOffset = windowDimensions.MARGIN_LEFT
+      + modelFrameDimensions.WIDTH * column
+      + windowDimensions.TEMPLATE_HORIZONTAL_OFFSET
 
   -- y offset has to be negative to downshift
-  local yOffset = -1 * modelFrameDimensions.HEIGHT
-      * row
+  local yOffset = -1 * modelFrameDimensions.HEIGHT * row
       - windowDimensions.MARGIN_TOP
 
   self:SetSize(
@@ -202,22 +208,21 @@ function VariantModelMixin:SetDimensions(modelSlot)
     modelDimensions.WIDTH,
     modelDimensions.HEIGHT
   )
+
+  self.VariantModelText:SetPoint("BOTTOM")
+  self.VariantModelText:SetSize(
+    modelDimensions.WIDTH - 8,
+    24
+  )
 end
 
 -- get the atlas for the background texture of a model
 local function GetVariantBorderAtlasName(speciesID, displayID)
   local ATLAS_NAMES = JetBattlePets.constants.ATLAS_NAMES
+  local numOwned = JetBattlePets.journal:GetNumOwned(speciesID, displayID)
 
-  for index = 1, C_PetJournal.GetNumPets() do
-    local petID, _speciesID = C_PetJournal.GetPetInfoByIndex(index)
-
-    if _speciesID == speciesID then
-      local petInfo = JetBattlePets.pets.GetPet(petID)
-
-      if petInfo.displayID == displayID then
-        return ATLAS_NAMES.VARIANT_OUTLINE_OWNED
-      end
-    end
+  if numOwned > 0 then
+    return ATLAS_NAMES.VARIANT_OUTLINE_OWNED
   end
 
   return ATLAS_NAMES.VARIANT_OUTLINE_UNOWNED
@@ -239,7 +244,7 @@ function VariantModelMixin:SetBackground(speciesID, displayID)
     "BackgroundTexture",
     "BACKGROUND"
   )
-  self.Background.BackgroundTexture:SetColorTexture(r, g, b, 0.1)
+  self.Background.BackgroundTexture:SetColorTexture(r, g, b, 0.25)
   self.Background.BackgroundTexture:SetPoint("TOPLEFT", 2, -2)
   self.Background.BackgroundTexture:SetPoint("BOTTOMRIGHT", -2, 2)
 end
@@ -284,6 +289,32 @@ function VariantModelMixin:SetModel(speciesID, displayID)
   end
 end
 
+---Set variant model text components
+---@param speciesID integer
+---@param displayID integer
+function VariantModelMixin:SetVariantModelText(speciesID, displayID)
+  local numOwned = JetBattlePets.journal:GetNumOwned(speciesID, displayID)
+  local ownedIcon = CreateAtlasMarkup(JetBattlePets.constants.ATLAS_NAMES.CAGED_ICON)
+
+  local rarityText = JetBattlePets.journal:GetDisplayProbabilityText(speciesID, displayID)
+
+  self.VariantModelText.OwnedTextIcon = self.VariantModelText.OwnedTextIcon or
+      self.VariantModelText:CreateFontString("OwnedTextIcon")
+  self.VariantModelText.OwnedTextIcon:SetText(ownedIcon)
+  self.VariantModelText.OwnedTextIcon:SetTextScale(2)
+  self.VariantModelText.OwnedTextIcon:SetPoint("LEFT")
+
+  self.VariantModelText.OwnedText = self.VariantModelText.OwnedText or
+      self.VariantModelText:CreateFontString("OwnedText")
+  self.VariantModelText.OwnedText:SetText(tostring(numOwned))
+  self.VariantModelText.OwnedText:SetPoint("LEFT", self.VariantModelText.OwnedTextIcon, "RIGHT")
+
+  self.VariantModelText.RarityText = self.VariantModelText.RarityText or
+      self.VariantModelText:CreateFontString("RarityText")
+  self.VariantModelText.RarityText:SetText(rarityText)
+  self.VariantModelText.RarityText:SetPoint("RIGHT")
+end
+
 ---Show the actual variant model
 ---@param speciesID integer
 ---@param modelSlot integer
@@ -293,6 +324,7 @@ function VariantModelMixin:ShowModel(speciesID, modelSlot)
   self:SetBorder(speciesID, displayID)
   self:SetBackground(speciesID, displayID)
   self:SetModel(speciesID, displayID)
+  self:SetVariantModelText(speciesID, displayID)
   self:SetDimensions(modelSlot)
   self:Show()
 end

@@ -48,7 +48,15 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
         parentKey="VariantModel"
       />
 
-      <Frame parentKey="VariantModelText" />
+      <Frame parentKey="VariantModelText">
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString parentKey="OwnedTextIcon" inherits="GameFontNormal" />
+            <FontString parentKey="OwnedText" inherits="GameFontNormal" />
+            <FontString parentKey="RarityText" inherits="GameFontNormal" />
+          </Layer>
+        </Layers>
+      </Frame>
     </Frames>
   </Frame>
 
