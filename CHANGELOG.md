@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.2
+
+- tighten up variant model viewer UI/UX
+
 ## v1.1.1
 
 - add a notification sound when enemy pets are using abilities are capture threats
