@@ -131,6 +131,20 @@ end
 function JetBattlePetsJournalUtils:GetDisplayIndex(speciesID, displayID)
 end
 
+---Get text for the precent probability of encountering the pet model
+---identified by a specific display index
+---@param speciesID integer
+---@param displayIndex SlotNumber
+function JetBattlePetsJournalUtils:GetDisplayIndexProbabilityText(speciesID, displayIndex)
+end
+
+---Get text for the percent probability of encountering a specific model
+---@param speciesID integer
+---@param displayID integer
+---@return string
+function JetBattlePetsJournalUtils:GetDisplayProbabilityText(speciesID, displayID)
+end
+
 ---Get the rarity of a variant model
 ---@param speciesID integer
 ---@param displayID integer
