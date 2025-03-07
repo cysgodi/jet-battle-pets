@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.3
+
+- fixed an issue where the variant model viewer would throw an error if you tried to view models for a species that you hadn't caught at least one of
+
 ## v1.1.2
 
 - tighten up variant model viewer UI/UX

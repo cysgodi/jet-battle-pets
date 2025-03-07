@@ -60,7 +60,7 @@ local function DisplayVariantModels(_, petInfo)
   local VariantModels = JetBattlePets.frames.VariantModelsWindow
 
   if VariantModels:IsShown()
-      and VariantModels.displayedSpeciesID == petInfo.speciesID
+      and VariantModels.CurrentSpeciesID == petInfo.speciesID
   then
     VariantModels:Hide()
     return

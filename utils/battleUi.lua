@@ -7,6 +7,11 @@ JetBattlePets.battleUi = JetBattlePets.battleUi or {
   alertsFired = false
 }
 
+-- TODO: add button/drawer (?) to battle UI to toggle variant model viewer
+-- TODO: add spacing between rows in model viewer
+-- TODO: close the variant model viewer when ESC is hit
+-- TODO: add "click to view all models" message to pet card variants tooltip
+
 ---determine whether an alert should fire based on user preferences
 ---@param speciesID number
 ---@param displayID number

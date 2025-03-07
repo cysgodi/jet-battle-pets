@@ -4,7 +4,6 @@ local _, _JetBattlePets = ...
 local JetBattlePets = _JetBattlePets
 
 ---@class VariantModelsWindow : Frame A window for displaying battle pet variant models
----@field displayedSpeciesID integer
 ---@field VariantModels VariantModelMixin[]
 JetBattlePets.frames.VariantModelsWindow = JetBattlePets.frames.VariantModelsWindow or CreateFrame(
   "Frame",
@@ -70,32 +69,32 @@ end
 
 -- update the models that are shown in the window
 function JetBattlePets.frames.VariantModelsWindow:UpdateModels(petInfo)
-  if self.displayedSpeciesID == petInfo.speciesID then
+  if self.CurrentSpeciesID == petInfo.speciesID then
     return
   end
 
   self:ResetVariantModels()
-  self.displayedSpeciesID = petInfo.speciesID
+  self.CurrentSpeciesID = petInfo.speciesID
 
   self.SetTitle(self, petInfo.name)
 
-  local numDisplays = C_PetJournal.GetNumDisplays(petInfo.speciesID)
+  local numDisplays = C_PetJournal.GetNumDisplays(self.CurrentSpeciesID)
 
-  self:UpdateSize(petInfo.speciesID)
+  self:UpdateSize()
 
   for slot = 1, numDisplays do
-    self:UpdateVariantModel(petInfo.speciesID, slot)
+    self:UpdateVariantModel(slot)
   end
 end
 
 -- update window size based on the species being displayed
-function JetBattlePets.frames.VariantModelsWindow:UpdateSize(speciesID)
+function JetBattlePets.frames.VariantModelsWindow:UpdateSize()
   local gridDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_GRID
   local modelFrameDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_FRAME
   local windowDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW
   local titleBarButtonSize = JetBattlePets.constants.DIMENSIONS.TITLE_BAR_BUTTON.SIZE
 
-  local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
+  local numDisplays = C_PetJournal.GetNumDisplays(self.CurrentSpeciesID)
 
   local gridHeight = JetBattlePets.grid:GetHeight(
     modelFrameDimensions.HEIGHT,
@@ -130,7 +129,6 @@ function JetBattlePets.frames.VariantModelsWindow:UpdateSize(speciesID)
 end
 
 function JetBattlePets.frames.VariantModelsWindow:UpdateVariantModel(
-    speciesID,
     modelSlot
 )
   if not self.VariantModels[modelSlot] then
@@ -142,7 +140,8 @@ function JetBattlePets.frames.VariantModelsWindow:UpdateVariantModel(
     ) --[[@as VariantModelMixin]]
   end
 
-  self.VariantModels[modelSlot]:ShowModel(speciesID, modelSlot)
+  self.VariantModels[modelSlot].CurrentSpeciesID = self.CurrentSpeciesID
+  self.VariantModels[modelSlot]:ShowModel(modelSlot)
 end
 
 ---@class VariantModelBackground : Frame
@@ -159,6 +158,7 @@ end
 ---@class VariantModelMixin : ModelScene A template for frames displaying battle pet variant models
 ---@field Background VariantModelBackground
 ---@field Border VariantModelBorder
+---@field CurrentSpeciesID integer
 ---@field VariantModel ModelScene
 ---@field VariantModelText VariantModelText
 VariantModelMixin = {}
@@ -229,11 +229,10 @@ local function GetVariantBorderAtlasName(speciesID, displayID)
 end
 
 ---Add the appropriate background to the frame
----@param speciesID integer
 ---@param displayID integer
-function VariantModelMixin:SetBackground(speciesID, displayID)
+function VariantModelMixin:SetBackground(displayID)
   local rarityName = JetBattlePets.journal:GetDisplayRarityName(
-    speciesID,
+    self.CurrentSpeciesID,
     displayID
   )
 
@@ -250,10 +249,9 @@ function VariantModelMixin:SetBackground(speciesID, displayID)
 end
 
 ---Add the appropriate border to the frame
----@param speciesID integer
 ---@param displayID integer
-function VariantModelMixin:SetBorder(speciesID, displayID)
-  local atlasName = GetVariantBorderAtlasName(speciesID, displayID)
+function VariantModelMixin:SetBorder(displayID)
+  local atlasName = GetVariantBorderAtlasName(self.CurrentSpeciesID, displayID)
 
   self.Border.BorderTexture = self.Border.BorderTexture or self:CreateTexture()
   self.Border.BorderTexture:SetAtlas(atlasName)
@@ -262,10 +260,9 @@ function VariantModelMixin:SetBorder(speciesID, displayID)
 end
 
 ---Set the 3D model displayed and animated by the frame
----@param speciesID integer
 ---@param displayID integer
-function VariantModelMixin:SetModel(speciesID, displayID)
-  local modelSceneID = C_PetJournal.GetPetModelSceneInfoBySpeciesID(speciesID)
+function VariantModelMixin:SetModel(displayID)
+  local modelSceneID = C_PetJournal.GetPetModelSceneInfoBySpeciesID(self.CurrentSpeciesID)
 
   self.VariantModel = self.VariantModel or CreateFrame(
     "ModelScene",
@@ -290,13 +287,18 @@ function VariantModelMixin:SetModel(speciesID, displayID)
 end
 
 ---Set variant model text components
----@param speciesID integer
 ---@param displayID integer
-function VariantModelMixin:SetVariantModelText(speciesID, displayID)
-  local numOwned = JetBattlePets.journal:GetNumOwned(speciesID, displayID)
+function VariantModelMixin:SetVariantModelText(displayID)
+  local numOwned = JetBattlePets.journal:GetNumOwned(
+    self.CurrentSpeciesID,
+    displayID
+  )
   local ownedIcon = CreateAtlasMarkup(JetBattlePets.constants.ATLAS_NAMES.CAGED_ICON)
 
-  local rarityText = JetBattlePets.journal:GetDisplayProbabilityText(speciesID, displayID)
+  local rarityText = JetBattlePets.journal:GetDisplayProbabilityText(
+    self.CurrentSpeciesID,
+    displayID
+  )
 
   self.VariantModelText.OwnedTextIcon = self.VariantModelText.OwnedTextIcon or
       self.VariantModelText:CreateFontString("OwnedTextIcon")
@@ -316,15 +318,17 @@ function VariantModelMixin:SetVariantModelText(speciesID, displayID)
 end
 
 ---Show the actual variant model
----@param speciesID integer
 ---@param modelSlot integer
-function VariantModelMixin:ShowModel(speciesID, modelSlot)
-  local displayID = C_PetJournal.GetDisplayIDByIndex(speciesID, modelSlot)
+function VariantModelMixin:ShowModel(modelSlot)
+  local displayID = C_PetJournal.GetDisplayIDByIndex(
+    self.CurrentSpeciesID,
+    modelSlot
+  )
 
-  self:SetBorder(speciesID, displayID)
-  self:SetBackground(speciesID, displayID)
-  self:SetModel(speciesID, displayID)
-  self:SetVariantModelText(speciesID, displayID)
+  self:SetBorder(displayID)
+  self:SetBackground(displayID)
+  self:SetModel(displayID)
+  self:SetVariantModelText(displayID)
   self:SetDimensions(modelSlot)
   self:Show()
 end
