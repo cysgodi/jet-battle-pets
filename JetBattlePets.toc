@@ -18,6 +18,9 @@
 ## Category-zhCN: 宠物对战
 ## Category-zhTW: 寵物對戰
 
+# independent utility functions
+utils/array.lua
+
 # globals
 constants.lua
 state.lua
