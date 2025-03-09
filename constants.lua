@@ -194,16 +194,31 @@ local FRIENDLY_FIRE_ABILITIES = {
 ---IDs of abilities that are a threat to a battle pet you might
 ---want to capture
 ---@type number[]
-local CAPTURE_THREAT_ABILITIES = {
-  unpack(RECOIL_ABILITIES),
-  unpack(SELF_DESTRUCT_ABILITIES),
-  unpack(ENVIRONMENTAL_DOT_ABILITIES),
-  unpack(FRIENDLY_FIRE_ABILITIES),
-}
+local CAPTURE_THREAT_ABILITIES = JetBattlePets.array:Concat(
+  RECOIL_ABILITIES,
+  SELF_DESTRUCT_ABILITIES,
+  ENVIRONMENTAL_DOT_ABILITIES,
+  FRIENDLY_FIRE_ABILITIES
+)
 
 ---@class AbilityConstants Specialized lists of ability IDs
 local ABILITY_CONSTANTS = {
   CAPTURE_THREATS = CAPTURE_THREAT_ABILITIES,
+}
+
+---@class BattleUiFrames Frames used in the pet battle UI
+local BATTLE_UI_FRAMES = {
+  ACTIVE_ALLY = "ActiveAlly",
+  ACTIVE_ENEMY = "ActiveEnemy",
+  ALLY_2 = "Ally2",
+  ALLY_3 = "Ally3",
+  ENEMY_2 = "Enemy2",
+  ENEMY_3 = "Enemy3",
+}
+
+---@class FrameConstants Constant reference to UI frames
+local FRAMES = {
+  BATTLE_UI = BATTLE_UI_FRAMES
 }
 
 ---@class JetBattlePetsConstants
@@ -212,6 +227,7 @@ JetBattlePets.constants = JetBattlePets.constants or {
   ATLAS_NAMES = ATLAS_NAMES,
   COLORS = COLORS,
   DIMENSIONS = DIMENSION_CONSTANTS,
+  FRAMES = FRAMES,
   RARITIES = RARITIES,
   RARITY_NAMES = RARITY_NAMES,
   RARITY_RATIOS = RARITY_RATIOS,

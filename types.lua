@@ -4,6 +4,7 @@
 
 ---@class JetBattlePets
 ---@field atlas JetBattlePetsAtlasUtils
+---@field array JetBattlePetsArrayUtils
 ---@field battleUi JetBattlePetsBattleUtils
 ---@field color JetBattlePetsColorUtils
 ---@field constants JetBattlePetsConstants
@@ -26,6 +27,7 @@ JetBattlePets = {}
 ---@field ATLAS_NAMES AtlasNames
 ---@field COLORS Colors
 ---@field DIMENSIONS DimensionConstants
+---@field FRAMES FrameConstants
 ---@field SOUNDS SoundFileIDs
 ---@field TEXT_FORMAT TextFormatConstants
 JetBattlePetsConstants = {
@@ -47,6 +49,22 @@ JetBattlePetsConstants = {
     UNCOMMON = 2
   }
 }
+
+-----------------------------------------------------
+------------------ Array Utils ----------------------
+-----------------------------------------------------
+
+---@class JetBattlePetsArrayUtils
+JetBattlePetsArrayUtils = {}
+
+---Concatenate two or more arrays into a single array
+---@generic T
+---@param a T[]
+---@param ... T[][]
+---@return T[]
+function JetBattlePetsArrayUtils:Concat(a, ...)
+  return {}
+end
 
 -----------------------------------------------------
 ------------------- Grid Utils ----------------------
@@ -241,6 +259,10 @@ end
 ---Print an alert to the chat box that a shiny is in the battle
 ---@param speciesID integer
 function JetBattlePetsBattleUtils:PrintShinyAlert(speciesID)
+end
+
+---Initialize frames in the pet battle UI
+function JetBattlePetsBattleUtils:SetUpPets()
 end
 
 ---Attach the shiny icon to appropriate battle pet UI frames
