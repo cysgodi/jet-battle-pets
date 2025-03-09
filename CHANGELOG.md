@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.4
+
+- fixed an issue where some threatening weren't triggering alerts properly
+
 ## v1.1.3
 
 - fixed an issue where the variant model viewer would throw an error if you tried to view models for a species that you hadn't caught at least one of
