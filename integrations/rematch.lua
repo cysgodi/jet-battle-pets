@@ -151,11 +151,6 @@ local function HasShiny(petInfo)
   return false
 end
 
--- does a species of pet have a shiny variant, and is it unowned?
-local function HasShinyAndNoneOwned(petInfo)
-  return (not petInfo.count or petInfo.count == 0) and HasShiny(petInfo)
-end
-
 -- is the given pet shiny?
 local function IsShiny(petInfo)
   if (
