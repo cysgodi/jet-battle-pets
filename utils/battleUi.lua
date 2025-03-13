@@ -176,7 +176,7 @@ local function OnClickPetFrame(self)
   end
 
   local speciesID = C_PetBattles.GetPetSpeciesID(petOwner, petIndex)
-  print(petOwner, petIndex)
+  JetBattlePets.frames.VariantModelsWindow:SetModels(speciesID)
 end
 
 ---OnEnter handler for pet frames in the battle UI

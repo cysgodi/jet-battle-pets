@@ -53,8 +53,7 @@ end
 
 -- create a frame to display all variant models of a pet species
 local function DisplayVariantModels(_, petInfo)
-  local VariantModels = JetBattlePets.frames.VariantModelsWindow
-  VariantModels:SetModels(petInfo.speciesID)
+  JetBattlePets.frames.VariantModelsWindow:SetModels(petInfo.speciesID)
 end
 
 -- get text to display on the tooltip for pet card variant stats

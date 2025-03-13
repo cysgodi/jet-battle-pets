@@ -75,7 +75,11 @@ function JetBattlePets.frames.VariantModelsWindow:SetModels(speciesID)
   end
 
   if self.CurrentSpeciesID == speciesID then
-    if self:IsShown() then self:Hide() end
+    if self:IsShown() then
+      self:Hide()
+    else
+      self:Show()
+    end
 
     return
   end
@@ -208,21 +212,21 @@ function VariantModelMixin:SetDimensions(modelSlot)
   )
   self:SetPoint("TOPLEFT", xOffset, yOffset)
 
-  self.Background:SetFrameLevel(1)
+  self.Background:SetFrameLevel(4)
   self.Background:SetPoint("TOP")
   self.Background:SetSize(
     modelDimensions.HEIGHT,
     modelDimensions.WIDTH
   )
 
-  self.Border:SetFrameLevel(3)
+  self.Border:SetFrameLevel(6)
   self.Border:SetPoint("TOP")
   self.Border:SetSize(
     modelDimensions.HEIGHT,
     modelDimensions.WIDTH
   )
 
-  self.VariantModel:SetFrameLevel(2)
+  self.VariantModel:SetFrameLevel(5)
   self.VariantModel:SetPoint("TOP")
   self.VariantModel:SetSize(
     modelDimensions.WIDTH,
