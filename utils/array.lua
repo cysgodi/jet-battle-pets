@@ -24,3 +24,15 @@ function JetBattlePets.array:Concat(a, ...)
 
   return self:Concat(result, concatenatedArrays)
 end
+
+function JetBattlePets.array:Slice(array, startIndex, endIndex)
+  local result = {}
+  startIndex = startIndex or 1
+  endIndex = endIndex or #array
+
+  for index = startIndex, endIndex do
+    table.insert(result, array[index])
+  end
+
+  return result
+end

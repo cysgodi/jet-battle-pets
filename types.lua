@@ -66,6 +66,16 @@ function JetBattlePetsArrayUtils:Concat(a, ...)
   return {}
 end
 
+---Get a slice of an existing array
+---@generic T
+---@param array T[]
+---@param startIndex? integer Defaults to 1
+---@param endIndex? integer Defaults to #array
+---@return T[]
+function JetBattlePetsArrayUtils:Slice(array, startIndex, endIndex)
+  return {}
+end
+
 -----------------------------------------------------
 ------------------- Grid Utils ----------------------
 -----------------------------------------------------
