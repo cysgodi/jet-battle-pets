@@ -11,6 +11,10 @@ JetBattlePets.battleUi = JetBattlePets.battleUi or {
 -- TODO: add spacing between rows in model viewer
 -- TODO: close the variant model viewer when ESC is hit
 -- TODO: add "click to view all models" message to pet card variants tooltip
+-- TODO: fix variant model viewer for pets using random models
+-- TODO: reset zoom levels on model scenes when changing species
+-- TODO: fix layers/strata on model viewer overlapping battle UI elements
+-- TODO: in battle, highlight in-use ability borders on pet cards
 
 ---determine whether an alert should fire based on user preferences
 ---@param speciesID number
@@ -99,6 +103,31 @@ function JetBattlePets.battleUi:PrintShinyAlert(speciesID)
   local shinyIcon = CreateAtlasMarkup("rare-elite-star")
 
   print('|c00ffff00' .. shinyIcon .. ' An unusual ' .. pet.name .. ' appears! ' .. shinyIcon .. '|r')
+end
+
+---OnEnter handler for pet frames in the battle UI
+local function OnEnterPetFrame(self, motion)
+  local rematchInfo = C_AddOns.GetAddOnInfo("Rematch")
+  local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED"
+
+  if IsControlKeyDown() then
+    SetCursor("INSPECT_CURSOR")
+    return
+  end
+
+  if noRematch then
+    return
+  end
+
+  Rematch.battle:UnitOnEnter(self, motion)
+end
+
+function JetBattlePets.battleUi:SetUpPets()
+  local BattleUiFrames = JetBattlePets.constants.FRAMES.BATTLE_UI
+
+  for _, frame in pairs(BattleUiFrames) do
+    PetBattleFrame[frame]:HookScript("OnEnter", OnEnterPetFrame)
+  end
 end
 
 function JetBattlePets.battleUi:UpdateShinyFrames()
