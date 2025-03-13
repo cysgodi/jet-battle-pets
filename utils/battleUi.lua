@@ -3,6 +3,8 @@ local _, _JetBattlePets = ...
 ---@type JetBattlePets
 local JetBattlePets = _JetBattlePets
 
+---@class JetBattlePetsBattleUtils
+---@field alertsFired boolean Have shiny alerts been fired in the current battle?
 JetBattlePets.battleUi = JetBattlePets.battleUi or {
   alertsFired = false
 }
@@ -43,10 +45,14 @@ local function ShouldAlert(speciesID, displayID)
   return ratio >= alertRatio, isShiny
 end
 
+---Cleanup after a pet battle is finished
 function JetBattlePets.battleUi:AfterBattle()
   JetBattlePets.battleUi.alertsFired = false
 end
 
+---Save data about a specific encountered enemy pet to disk
+---@param slot integer
+---@param location PetBattleLocation
 function JetBattlePets.battleUi:RecordEncounterSlotData(slot, location)
   JetBattlePets.encounters:AddEncounter({
     speciesID = C_PetBattles.GetPetSpeciesID(
@@ -82,6 +88,9 @@ function JetBattlePets.battleUi:RecordEncounterSlotData(slot, location)
   })
 end
 
+---Print an alert message that an enemy pet contains a problematic ability
+---@param abilityName string
+---@param petSlot SlotNumber
 function JetBattlePets.battleUi:PrintThreatAlert(
     abilityName,
     petSlot
@@ -98,6 +107,8 @@ function JetBattlePets.battleUi:PrintThreatAlert(
     threatIcon .. ' WARNING: ' .. pet.name .. ' is using ' .. abilityName .. ' ' .. threatIcon .. '|r')
 end
 
+---Print an alert to the chat box that a shiny is in the battle
+---@param speciesID integer
 function JetBattlePets.battleUi:PrintShinyAlert(speciesID)
   local pet = JetBattlePets.pets.GetPet(speciesID)
   local shinyIcon = CreateAtlasMarkup("rare-elite-star")
@@ -122,6 +133,7 @@ local function OnEnterPetFrame(self, motion)
   Rematch.battle:UnitOnEnter(self, motion)
 end
 
+---Initialize frames in the pet battle UI
 function JetBattlePets.battleUi:SetUpPets()
   local BattleUiFrames = JetBattlePets.constants.FRAMES.BATTLE_UI
 
@@ -130,6 +142,7 @@ function JetBattlePets.battleUi:SetUpPets()
   end
 end
 
+---Attach the shiny icon to appropriate battle pet UI frames
 function JetBattlePets.battleUi:UpdateShinyFrames()
   JetBattlePets.battleUi:ResetShinyFrames()
 
@@ -164,6 +177,9 @@ function JetBattlePets.battleUi:UpdateShinyFrames()
   end
 end
 
+---Play an audio alert and display a warning message if an enemy pet
+---has an ability that could ruin the player's attempts to capture it
+---or one of its teammates
 function JetBattlePets.battleUi:DisplayCaptureThreatWarnings()
   if not JetBattlePets.settings.ENABLE_CAPTURE_THREAT_WARNINGS
       or not C_PetBattles.IsWildBattle() then
@@ -191,6 +207,7 @@ function JetBattlePets.battleUi:DisplayCaptureThreatWarnings()
   end
 end
 
+---Save data about encountered pets to disk
 function JetBattlePets.battleUi:RecordEncounterData()
   if
       not JetBattlePets.settings.ENABLE_DATA_COLLECTION
@@ -226,6 +243,7 @@ function JetBattlePets.battleUi:RecordEncounterData()
   end
 end
 
+---Hide any shiny frames that are currently shown
 function JetBattlePets.battleUi:ResetShinyFrames()
   if JetBattlePets.frames.ActiveShinyFrame then
     JetBattlePets.frames.ActiveShinyFrame:Hide()
@@ -243,6 +261,7 @@ function JetBattlePets.battleUi:ResetShinyFrames()
   end
 end
 
+---Add a shiny icon to an active enemy pet that's shiny
 function JetBattlePets.battleUi:TagShinyActivePet()
   local atlas = C_Texture.GetAtlasInfo("rare-elite-star")
 
@@ -264,6 +283,8 @@ function JetBattlePets.battleUi:TagShinyActivePet()
   JetBattlePets.frames.ActiveShinyFrame = f
 end
 
+---Add a shiny icon to back row pets that are shiny
+---@param slot integer
 function JetBattlePets.battleUi:TagShinyBackPet(slot)
   if (slot < 2 or slot > 3) then
     return
