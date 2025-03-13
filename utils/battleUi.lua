@@ -157,6 +157,28 @@ function JetBattlePets.battleUi:PrintShinyAlert(speciesID)
   print('|c00ffff00' .. shinyIcon .. ' An unusual ' .. pet.name .. ' appears! ' .. shinyIcon .. '|r')
 end
 
+---OnClick handler for pet frames in the battle UI
+---@param self PetBattleFrame The clicked frame
+local function OnClickPetFrame(self)
+  local petIndex = self.petIndex
+  local petOwner = self.petOwner
+
+  local rematchInfo = C_AddOns.GetAddOnInfo("Rematch")
+  local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED"
+
+  if not noRematch and not IsControlKeyDown() then
+    Rematch.cardManager:OnClick(
+      Rematch.petCard,
+      self,
+      Rematch.battle:GetUnitPetID(self.petOwner, self.petIndex)
+    )
+    return
+  end
+
+  local speciesID = C_PetBattles.GetPetSpeciesID(petOwner, petIndex)
+  print(petOwner, petIndex)
+end
+
 ---OnEnter handler for pet frames in the battle UI
 ---@param self PetBattleFrame The moused-over frame
 local function OnEnterPetFrame(self)
@@ -185,6 +207,7 @@ function JetBattlePets.battleUi:SetUpPets()
 
   for _, frame in pairs(BattleUiFrames) do
     PetBattleFrame[frame]:SetScript("OnEnter", OnEnterPetFrame)
+    PetBattleFrame[frame]:SetScript("OnClick", OnClickPetFrame)
   end
 end
 

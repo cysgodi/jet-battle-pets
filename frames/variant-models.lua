@@ -67,11 +67,31 @@ function JetBattlePets.frames.VariantModelsWindow:ResetVariantModels()
   end
 end
 
--- update the models that are shown in the window
-function JetBattlePets.frames.VariantModelsWindow:UpdateModels(petInfo)
-  if self.CurrentSpeciesID == petInfo.speciesID then
+---Set the species whose models are displayed by the window.
+---@param speciesID integer
+function JetBattlePets.frames.VariantModelsWindow:SetModels(speciesID)
+  if not JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER then
     return
   end
+
+  if self.CurrentSpeciesID == speciesID then
+    if self:IsShown() then self:Hide() end
+
+    return
+  end
+
+  self:UpdateModels(speciesID)
+  self:Show()
+end
+
+---Update the models that are shown in the window
+---@param speciesID integer
+function JetBattlePets.frames.VariantModelsWindow:UpdateModels(speciesID)
+  if self.CurrentSpeciesID == speciesID then
+    return
+  end
+
+  local petInfo = JetBattlePets.pets.GetPet(speciesID)
 
   self:ResetVariantModels()
   self.CurrentSpeciesID = petInfo.speciesID

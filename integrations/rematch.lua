@@ -53,21 +53,8 @@ end
 
 -- create a frame to display all variant models of a pet species
 local function DisplayVariantModels(_, petInfo)
-  if not JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER then
-    return
-  end
-
   local VariantModels = JetBattlePets.frames.VariantModelsWindow
-
-  if VariantModels:IsShown()
-      and VariantModels.CurrentSpeciesID == petInfo.speciesID
-  then
-    VariantModels:Hide()
-    return
-  end
-
-  VariantModels:UpdateModels(petInfo)
-  VariantModels:Show()
+  VariantModels:SetModels(petInfo.speciesID)
 end
 
 -- get text to display on the tooltip for pet card variant stats
