@@ -50,6 +50,24 @@ function JetBattlePets.battleUi:AfterBattle()
   JetBattlePets.battleUi.alertsFired = false
 end
 
+---Battle UI behavior when modifier keys are pressed.
+---@param key string The identifier of the pressed key.
+---@param down integer Was the key pressed (1) or released (2)?
+function JetBattlePets.battleUi:OnModifierStateChanged(key, down)
+  if not MouseIsOver(PetBattleFrame.ActiveEnemy.Icon) then
+    return
+  end
+
+  if key ~= "LCTRL" and key ~= "RCTRL" then
+    return
+  end
+  if down == 1 then
+    SetCursor("INSPECT_CURSOR")
+  else
+    ResetCursor()
+  end
+end
+
 ---Save data about a specific encountered enemy pet to disk
 ---@param slot integer
 ---@param location PetBattleLocation

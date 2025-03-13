@@ -15,19 +15,7 @@ function EventsFrame:ADDON_LOADED(_, addonName)
 end
 
 function EventsFrame:MODIFIER_STATE_CHANGED(_, key, down)
-  if not MouseIsOver(PetBattleFrame.ActiveEnemy.Icon) then
-    return
-  end
-
-  if key ~= "LCTRL" and key ~= "RCTRL" then
-    return
-  end
-
-  if down == 1 then
-    SetCursor("INSPECT_CURSOR")
-  else
-    ResetCursor()
-  end
+  JetBattlePets.battleUi:OnModifierStateChanged(key, down)
 end
 
 function EventsFrame:PET_BATTLE_OPENING_START()
