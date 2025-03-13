@@ -54,17 +54,40 @@ end
 ---@param key string The identifier of the pressed key.
 ---@param down integer Was the key pressed (1) or released (2)?
 function JetBattlePets.battleUi:OnModifierStateChanged(key, down)
-  if not MouseIsOver(PetBattleFrame.ActiveEnemy.Icon) then
+  local BattleUiFrames = JetBattlePets.constants.FRAMES.BATTLE_UI
+  local frameName
+
+  for _, frame in pairs(BattleUiFrames) do
+    if MouseIsOver(PetBattleFrame[frame]) then
+      frameName = frame
+    end
+  end
+
+  if not frameName or (key ~= "LCTRL" and key ~= "RCTRL") then
     return
   end
 
-  if key ~= "LCTRL" and key ~= "RCTRL" then
-    return
-  end
+  local rematchInfo = C_AddOns.GetAddOnInfo("Rematch")
+  local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED"
+
   if down == 1 then
     SetCursor("INSPECT_CURSOR")
+
+    if not noRematch then
+      Rematch.cardManager:OnLeave(Rematch.petCard)
+    end
   else
     ResetCursor()
+
+    if not noRematch then
+      local frame = PetBattleFrame[frameName]
+
+      Rematch.cardManager:OnEnter(
+        Rematch.petCard,
+        frame,
+        Rematch.battle:GetUnitPetID(frame.petOwner, frame.petIndex)
+      )
+    end
   end
 end
 
@@ -135,7 +158,8 @@ function JetBattlePets.battleUi:PrintShinyAlert(speciesID)
 end
 
 ---OnEnter handler for pet frames in the battle UI
-local function OnEnterPetFrame(self, motion)
+---@param self PetBattleFrame The moused-over frame
+local function OnEnterPetFrame(self)
   local rematchInfo = C_AddOns.GetAddOnInfo("Rematch")
   local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED"
 
@@ -148,7 +172,11 @@ local function OnEnterPetFrame(self, motion)
     return
   end
 
-  Rematch.battle:UnitOnEnter(self, motion)
+  Rematch.cardManager:OnEnter(
+    Rematch.petCard,
+    self,
+    Rematch.battle:GetUnitPetID(self.petOwner, self.petIndex)
+  )
 end
 
 ---Initialize frames in the pet battle UI
@@ -156,7 +184,7 @@ function JetBattlePets.battleUi:SetUpPets()
   local BattleUiFrames = JetBattlePets.constants.FRAMES.BATTLE_UI
 
   for _, frame in pairs(BattleUiFrames) do
-    PetBattleFrame[frame]:HookScript("OnEnter", OnEnterPetFrame)
+    PetBattleFrame[frame]:SetScript("OnEnter", OnEnterPetFrame)
   end
 end
 
