@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.5
+
+- bumped TOC for 11.1.5
+- fixed several issues with alerts and the model viewer when Rematch was disabled or not installed
+
 ## v1.1.4
 
 - fixed an issue where some threatening weren't triggering alerts properly
