@@ -142,16 +142,8 @@ function JetBattlePets.battleUi:PrintThreatAlert(
   local pet = JetBattlePets.pets.GetPet(speciesID)
   local threatIcon = CreateAtlasMarkup("Ping_Chat_Warning")
 
-  local petName
-
-  if type(pet) == "string" then
-    petName = pet
-  else
-    petName = pet.name
-  end
-
   print('|c00ff3333' ..
-    threatIcon .. ' WARNING: ' .. petName .. ' is using ' .. abilityName .. ' ' .. threatIcon .. '|r')
+    threatIcon .. ' WARNING: ' .. pet.name .. ' is using ' .. abilityName .. ' ' .. threatIcon .. '|r')
 end
 
 ---Print an alert to the chat box that a shiny is in the battle
@@ -159,15 +151,8 @@ end
 function JetBattlePets.battleUi:PrintShinyAlert(speciesID)
   local pet = JetBattlePets.pets.GetPet(speciesID)
   local shinyIcon = CreateAtlasMarkup("rare-elite-star")
-  local petName
 
-  if type(pet) == "string" then
-    petName = pet
-  else
-    petName = pet.name
-  end
-
-  print('|c00ffff00' .. shinyIcon .. ' An unusual ' .. petName .. ' appears! ' .. shinyIcon .. '|r')
+  print('|c00ffff00' .. shinyIcon .. ' An unusual ' .. pet.name .. ' appears! ' .. shinyIcon .. '|r')
 end
 
 ---OnClick handler for pet frames in the battle UI
