@@ -9,13 +9,11 @@ JetBattlePets.battleUi = JetBattlePets.battleUi or {
   alertsFired = false
 }
 
--- TODO: add button/drawer (?) to battle UI to toggle variant model viewer
 -- TODO: add spacing between rows in model viewer
 -- TODO: close the variant model viewer when ESC is hit
 -- TODO: add "click to view all models" message to pet card variants tooltip
 -- TODO: fix variant model viewer for pets using random models
 -- TODO: reset zoom levels on model scenes when changing species
--- TODO: fix layers/strata on model viewer overlapping battle UI elements
 -- TODO: in battle, highlight in-use ability borders on pet cards
 
 ---determine whether an alert should fire based on user preferences
@@ -144,8 +142,16 @@ function JetBattlePets.battleUi:PrintThreatAlert(
   local pet = JetBattlePets.pets.GetPet(speciesID)
   local threatIcon = CreateAtlasMarkup("Ping_Chat_Warning")
 
+  local petName
+
+  if type(pet) == "string" then
+    petName = pet
+  else
+    petName = pet.name
+  end
+
   print('|c00ff3333' ..
-    threatIcon .. ' WARNING: ' .. pet.name .. ' is using ' .. abilityName .. ' ' .. threatIcon .. '|r')
+    threatIcon .. ' WARNING: ' .. petName .. ' is using ' .. abilityName .. ' ' .. threatIcon .. '|r')
 end
 
 ---Print an alert to the chat box that a shiny is in the battle
@@ -153,8 +159,15 @@ end
 function JetBattlePets.battleUi:PrintShinyAlert(speciesID)
   local pet = JetBattlePets.pets.GetPet(speciesID)
   local shinyIcon = CreateAtlasMarkup("rare-elite-star")
+  local petName
 
-  print('|c00ffff00' .. shinyIcon .. ' An unusual ' .. pet.name .. ' appears! ' .. shinyIcon .. '|r')
+  if type(pet) == "string" then
+    petName = pet
+  else
+    petName = pet.name
+  end
+
+  print('|c00ffff00' .. shinyIcon .. ' An unusual ' .. petName .. ' appears! ' .. shinyIcon .. '|r')
 end
 
 ---OnClick handler for pet frames in the battle UI

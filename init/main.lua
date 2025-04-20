@@ -11,5 +11,5 @@ function JetBattlePets.pets.GetPet(petID)
     return Rematch.petInfo:Fetch(petID)
   end
 
-  return C_PetJournal.GetPetInfoTableByPetID(petID)
+  return C_PetJournal.GetPetInfoBySpeciesID(petID)
 end
