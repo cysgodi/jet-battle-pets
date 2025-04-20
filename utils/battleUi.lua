@@ -66,7 +66,7 @@ function JetBattlePets.battleUi:OnModifierStateChanged(key, down)
   end
 
   local rematchInfo = C_AddOns.GetAddOnInfo("Rematch")
-  local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED"
+  local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED" or rematchInfo.reason == nil
 
   if down == 1 then
     SetCursor("INSPECT_CURSOR")
@@ -196,7 +196,7 @@ end
 ---@param self PetBattleFrame The moused-over frame
 local function OnEnterPetFrame(self)
   local rematchInfo = C_AddOns.GetAddOnInfo("Rematch")
-  local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED"
+  local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED" or rematchInfo.reason == nil
 
   if IsControlKeyDown() then
     SetCursor("INSPECT_CURSOR")
@@ -204,6 +204,34 @@ local function OnEnterPetFrame(self)
   end
 
   if noRematch then
+    if self.petIndex == 1 then
+      PetBattleUnitTooltip_Attach(
+        PetBattlePrimaryUnitTooltip,
+        "TOP",
+        self,
+        "BOTTOM",
+        0,
+        0
+      )
+    else
+      PetBattleUnitTooltip_Attach(
+        PetBattlePrimaryUnitTooltip,
+        "TOPLEFT",
+        self,
+        "TOPRIGHT",
+        0,
+        0
+      )
+    end
+
+    PetBattleUnitTooltip_UpdateForUnit(
+      PetBattlePrimaryUnitTooltip,
+      self.petOwner,
+      self.petIndex
+    )
+
+    PetBattlePrimaryUnitTooltip:Show()
+
     return
   end
 
