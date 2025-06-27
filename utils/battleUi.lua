@@ -180,15 +180,14 @@ end
 ---OnEnter handler for pet frames in the battle UI
 ---@param self PetBattleFrame The moused-over frame
 local function OnEnterPetFrame(self)
-  local rematchInfo = C_AddOns.GetAddOnInfo("Rematch")
-  local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED" or rematchInfo.reason == nil
+  local rematchIsLoaded = C_AddOns.IsAddOnLoaded("Rematch")
 
   if IsControlKeyDown() then
     SetCursor("INSPECT_CURSOR")
     return
   end
 
-  if noRematch then
+  if not rematchIsLoaded then
     if self.petIndex == 1 then
       PetBattleUnitTooltip_Attach(
         PetBattlePrimaryUnitTooltip,
