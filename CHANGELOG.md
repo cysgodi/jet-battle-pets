@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.6
+
+- bumped TOC for 11.1.7
+- fixed an issue where Rematch mouseover cards weren't dispaying during pet battles
+
 ## v1.1.5
 
 - bumped TOC for 11.1.5
