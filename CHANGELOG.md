@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.8
+
+- fixed an issue where Rematch mouseover cards were displaying in pet battles even if the Rematch "Use Pet Cards In Battle" setting wasn't enabled
+- fixed an issue where Rematch pet cards shown in pet battles were getting stuck open
+
 ## v1.1.7
 
 - bumped TOC for 11.2
@@ -7,7 +12,7 @@
 ## v1.1.6
 
 - bumped TOC for 11.1.7
-- fixed an issue where Rematch mouseover cards weren't dispaying during pet battles
+- fixed an issue where Rematch mouseover cards weren't displaying during pet battles
 
 ## v1.1.5
 
