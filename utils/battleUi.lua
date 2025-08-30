@@ -68,7 +68,7 @@ function JetBattlePets.battleUi:OnModifierStateChanged(key, down)
   local rematchInfo = C_AddOns.GetAddOnInfo("Rematch")
   local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED" or rematchInfo.reason == nil
 
-  if down == 1 then
+  if down == 1 and JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER then
     SetCursor("INSPECT_CURSOR")
 
     if not noRematch then
@@ -182,7 +182,7 @@ end
 local function OnEnterPetFrame(self)
   local rematchIsLoaded = C_AddOns.IsAddOnLoaded("Rematch")
 
-  if IsControlKeyDown() then
+  if JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER and IsControlKeyDown() then
     SetCursor("INSPECT_CURSOR")
     return
   end
