@@ -161,20 +161,25 @@ local function OnClickPetFrame(self)
   local petIndex = self.petIndex
   local petOwner = self.petOwner
 
-  local rematchInfo = C_AddOns.GetAddOnInfo("Rematch")
-  local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED"
+  if IsControlKeyDown() and JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER then
+    local speciesID = C_PetBattles.GetPetSpeciesID(petOwner, petIndex)
+    JetBattlePets.frames.VariantModelsWindow:SetModels(speciesID)
 
-  if not noRematch and not IsControlKeyDown() then
-    Rematch.cardManager:OnClick(
-      Rematch.petCard,
-      self,
-      Rematch.battle:GetUnitPetID(self.petOwner, self.petIndex)
-    )
     return
   end
 
-  local speciesID = C_PetBattles.GetPetSpeciesID(petOwner, petIndex)
-  JetBattlePets.frames.VariantModelsWindow:SetModels(speciesID)
+  local rematchInfo = C_AddOns.GetAddOnInfo("Rematch")
+  local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED"
+
+  if noRematch or not Rematch.settings.PetCardInBattle then
+    return
+  end
+
+  Rematch.cardManager:OnClick(
+    Rematch.petCard,
+    self,
+    Rematch.battle:GetUnitPetID(self.petOwner, self.petIndex)
+  )
 end
 
 ---OnEnter handler for pet frames in the battle UI
