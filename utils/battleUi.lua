@@ -187,7 +187,7 @@ local function OnEnterPetFrame(self)
     return
   end
 
-  if not rematchIsLoaded then
+  if not rematchIsLoaded or not Rematch.settings.PetCardInBattle then
     if self.petIndex == 1 then
       PetBattleUnitTooltip_Attach(
         PetBattlePrimaryUnitTooltip,
