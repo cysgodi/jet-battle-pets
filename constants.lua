@@ -34,7 +34,7 @@ local VARIANT_MODEL_WINDOW_DIMENSIONS = {
   MARGIN_BOTTOM = 32,
   MARGIN_LEFT = 16,
   MARGIN_RIGHT = 16,
-  MARGIN_TOP = 32,
+  MARGIN_TOP = 48,
   -- the window inside of frames created with "PortraitFrameTemplate"
   -- is offset 3 points to the right of the actual left edge of the frame
   TEMPLATE_HORIZONTAL_OFFSET = 3,
