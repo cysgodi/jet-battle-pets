@@ -316,6 +316,8 @@ end
 ---Set variant model text components
 ---@param displayID integer
 function VariantModelMixin:SetVariantModelText(displayID)
+  local usesRandomModel = C_PetJournal.PetUsesRandomDisplay(self.CurrentSpeciesID)
+
   local numOwned = JetBattlePets.journal:GetNumOwned(
     self.CurrentSpeciesID,
     displayID
@@ -327,16 +329,20 @@ function VariantModelMixin:SetVariantModelText(displayID)
     displayID
   )
 
-  self.VariantModelText.OwnedTextIcon = self.VariantModelText.OwnedTextIcon or
-      self.VariantModelText:CreateFontString("OwnedTextIcon")
-  self.VariantModelText.OwnedTextIcon:SetText(ownedIcon)
-  self.VariantModelText.OwnedTextIcon:SetTextScale(2)
-  self.VariantModelText.OwnedTextIcon:SetPoint("LEFT")
+  if not usesRandomModel then
+    self.VariantModelText.OwnedTextIcon = self.VariantModelText.OwnedTextIcon or
+        self.VariantModelText:CreateFontString("OwnedTextIcon")
+    self.VariantModelText.OwnedTextIcon:SetText(ownedIcon)
+    self.VariantModelText.OwnedTextIcon:SetTextScale(2)
+    self.VariantModelText.OwnedTextIcon:SetPoint("LEFT")
+  end
 
-  self.VariantModelText.OwnedText = self.VariantModelText.OwnedText or
-      self.VariantModelText:CreateFontString("OwnedText")
-  self.VariantModelText.OwnedText:SetText(tostring(numOwned))
-  self.VariantModelText.OwnedText:SetPoint("LEFT", self.VariantModelText.OwnedTextIcon, "RIGHT")
+  if not usesRandomModel then
+    self.VariantModelText.OwnedText = self.VariantModelText.OwnedText or
+        self.VariantModelText:CreateFontString("OwnedText")
+    self.VariantModelText.OwnedText:SetText(tostring(numOwned))
+    self.VariantModelText.OwnedText:SetPoint("LEFT", self.VariantModelText.OwnedTextIcon, "RIGHT")
+  end
 
   self.VariantModelText.RarityText = self.VariantModelText.RarityText or
       self.VariantModelText:CreateFontString("RarityText")
