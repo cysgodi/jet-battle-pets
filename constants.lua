@@ -31,6 +31,7 @@ local VARIANT_MODEL_GRID_DIMENSIONS = {
 
 ---@class VariantModelWindowDimensions Dimensions of the window that variant models are displayed in
 local VARIANT_MODEL_WINDOW_DIMENSIONS = {
+  DISCLAIMER_HEIGHT = 48,
   MARGIN_BOTTOM = 32,
   MARGIN_LEFT = 16,
   MARGIN_RIGHT = 16,

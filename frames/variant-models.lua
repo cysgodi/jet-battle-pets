@@ -70,6 +70,106 @@ function JetBattlePets.frames.VariantModelsWindow:ResetVariantModels()
   end
 end
 
+function JetBattlePets.frames.VariantModelsWindow:ResetDisclaimer()
+  if not self.Disclaimer then
+    return
+  end
+
+  self.Disclaimer:Hide()
+end
+
+local function GetWindowSize(speciesID)
+  local gridDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_GRID
+  local modelFrameDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_FRAME
+  local windowDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW
+
+  local disclaimerHeight = 0
+  local numModels = C_PetJournal.GetNumDisplays(speciesID)
+
+  if C_PetJournal.PetUsesRandomDisplay(speciesID) then
+    disclaimerHeight = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW.DISCLAIMER_HEIGHT
+  end
+
+  local gridHeight = JetBattlePets.grid:GetHeight(
+    modelFrameDimensions.HEIGHT,
+    numModels,
+    gridDimensions.MAX_COLS
+  )
+
+  local gridWidth = JetBattlePets.grid:GetWidth(
+    modelFrameDimensions.WIDTH,
+    numModels,
+    gridDimensions.MAX_COLS
+  )
+
+  local windowHeight = gridHeight
+      + windowDimensions.MARGIN_TOP
+      + windowDimensions.MARGIN_BOTTOM
+      + disclaimerHeight
+
+  local windowWidth = gridWidth
+      + windowDimensions.MARGIN_LEFT
+      + windowDimensions.MARGIN_RIGHT
+
+  return windowWidth, windowHeight
+end
+
+function JetBattlePets.frames.VariantModelsWindow:UpdateDisclaimer()
+  self:ResetDisclaimer()
+
+  if not self.CurrentSpeciesID or not C_PetJournal.PetUsesRandomDisplay(self.CurrentSpeciesID) then
+    return
+  end
+
+  local disclaimerHeight = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW.DISCLAIMER_HEIGHT
+  local marginBottom = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW.MARGIN_BOTTOM
+
+  self.Disclaimer = self.Disclaimer or CreateFrame(
+    "Frame",
+    "VariantModelsDisclaimer",
+    self
+  )
+
+  local windowWidth = GetWindowSize(self.CurrentSpeciesID)
+
+  self.Disclaimer:SetSize(windowWidth - 8, disclaimerHeight)
+  self.Disclaimer:SetPoint("BOTTOMLEFT", 8, marginBottom / 2)
+
+  local randomIcon = CreateAtlasMarkup("lootroll-icon-need")
+
+  local ownedIcon = CreateAtlasMarkup(JetBattlePets.constants.ATLAS_NAMES.CAGED_ICON)
+
+  local numOwned = JetBattlePets.journal:GetNumOwned(self.CurrentSpeciesID, 0)
+
+  local disclaimerText = "This model is randomized on summon"
+
+  self.Disclaimer.OwnedTextIcon = self.Disclaimer.OwnedTextIcon or
+      self.Disclaimer:CreateFontString("OwnedTextIcon", "ARTWORK", "GameFontNormal")
+  self.Disclaimer.OwnedTextIcon:SetText(ownedIcon)
+  self.Disclaimer.OwnedTextIcon:SetTextScale(2)
+  self.Disclaimer.OwnedTextIcon:SetPoint("TOPLEFT", 8, 0)
+
+  self.Disclaimer.OwnedText = self.Disclaimer.OwnedText or
+      self.Disclaimer:CreateFontString("OwnedText", "ARTWORK", "GameFontNormal")
+  self.Disclaimer.OwnedText:SetText(tostring(numOwned))
+  self.Disclaimer.OwnedText:SetPoint("LEFT", self.Disclaimer.OwnedTextIcon, "RIGHT", 8, 0)
+
+  self.Disclaimer.TextIcon = self.Disclaimer.TextIcon or
+      self.Disclaimer:CreateFontString("TextIcon", "ARTWORK", "GameFontNormal")
+  self.Disclaimer.TextIcon:SetText(randomIcon)
+  self.Disclaimer.TextIcon:SetTextScale(1.5)
+  self.Disclaimer.TextIcon:SetPoint("BOTTOMLEFT", 8, 0)
+
+  self.Disclaimer.Text = self.Disclaimer.Text or
+      self.Disclaimer:CreateFontString("DisclaimerText", "ARTWORK", "GameFontNormal")
+  self.Disclaimer.Text:SetText(disclaimerText)
+  self.Disclaimer.Text:SetJustifyH("LEFT")
+  self.Disclaimer.Text:SetTextScale(0.75)
+  self.Disclaimer.Text:SetPoint("LEFT", self.Disclaimer.TextIcon, "RIGHT", 8, 0)
+
+  self.Disclaimer:Show()
+end
+
 ---Set the species whose models are displayed by the window.
 ---@param speciesID integer
 function JetBattlePets.frames.VariantModelsWindow:SetModels(speciesID)
@@ -87,18 +187,15 @@ function JetBattlePets.frames.VariantModelsWindow:SetModels(speciesID)
     return
   end
 
-  self:UpdateModels(speciesID)
+  self.CurrentSpeciesID = speciesID
+  self:UpdateDisclaimer()
+  self:UpdateModels()
   self:Show()
 end
 
 ---Update the models that are shown in the window
----@param speciesID integer
-function JetBattlePets.frames.VariantModelsWindow:UpdateModels(speciesID)
-  if self.CurrentSpeciesID == speciesID then
-    return
-  end
-
-  local petInfo = JetBattlePets.pets.GetPet(speciesID)
+function JetBattlePets.frames.VariantModelsWindow:UpdateModels()
+  local petInfo = JetBattlePets.pets.GetPet(self.CurrentSpeciesID)
 
   self:ResetVariantModels()
   self.CurrentSpeciesID = petInfo.speciesID
@@ -116,33 +213,9 @@ end
 
 -- update window size based on the species being displayed
 function JetBattlePets.frames.VariantModelsWindow:UpdateSize()
-  local gridDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_GRID
-  local modelFrameDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_FRAME
-  local windowDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW
   local titleBarButtonSize = JetBattlePets.constants.DIMENSIONS.TITLE_BAR_BUTTON.SIZE
 
-  local numDisplays = C_PetJournal.GetNumDisplays(self.CurrentSpeciesID)
-
-  local gridHeight = JetBattlePets.grid:GetHeight(
-    modelFrameDimensions.HEIGHT,
-    numDisplays,
-    gridDimensions.MAX_COLS
-  )
-
-  local gridWidth = JetBattlePets.grid:GetWidth(
-    modelFrameDimensions.WIDTH,
-    numDisplays,
-    gridDimensions.MAX_COLS
-  )
-
-  local windowHeight = gridHeight
-      + windowDimensions.MARGIN_TOP
-      + windowDimensions.MARGIN_BOTTOM
-
-  local windowWidth = gridWidth
-      + windowDimensions.MARGIN_LEFT
-      + windowDimensions.MARGIN_RIGHT
-
+  local windowWidth, windowHeight = GetWindowSize(self.CurrentSpeciesID)
 
   self.DragHandle:SetSize(
     windowWidth - titleBarButtonSize,
