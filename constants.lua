@@ -20,7 +20,7 @@ local VARIANT_MODEL_DIMENSIONS = {
 
 ---@class VariantModelFrameDimensions
 local VARIANT_MODEL_FRAME_DIMENSIONS = {
-  HEIGHT = 172,
+  HEIGHT = 188,
   WIDTH = 168,
 }
 

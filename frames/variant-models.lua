@@ -171,7 +171,7 @@ end
 ---@class VariantModelBackground : Frame
 ---@field BackgroundTexture TextureBase
 
----@class VariantModelBorder: Frame
+---@class VariantModelBorder : Frame
 ---@field BorderTexture TextureBase
 
 ---@class VariantModelText : Frame
@@ -212,13 +212,6 @@ function VariantModelMixin:SetDimensions(modelSlot)
   )
   self:SetPoint("TOPLEFT", xOffset, yOffset)
 
-  self.Background:SetFrameLevel(4)
-  self.Background:SetPoint("TOP")
-  self.Background:SetSize(
-    modelDimensions.HEIGHT,
-    modelDimensions.WIDTH
-  )
-
   self.Border:SetFrameLevel(6)
   self.Border:SetPoint("TOP")
   self.Border:SetSize(
@@ -233,7 +226,14 @@ function VariantModelMixin:SetDimensions(modelSlot)
     modelDimensions.HEIGHT
   )
 
-  self.VariantModelText:SetPoint("BOTTOM")
+  self.Background:SetFrameLevel(4)
+  self.Background:SetPoint("TOP")
+  self.Background:SetSize(
+    modelDimensions.HEIGHT,
+    modelDimensions.WIDTH
+  )
+
+  self.VariantModelText:SetPoint("BOTTOM", 0, 16)
   self.VariantModelText:SetSize(
     modelDimensions.WIDTH - 8,
     24
