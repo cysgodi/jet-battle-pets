@@ -9,7 +9,6 @@ JetBattlePets.battleUi = JetBattlePets.battleUi or {
   alertsFired = false
 }
 
--- TODO: add spacing between rows in model viewer
 -- TODO: close the variant model viewer when ESC is hit
 -- TODO: add "click to view all models" message to pet card variants tooltip
 -- TODO: fix variant model viewer for pets using random models

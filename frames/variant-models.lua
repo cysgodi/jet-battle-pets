@@ -46,6 +46,9 @@ JetBattlePets.frames.VariantModelsWindow.DragHandle:SetScript("OnMouseUp", funct
   parent:StopMovingOrSizing()
 end)
 
+_G["JetBattlePetsVariantModelsWindowFrame"] = JetBattlePets.frames.VariantModelsWindow
+tinsert(UISpecialFrames, "JetBattlePetsVariantModelsWindowFrame")
+
 JetBattlePets.frames.VariantModelsWindow:Hide()
 
 ButtonFrameTemplate_HidePortrait(JetBattlePets.frames.VariantModelsWindow)
