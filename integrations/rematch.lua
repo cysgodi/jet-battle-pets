@@ -48,6 +48,14 @@ local function DisplayVariantCount(_, petInfo)
     variantCountString = string.format("%d %s", numDisplays, randomIcon)
   end
 
+  local variantLabel = " Variant"
+
+  if numDisplays > 1 then
+    variantLabel = " Variants"
+  end
+
+  variantCountString = variantCountString .. variantLabel
+
   return variantCountString
 end
 
@@ -62,8 +70,13 @@ local function DisplayVariantCountTooltip(self, petInfo)
   local variantCount = numDisplays > 0 and numDisplays or 1
   local variantText = variantCount > 1 and "Variants" or "Variant"
 
-  local baseText = "How many unique models does this pet species have?\n\n"
-      .. string.format("%d %s: ", variantCount, variantText)
+  local baseText = "How many unique models does this pet species have?"
+
+  if JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER then
+    baseText = Rematch.constants.LMB_TEXT_ICON .. " Click to see all of this pet's variants in the model viewer."
+  end
+
+  baseText = baseText .. "\n\n" .. string.format("%d %s: ", variantCount, variantText)
   if numDisplays <= 1 then
     return baseText .. JetBattlePets.text:GetRarityText(100, 100)
   end

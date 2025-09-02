@@ -9,8 +9,6 @@ JetBattlePets.battleUi = JetBattlePets.battleUi or {
   alertsFired = false
 }
 
--- TODO: close the variant model viewer when ESC is hit
--- TODO: add "click to view all models" message to pet card variants tooltip
 -- TODO: fix variant model viewer for pets using random models
 -- TODO: reset zoom levels on model scenes when changing species
 -- TODO: in battle, highlight in-use ability borders on pet cards
