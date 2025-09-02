@@ -151,7 +151,7 @@ function JetBattlePets.frames.VariantModelsWindow:UpdateDisclaimer()
 
   self.Disclaimer.OwnedText = self.Disclaimer.OwnedText or
       self.Disclaimer:CreateFontString("OwnedText", "ARTWORK", "GameFontNormal")
-  self.Disclaimer.OwnedText:SetText(tostring(numOwned))
+  self.Disclaimer.OwnedText:SetText(tostring(numOwned) .. "x Owned")
   self.Disclaimer.OwnedText:SetPoint("LEFT", self.Disclaimer.OwnedTextIcon, "RIGHT", 8, 0)
 
   self.Disclaimer.TextIcon = self.Disclaimer.TextIcon or

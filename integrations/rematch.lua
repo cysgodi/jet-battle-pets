@@ -83,16 +83,6 @@ local function DisplayVariantCountTooltip(self, petInfo)
 
   local tooltipBody = baseText
 
-  if C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
-  then
-    local randomIcon = CreateAtlasMarkup("lootroll-icon-need")
-    local randomDisclaimer = "When this pet is summoned, its model is randomly chosen from all possible species models."
-
-    local randomText = string.format("\n\n%s %s\n\n", randomIcon, randomDisclaimer)
-
-    tooltipBody = tooltipBody .. randomText
-  end
-
   for slot = 1, numDisplays do
     if slot ~= 1 then
       tooltipBody = tooltipBody .. " / "
@@ -105,6 +95,16 @@ local function DisplayVariantCountTooltip(self, petInfo)
   end
 
   tooltipBody = tooltipBody .. "\n\n"
+
+  if C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
+  then
+    local randomIcon = CreateAtlasMarkup("lootroll-icon-need")
+    local randomDisclaimer = "When this pet is summoned, its model is randomly chosen from all possible species models."
+
+    local randomText = string.format("%s %s\n\n", randomIcon, randomDisclaimer)
+
+    tooltipBody = tooltipBody .. randomText
+  end
 
   return tooltipBody
 end
