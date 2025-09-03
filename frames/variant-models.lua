@@ -402,19 +402,25 @@ function VariantModelMixin:SetVariantModelText(displayID)
     displayID
   )
 
+  self.VariantModelText.OwnedTextIcon = self.VariantModelText.OwnedTextIcon or
+      self.VariantModelText:CreateFontString("OwnedTextIcon")
+  self.VariantModelText.OwnedTextIcon:Hide()
+
   if not usesRandomModel then
-    self.VariantModelText.OwnedTextIcon = self.VariantModelText.OwnedTextIcon or
-        self.VariantModelText:CreateFontString("OwnedTextIcon")
     self.VariantModelText.OwnedTextIcon:SetText(ownedIcon)
     self.VariantModelText.OwnedTextIcon:SetTextScale(2)
     self.VariantModelText.OwnedTextIcon:SetPoint("LEFT")
+    self.VariantModelText.OwnedTextIcon:Show()
   end
 
+  self.VariantModelText.OwnedText = self.VariantModelText.OwnedText or
+      self.VariantModelText:CreateFontString("OwnedText")
+  self.VariantModelText.OwnedText:Hide()
+
   if not usesRandomModel then
-    self.VariantModelText.OwnedText = self.VariantModelText.OwnedText or
-        self.VariantModelText:CreateFontString("OwnedText")
     self.VariantModelText.OwnedText:SetText(tostring(numOwned))
     self.VariantModelText.OwnedText:SetPoint("LEFT", self.VariantModelText.OwnedTextIcon, "RIGHT")
+    self.VariantModelText.OwnedText:Show()
   end
 
   self.VariantModelText.RarityText = self.VariantModelText.RarityText or
