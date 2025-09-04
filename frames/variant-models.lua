@@ -371,10 +371,11 @@ function VariantModelMixin:SetModel(displayID)
     "VariantModelSceneTemplate"
   ) --[[@as ModelScene]]
 
+  self.VariantModel:ClearScene()
   self.VariantModel:TransitionToModelSceneID(
     modelSceneID,
     CAMERA_TRANSITION_TYPE_IMMEDIATE,
-    CAMERA_MODIFICATION_TYPE_MAINTAIN,
+    CAMERA_MODIFICATION_TYPE_DISCARD,
     false
   )
 
