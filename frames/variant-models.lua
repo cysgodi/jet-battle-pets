@@ -84,7 +84,7 @@ local function GetWindowSize(speciesID)
   local windowDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW
 
   local disclaimerHeight = 0
-  local numModels = C_PetJournal.GetNumDisplays(speciesID)
+  local numModels = C_PetJournal.GetNumDisplays(speciesID) or 1
 
   if C_PetJournal.PetUsesRandomDisplay(speciesID) then
     disclaimerHeight = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW.DISCLAIMER_HEIGHT
@@ -202,7 +202,7 @@ function JetBattlePets.frames.VariantModelsWindow:UpdateModels()
 
   self.SetTitle(self, petInfo.name)
 
-  local numDisplays = C_PetJournal.GetNumDisplays(self.CurrentSpeciesID)
+  local numDisplays = C_PetJournal.GetNumDisplays(self.CurrentSpeciesID) or 1
 
   self:UpdateSize()
 
@@ -380,6 +380,7 @@ function VariantModelMixin:SetModel(displayID)
   )
 
   local actor = self.VariantModel:GetActorByTag("unwrapped")
+  local petInfo = JetBattlePets.pets.GetPet(self.CurrentSpeciesID)
 
   if actor then
     actor:SetModelByCreatureDisplayID(displayID)
@@ -436,7 +437,7 @@ function VariantModelMixin:ShowModel(modelSlot)
   local displayID = C_PetJournal.GetDisplayIDByIndex(
     self.CurrentSpeciesID,
     modelSlot
-  )
+  ) or JetBattlePets.pets.GetPet(self.CurrentSpeciesID).displayID
 
   self:SetBorder(displayID)
   self:SetBackground(displayID)

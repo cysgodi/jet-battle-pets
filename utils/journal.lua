@@ -29,12 +29,12 @@ function JetBattlePets.journal:GetDisplayProbabilities(speciesID)
 end
 
 function JetBattlePets.journal:GetDisplayProbability(speciesID, displayID)
+  local probability = 100
+
   local displayIdIndex = JetBattlePets.journal:GetDisplayIndex(
     speciesID,
     displayID
   )
-
-  local probability
 
   if displayIdIndex then
     probability = C_PetJournal.GetDisplayProbabilityByIndex(
@@ -67,10 +67,14 @@ function JetBattlePets.journal:GetDisplayIndex(speciesID, displayID)
 end
 
 function JetBattlePets.journal:GetDisplayIndexProbabilityText(speciesID, displayIndex)
-  local probability = C_PetJournal.GetDisplayProbabilityByIndex(
-    speciesID,
-    displayIndex
-  ) or 100
+  local probability = 100
+
+  if displayIndex ~= nil then
+    probability = C_PetJournal.GetDisplayProbabilityByIndex(
+      speciesID,
+      displayIndex
+    )
+  end
 
   local maxProbability = JetBattlePets.journal:GetMaxDisplayProbability(speciesID)
 
