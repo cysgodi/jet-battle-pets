@@ -86,6 +86,10 @@ local function GetWindowSize(speciesID)
   local disclaimerHeight = 0
   local numModels = C_PetJournal.GetNumDisplays(speciesID) or 1
 
+  if numModels < 1 then
+    numModels = 1
+  end
+
   if C_PetJournal.PetUsesRandomDisplay(speciesID) then
     disclaimerHeight = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW.DISCLAIMER_HEIGHT
   end
