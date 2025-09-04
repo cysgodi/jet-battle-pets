@@ -123,3 +123,11 @@ function JetBattlePets.options:InitializeOptions()
 
   Settings.RegisterAddOnCategory(category)
 end
+
+-- enable new features when released
+function JetBattlePets.options:ReleaseFeatures()
+  if not JetBattlePets.settings.FEATURE_TOGGLED.VARIANT_MODEL_VIEWER then
+    JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER = true
+    JetBattlePets.settings.FEATURE_TOGGLED.VARIANT_MODEL_VIEWER = true
+  end
+end

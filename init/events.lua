@@ -10,6 +10,7 @@ end
 
 function EventsFrame:ADDON_LOADED(_, addonName)
   if addonName == "JetBattlePets" then
+    JetBattlePets.options:ReleaseFeatures()
     JetBattlePets.options:InitializeOptions()
   end
 end
