@@ -200,6 +200,12 @@ end
 function JetBattlePetsJournalUtils:GetMaxDisplayProbability(speciesID)
 end
 
+---Get the number of variant models a species has.
+---@param speciesID integer
+---@return number
+function JetBattlePetsJournalUtils:GetNumModels(speciesID)
+end
+
 ---Get the number of pets of a given species model the player owns
 ---@param speciesID integer
 ---@param displayID integer
