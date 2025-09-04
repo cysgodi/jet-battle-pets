@@ -24,6 +24,11 @@ local DEFAULT_SETTINGS = {
   -- flag to enable/disable warnings when a battle pet on the enemy team has
   -- an ability that might screw up a capture
   ENABLE_CAPTURE_THREAT_WARNINGS = false,
+
+  -- a dictionary of flags to track whether we've enabled a new feature on first init after it's released
+  FEATURE_TOGGLED = {
+    VARIANT_MODEL_VIEWER = false
+  }
 }
 
 ---Fetch key from saved vars. Init the saved var to a default if it
