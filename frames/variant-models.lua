@@ -3,8 +3,16 @@ local _, _JetBattlePets = ...
 ---@type JetBattlePets
 local JetBattlePets = _JetBattlePets
 
+---@class VariantModelsWindowDisclaimer : Frame A frame for displaying
+---disclaimer text in the variant models window
+---@field OwnedTextIcon FontString
+---@field OwnedText FontString
+---@field TextIcon FontString
+---@field Text FontString
+
 ---@class VariantModelsWindow : Frame A window for displaying battle pet variant models
 ---@field VariantModels VariantModelMixin[]
+---@field Disclaimer VariantModelsWindowDisclaimer
 JetBattlePets.frames.VariantModelsWindow = JetBattlePets.frames.VariantModelsWindow or CreateFrame(
   "Frame",
   "VariantModels",
@@ -57,7 +65,7 @@ JetBattlePets.frames.VariantModelsWindow.VariantModels = {}
 JetBattlePets.frames.VariantModelsWindow.initDone = true
 
 
--- hide any existing variant models
+--Hide any existing variant models
 function JetBattlePets.frames.VariantModelsWindow:ResetVariantModels()
   if not self.VariantModels then
     return
@@ -70,6 +78,7 @@ function JetBattlePets.frames.VariantModelsWindow:ResetVariantModels()
   end
 end
 
+---Hide the disclaimer frame.
 function JetBattlePets.frames.VariantModelsWindow:ResetDisclaimer()
   if not self.Disclaimer then
     return
@@ -78,17 +87,19 @@ function JetBattlePets.frames.VariantModelsWindow:ResetDisclaimer()
   self.Disclaimer:Hide()
 end
 
+---Calculate desired window height and width based on the number
+---of variant models a species with a given ID has.
+---
+---@param speciesID integer
+---@return number windowWidth
+---@return number windowHeight
 local function GetWindowSize(speciesID)
   local gridDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_GRID
   local modelFrameDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_FRAME
   local windowDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW
 
   local disclaimerHeight = 0
-  local numModels = C_PetJournal.GetNumDisplays(speciesID) or 1
-
-  if numModels < 1 then
-    numModels = 1
-  end
+  local numModels = JetBattlePets.journal:GetNumModels(speciesID)
 
   if C_PetJournal.PetUsesRandomDisplay(speciesID) then
     disclaimerHeight = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_WINDOW.DISCLAIMER_HEIGHT
@@ -118,6 +129,7 @@ local function GetWindowSize(speciesID)
   return windowWidth, windowHeight
 end
 
+---Update disclaimer size and content.
 function JetBattlePets.frames.VariantModelsWindow:UpdateDisclaimer()
   self:ResetDisclaimer()
 
@@ -197,16 +209,14 @@ function JetBattlePets.frames.VariantModelsWindow:SetModels(speciesID)
   self:Show()
 end
 
----Update the models that are shown in the window
+---Update the models that are shown in the window.
 function JetBattlePets.frames.VariantModelsWindow:UpdateModels()
   local petInfo = JetBattlePets.pets.GetPet(self.CurrentSpeciesID)
 
   self:ResetVariantModels()
-  self.CurrentSpeciesID = petInfo.speciesID
-
   self.SetTitle(self, petInfo.name)
 
-  local numDisplays = C_PetJournal.GetNumDisplays(self.CurrentSpeciesID) or 1
+  local numDisplays = JetBattlePets.journal:GetNumModels(self.CurrentSpeciesID)
 
   self:UpdateSize()
 
@@ -215,7 +225,7 @@ function JetBattlePets.frames.VariantModelsWindow:UpdateModels()
   end
 end
 
--- update window size based on the species being displayed
+--Update window size based on the species being displayed.
 function JetBattlePets.frames.VariantModelsWindow:UpdateSize()
   local titleBarButtonSize = JetBattlePets.constants.DIMENSIONS.TITLE_BAR_BUTTON.SIZE
 
@@ -232,20 +242,21 @@ function JetBattlePets.frames.VariantModelsWindow:UpdateSize()
   )
 end
 
+---Update
 function JetBattlePets.frames.VariantModelsWindow:UpdateVariantModel(
     modelSlot
 )
-  if not self.VariantModels[modelSlot] then
-    self.VariantModels[modelSlot] = CreateFrame(
-      "Frame",
-      "VariantModel" .. modelSlot,
-      self,
-      "VariantModelTemplate"
-    ) --[[@as VariantModelMixin]]
-  end
+  local model = self.VariantModels[modelSlot] or CreateFrame(
+    "Frame",
+    "VariantModel" .. modelSlot,
+    self,
+    "VariantModelTemplate"
+  ) --[[@as VariantModelMixin]]
 
-  self.VariantModels[modelSlot].CurrentSpeciesID = self.CurrentSpeciesID
-  self.VariantModels[modelSlot]:ShowModel(modelSlot)
+  model.CurrentSpeciesID = self.CurrentSpeciesID
+  model:ShowModel(modelSlot)
+
+  self.VariantModels[modelSlot] = model
 end
 
 ---@class VariantModelBackground : Frame
@@ -268,7 +279,7 @@ end
 VariantModelMixin = {}
 
 
--- set frame size and offset based on the display slot
+---Set frame size and offset based on the display slot.
 function VariantModelMixin:SetDimensions(modelSlot)
   local modelDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL
   local modelFrameDimensions = JetBattlePets.constants.DIMENSIONS.VARIANT_MODEL_FRAME
@@ -320,7 +331,7 @@ function VariantModelMixin:SetDimensions(modelSlot)
   )
 end
 
--- get the atlas for the background texture of a model
+---Get the atlas for the background texture of a model
 local function GetVariantBorderAtlasName(speciesID, displayID)
   local ATLAS_NAMES = JetBattlePets.constants.ATLAS_NAMES
   local numOwned = JetBattlePets.journal:GetNumOwned(speciesID, displayID)
@@ -384,7 +395,6 @@ function VariantModelMixin:SetModel(displayID)
   )
 
   local actor = self.VariantModel:GetActorByTag("unwrapped")
-  local petInfo = JetBattlePets.pets.GetPet(self.CurrentSpeciesID)
 
   if actor then
     actor:SetModelByCreatureDisplayID(displayID)
