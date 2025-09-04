@@ -40,6 +40,22 @@ local function InitAlertThresholdOption(category)
   )
 end
 
+-- init checkbox to toggle variant model viewer
+local function InitVariantModelViewerOption(category)
+  local setting = Settings.RegisterProxySetting(
+    category,
+    "SHOW_VARIANT_MODEL_VIEWER",
+    Settings.VarType.Boolean,
+    "Variant Model Viewer",
+    Settings.Default.True,
+    function() return JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER end,
+    function(value) JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER = value end
+  )
+
+  Settings.CreateCheckbox(category, setting,
+    "Enable the variant model viewer, which lets you look at all variants of a battle pet side-by-side.")
+end
+
 ------ DEVELOPER FEATURE FLAGS ------
 
 -- init checkbox to toggle encounter recording
@@ -86,22 +102,6 @@ local function InitCaptureThreatWarningsOption(category)
   )
 end
 
--- init checkbox to toggle variant model viewer
-local function InitVariantModelViewerOption(category)
-  local setting = Settings.RegisterProxySetting(
-    category,
-    "SHOW_VARIANT_MODEL_VIEWER",
-    Settings.VarType.Boolean,
-    "Variant Model Viewer",
-    Settings.Default.False,
-    function() return JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER end,
-    function(value) JetBattlePets.settings.SHOW_VARIANT_MODEL_VIEWER = value end
-  )
-
-  Settings.CreateCheckbox(category, setting,
-    "Enable the variant model viewer, which lets you look at all variants of a battle pet side-by-side.")
-end
-
 -- init experimental settings section
 local function InitExperimentalSettingsSection(category, layout)
   layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(
@@ -109,7 +109,6 @@ local function InitExperimentalSettingsSection(category, layout)
     "These are features that are in development. They may make the addon unstable."
   ))
 
-  InitVariantModelViewerOption(category)
   InitCaptureThreatWarningsOption(category)
 end
 
@@ -118,6 +117,7 @@ function JetBattlePets.options:InitializeOptions()
   local category, layout = Settings.RegisterVerticalLayoutCategory("JET Battle Pets")
 
   InitAlertThresholdOption(category)
+  InitVariantModelViewerOption(category)
   InitExperimentalSettingsSection(category, layout)
   InitDeveloperSettingsSection(category, layout)
 
