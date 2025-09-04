@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.0
+
+- release the variant model viewer and enable by default
+
 ## v1.1.8
 
 - fixed an issue where Rematch mouseover cards were displaying in pet battles even if the Rematch "Use Pet Cards In Battle" setting wasn't enabled
