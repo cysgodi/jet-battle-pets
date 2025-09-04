@@ -8,7 +8,7 @@ JetBattlePets.journal = JetBattlePets.journal or {}
 function JetBattlePets.journal:GetDisplayProbabilities(speciesID)
   local probabilities = { 100 }
 
-  local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
+  local numDisplays = JetBattlePets.journal:GetNumModels(speciesID)
 
   if not numDisplays or numDisplays == 0 then
     return probabilities
@@ -47,11 +47,7 @@ function JetBattlePets.journal:GetDisplayProbability(speciesID, displayID)
 end
 
 function JetBattlePets.journal:GetDisplayIndex(speciesID, displayID)
-  local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
-
-  if not numDisplays then
-    return nil
-  end
+  local numDisplays = JetBattlePets.journal:GetNumModels(speciesID)
 
   local displayIdIndex
 
@@ -128,6 +124,16 @@ function JetBattlePets.journal:GetMaxDisplayProbability(speciesID)
   local probabilities = JetBattlePets.journal:GetDisplayProbabilities(speciesID)
 
   return math.max(unpack(probabilities))
+end
+
+function JetBattlePets.journal:GetNumModels(speciesID)
+  local numDisplays = C_PetJournal.GetNumDisplays(speciesID)
+
+  if numDisplays == nil or numDisplays < 1 then
+    return 1
+  end
+
+  return numDisplays
 end
 
 function JetBattlePets.journal:GetNumOwned(speciesID, displayID)
