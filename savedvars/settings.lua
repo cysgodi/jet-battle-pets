@@ -19,7 +19,7 @@ local DEFAULT_SETTINGS = {
   ENABLE_DATA_COLLECTION = false,
 
   -- flag to enable/disable the variant model viewer feature
-  SHOW_VARIANT_MODEL_VIEWER = false,
+  SHOW_VARIANT_MODEL_VIEWER = true,
 
   -- flag to enable/disable warnings when a battle pet on the enemy team has
   -- an ability that might screw up a capture
