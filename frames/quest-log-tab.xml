@@ -3,6 +3,7 @@
 
   <Script file="quest-log-tab.lua" />
 
+  <!-- Quest Log tab for battle pets -->
   <Frame 
     inherits="QuestLogTabButtonTemplate"
     mixin="JetBattlePetsQuestTabButtonMixin"
@@ -10,11 +11,15 @@
     virtual="true"
   >
     <KeyValues>
+      <!-- ID used for WoW to know which tab is selected -->
       <KeyValue key="displayMode" value="JetBattlePets" type="string" />
+
+      <!-- Text in the tooltip on hover -->
       <KeyValue key="tooltipText" value="Battle Pets" type="string" />
     </KeyValues>
 
     <Layers>
+      <!-- Tab Icon -->
       <Layer level="ARTWORK">
         <Texture parentKey="BattlePetIcon">
           <Size x="24" y="24" />
@@ -32,6 +37,7 @@
     </Scripts>
   </Frame>
 
+  <!-- Quest Log page showing pets in the current zone -->
   <Frame 
     enableMouse="true"
     hidden="true"
@@ -40,6 +46,7 @@
     virtual="true"
   >
     <KeyValues>
+      <!-- ID of the page so WoW knows when to display it -->
       <KeyValue key="displayMode" value="JetBattlePets" type="string" />
     </KeyValues>
 
@@ -53,5 +60,47 @@
         <Texture setAllPoints="true" />
       </Layer>
     </Layers>
+
+    <Frames>
+      <Frame 
+        parentKey="BorderFrame"
+        inherits="QuestLogBorderFrameTemplate"
+      />
+
+      <Frame
+        parentKey="ScrollBox"
+        inherits="WowScrollBoxList"
+      >
+        <Anchors>
+          <Anchor point="TOPLEFT" />
+          <Anchor point="BOTTOMRIGHT" />
+        </Anchors>
+
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture 
+              atlas="QuestLog-main-background"
+              parentKey="Background"
+              useAtlasSize="true"
+            >
+              <Anchors>
+                <Anchor point="TOPLEFT" />
+                <Anchor point="BOTTOMRIGHT" />
+              </Anchors>
+            </Texture>
+
+            <FontString 
+              inherits="Game16Font"
+              parentKey="EmptyText"
+              text="No Battle Pets"
+            >
+              <Anchors>
+                <Anchor point="CENTER" />
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Frame>
+    </Frames>
   </Frame>
 </Ui>
