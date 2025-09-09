@@ -35,6 +35,10 @@ function JetBattlePetsQuestTabButtonMixin:OnLoad()
   self:SetChecked(false)
 end
 
+function JetBattlePetsQuestTabButtonMixin:SetChecked(checked)
+  self.SelectedTexture:SetShown(checked)
+end
+
 function JetBattlePetsQuestTabButtonMixin:OnMouseUp(button, upInside)
   QuestLogTabButtonMixin.OnMouseUp(self, button, upInside)
 
