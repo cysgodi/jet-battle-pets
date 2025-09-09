@@ -61,7 +61,6 @@ local function OnPlayerEnteringWorld(_, loggingIn, reloading)
 
   JetBattlePets.questLogTab:Init()
 end
-
 EventsFrame:OnEvent("PLAYER_ENTERING_WORLD", OnPlayerEnteringWorld)
 
 EventsFrame:RegisterEvent("ADDON_LOADED")

@@ -48,3 +48,8 @@ function JetBattlePetsQuestTabButtonMixin:OnMouseUp(button, upInside)
 end
 
 JetBattlePetsQuestLogPageMixin = {}
+
+function JetBattlePetsQuestLogPageMixin:OnShow()
+  local mapId = self:GetParent():GetParent():GetMapID();
+  print(mapId)
+end

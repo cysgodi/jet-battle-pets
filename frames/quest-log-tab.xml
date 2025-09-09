@@ -38,7 +38,7 @@
   </Frame>
 
   <!-- Quest Log page showing pets in the current zone -->
-  <Frame 
+  <Frame
     enableMouse="true"
     hidden="true"
     mixin="JetBattlePetsQuestLogPageMixin"
@@ -67,6 +67,7 @@
         inherits="QuestLogBorderFrameTemplate"
       />
 
+      <!-- Scroll box for the page -->
       <Frame
         parentKey="ScrollBox"
         inherits="WowScrollBoxList"
@@ -89,7 +90,9 @@
               </Anchors>
             </Texture>
 
+            <!-- Text displayed when there are no pets in the zone -->
             <FontString 
+              hidden="true"
               inherits="Game16Font"
               parentKey="EmptyText"
               text="No Battle Pets"
@@ -101,6 +104,33 @@
           </Layer>
         </Layers>
       </Frame>
+
+      <EventFrame
+        parentKey="ScrollBar"
+        inherits="MinimalScrollBar"
+      >
+        <Anchors>
+          <Anchor 
+            point="TOPLEFT" 
+            relativeKey="$parent.ScrollBox"
+            relativePoint="TOPRIGHT"
+            x="8"
+            y="2"
+          />
+          
+          <Anchor 
+            point="BOTTOMLEFT" 
+            relativeKey="$parent.ScrollBox"
+            relativePoint="BOTTOMRIGHT"
+            x="6"
+            y="-4"
+          />
+        </Anchors>
+      </EventFrame>
     </Frames>
+
+    <Scripts>
+      <OnShow method="OnShow" />
+    </Scripts>
   </Frame>
 </Ui>
