@@ -88,17 +88,10 @@ local RARITY_RATIOS = {
 
 ---@class AtlasNames Names of atlases used for various UI elements
 local ATLAS_NAMES = {
-  --[[
-    Icons to try for caged count:
-
-    - GarrMission_MissionIcon-Provision
-    - legionmission-icon-currency
-    - UI_Icon_Chest_NPCreward
-    - UI-HUD-MicroMenu-Collections-Up
-    - plunderstorm-icon-item
-  ]]
   CAGED_ICON = "legionmission-icon-currency",
   MODEL_RARITY_ICON = "groupfinder-eye-frame",
+  QUEST_LOG_TAB_ICON = "WildBattlePetCapturable",
+  QUEST_LOG_TAB_SELECTED_ICON = "WildBattlePet",
   SHINY_ICON = "rare-elite-star",
   THREAT_ICON = "Ping_Chat_Warning",
   VARIANT_OUTLINE_OWNED = "transmog-wardrobe-border-collected",
