@@ -28,6 +28,7 @@
 
     <Scripts>
       <OnLoad method="OnLoad" />
+      <OnMouseUp method="OnMouseUp" />
     </Scripts>
   </Frame>
 

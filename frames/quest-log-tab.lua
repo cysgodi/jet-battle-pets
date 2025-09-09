@@ -35,4 +35,12 @@ function JetBattlePetsQuestTabButtonMixin:OnLoad()
   self:SetChecked(false)
 end
 
+function JetBattlePetsQuestTabButtonMixin:OnMouseUp(button, upInside)
+  QuestLogTabButtonMixin.OnMouseUp(self, button, upInside)
+
+  if (button == "LeftButton" and upInside) then
+    QuestMapFrame:SetDisplayMode(self.displayMode)
+  end
+end
+
 JetBattlePetsQuestLogPageMixin = {}
