@@ -4,7 +4,7 @@ local _, JetBattlePets = ...
   This file hooks into any events necessary for 3rd party integrations.
 ]]
 
-function JetBattlePets.events:PLAYER_ENTERING_WORLD()
+local function OnPlayerEnteringWorld()
   if not C_AddOns.IsAddOnLoaded("JetBattlePets") then
     return
   end
@@ -23,3 +23,4 @@ function JetBattlePets.events:PLAYER_ENTERING_WORLD()
 end
 
 JetBattlePets.events:RegisterEvent("PLAYER_ENTERING_WORLD")
+JetBattlePets.events:OnEvent("PLAYER_ENTERING_WORLD", OnPlayerEnteringWorld)

@@ -3,44 +3,73 @@ local _, JetBattlePets = ...
 ---@class EventsFrame : Frame
 local EventsFrame = CreateFrame("Frame")
 
+---Register a callback for a specific event
+---@param event string
+---@param callback function
+function EventsFrame:OnEvent(event, callback)
+  self[event] = self[event] or {}
 
-function EventsFrame:OnEvent(event, ...)
-  self[event](self, event, ...)
+  table.insert(self[event], callback)
 end
 
-function EventsFrame:ADDON_LOADED(_, addonName)
+---Execute all callbacks for a fired event
+function EventsFrame:HandleEvent(event, ...)
+  self[event] = self[event] or {}
+
+  for _, callback in pairs(self[event]) do
+    callback(self, event, ...)
+  end
+end
+
+local function OnAddonLoaded(_, addonName)
   if addonName == "JetBattlePets" then
     JetBattlePets.options:ReleaseFeatures()
     JetBattlePets.options:InitializeOptions()
   end
 end
+EventsFrame:OnEvent("ADDON_LOADED", OnAddonLoaded)
 
-function EventsFrame:MODIFIER_STATE_CHANGED(_, key, down)
+local function OnModifierStateChanged(_, key, down)
   JetBattlePets.battleUi:OnModifierStateChanged(key, down)
 end
+EventsFrame:OnEvent("MODIFIER_STATE_CHANGED", OnModifierStateChanged)
 
-function EventsFrame:PET_BATTLE_OPENING_START()
+local function OnPetBattleOpeningStart()
   JetBattlePets.battleUi:UpdateShinyFrames()
   JetBattlePets.battleUi:DisplayCaptureThreatWarnings()
   JetBattlePets.battleUi:RecordEncounterData()
   JetBattlePets.battleUi:SetUpPets()
 end
+EventsFrame:OnEvent("PET_BATTLE_OPENING_START", OnPetBattleOpeningStart)
 
-function EventsFrame:PET_BATTLE_OVER()
+local function OnPetBattleOver()
   JetBattlePets.battleUi:AfterBattle()
 end
+EventsFrame:OnEvent("PET_BATTLE_OVER", OnPetBattleOver)
 
-function EventsFrame:PET_BATTLE_PET_CHANGED(_, owner)
+local function OnPetBattlePetChanged(_, owner)
   if owner == Enum.BattlePetOwner.Enemy then
     JetBattlePets.battleUi:UpdateShinyFrames()
   end
 end
+EventsFrame:OnEvent("PET_BATTLE_PET_CHANGED", OnPetBattlePetChanged)
+
+local function OnPlayerEnteringWorld(_, loggingIn, reloading)
+  if not loggingIn and not reloading then
+    return
+  end
+
+  JetBattlePets.questLogTab:Init()
+end
+
+EventsFrame:OnEvent("PLAYER_ENTERING_WORLD", OnPlayerEnteringWorld)
 
 EventsFrame:RegisterEvent("ADDON_LOADED")
 EventsFrame:RegisterEvent("MODIFIER_STATE_CHANGED")
 EventsFrame:RegisterEvent("PET_BATTLE_OPENING_START")
 EventsFrame:RegisterEvent("PET_BATTLE_OVER")
 EventsFrame:RegisterEvent("PET_BATTLE_PET_CHANGED")
-EventsFrame:SetScript("OnEvent", EventsFrame.OnEvent)
+EventsFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+EventsFrame:SetScript("OnEvent", EventsFrame.HandleEvent)
 
 JetBattlePets.events = EventsFrame
