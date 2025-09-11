@@ -25,6 +25,17 @@ function JetBattlePets.array:Concat(a, ...)
   return self:Concat(result, concatenatedArrays)
 end
 
+function JetBattlePets.array:Each(array, callback)
+  if type(callback) ~= "function" then
+    error("Invalid array callback")
+    return
+  end
+
+  for _, value in pairs(array) do
+    callback(value)
+  end
+end
+
 function JetBattlePets.array:Slice(array, startIndex, endIndex)
   local result = {}
   startIndex = startIndex or 1
