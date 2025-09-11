@@ -29,6 +29,10 @@ state.lua
 savedvars/settings.lua
 savedvars/encounters.lua
 
+# data cache
+data/pets.cache.lua
+data/maps.cache.lua
+
 # init
 init/frames.lua
 init/main.lua
