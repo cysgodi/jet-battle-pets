@@ -19,8 +19,8 @@ local function mapGetter(_, mapID)
   local numPets = C_PetJournal.GetNumPets()
 
   for index = 1, numPets do
-    local petID = C_PetJournal.GetPetInfoByIndex(index)
-    petIdSet[petID] = true
+    local _, speciesID = C_PetJournal.GetPetInfoByIndex(index)
+    petIdSet[speciesID] = true
   end
 
   local petIdArray = {}
