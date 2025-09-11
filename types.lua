@@ -67,6 +67,13 @@ function JetBattlePetsArrayUtils:Concat(a, ...)
   return {}
 end
 
+---Execute a callback on each item in an array.
+---@generic T
+---@param array T[]
+---@param callback function
+function JetBattlePetsArrayUtils:Each(array, callback)
+end
+
 ---Get a slice of an existing array
 ---@generic T
 ---@param array T[]
@@ -222,9 +229,15 @@ end
 JetBattlePetsPetUtils = {}
 
 ---Fetch info for a pet, using Rematch if possible
----@param petID PetID
+---@param petOrSpeciesID PetID
 ---@return RematchPetInfo
-function JetBattlePetsPetUtils.GetPet(petID)
+function JetBattlePetsPetUtils.GetPet(petOrSpeciesID)
+end
+
+---Fetch info for a pet, using Rematch if possible
+---@param petOrSpeciesIDs PetID[]
+---@return RematchPetInfo[]
+function JetBattlePetsPetUtils.GetPets(petOrSpeciesIDs)
 end
 
 -----------------------------------------------------
