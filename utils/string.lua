@@ -39,6 +39,20 @@ function JetBattlePets.text:GetRarityText(probability, maxProbability)
   )
 end
 
+function JetBattlePets.text:Print(value)
+  print(JetBattlePets.text:ToString(value))
+end
+
+function JetBattlePets.text:RepeatCharacter(character, times)
+  local string = ""
+
+  for _ = 1, times do
+    string = string .. character
+  end
+
+  return string
+end
+
 function JetBattlePets.text:SetColor(colorHexString, text)
   return string.format(
     "%s%s%s%s",
@@ -58,4 +72,37 @@ function JetBattlePets.text:SetColorByName(rarity, text)
   end
 
   return JetBattlePets.text:SetColor(color, text)
+end
+
+function JetBattlePets.text:TableToString(table, indent)
+  local spaces = JetBattlePets.text:RepeatCharacter(" ", indent)
+  local subSpaces = JetBattlePets.text:RepeatCharacter(" ", indent + 2)
+  local tableString = "[\n"
+
+  for key, value in pairs(table) do
+    local keyString = subSpaces .. key
+    local valueString = JetBattlePets.text:ToString(value, indent + 2)
+    tableString = tableString .. keyString .. " = " .. valueString
+  end
+
+  tableString = tableString .. spaces .. "]"
+
+  return tableString
+end
+
+function JetBattlePets.text:ToString(value, indent)
+  indent = indent or 0
+  local valueString = value
+
+  if type(value) == "function"
+      or type(value) == "nil"
+      or type(value) == "thread"
+      or type(value) == "userdata"
+  then
+    valueString = JetBattlePets.text:Capitalize(type(value))
+  elseif type(value) == "table" then
+    valueString = JetBattlePets.text:TableToString(value, indent)
+  end
+
+  return valueString .. "\n"
 end

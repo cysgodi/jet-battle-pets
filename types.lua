@@ -6,6 +6,7 @@
 ---@field atlas JetBattlePetsAtlasUtils
 ---@field array JetBattlePetsArrayUtils
 ---@field battleUi JetBattlePetsBattleUtils
+---@field cache table<string, Dictionary<table>>
 ---@field color JetBattlePetsColorUtils
 ---@field constants JetBattlePetsConstants
 ---@field encounters JetBattlePetsEncountersUtils
@@ -321,6 +322,18 @@ end
 function JetBattlePetsTextUtils:GetRarityText(probability, maxProbability)
 end
 
+---Print a string representation of any value
+---@param value unknown
+function JetBattlePetsTextUtils:Print(value)
+end
+
+---Build a string consisting of `count` copies of `character`
+---@param character string A single character
+---@param count integer The number of times to repeat the character
+---@return string
+function JetBattlePetsTextUtils:RepeatCharacter(character, count)
+end
+
 ---Given the hex value of a color and some text, return a string literal
 ---in the form `|c00XXYYZZProvidedTextr|`
 ---@param colorHexString string
@@ -336,6 +349,20 @@ end
 ---@param text string
 ---@return string
 function JetBattlePetsTextUtils:SetColorByName(rarity, text)
+end
+
+---Build a string representation of a table
+---@param table table The table
+---@param indent integer The indentation level of the table
+---@return string
+function JetBattlePetsTextUtils:TableToString(table, indent)
+end
+
+---Build a string from any value.
+---@param value unknown
+---@param indent integer | nil The indentation level of the string
+---@return string
+function JetBattlePetsTextUtils:ToString(value, indent)
 end
 
 -----------------------------------------------------
