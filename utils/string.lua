@@ -102,6 +102,8 @@ function JetBattlePets.text:ToString(value, indent)
     valueString = JetBattlePets.text:Capitalize(type(value))
   elseif type(value) == "table" then
     valueString = JetBattlePets.text:TableToString(value, indent)
+  elseif type(value) == "boolean" then
+    valueString = value and "true" or "false"
   end
 
   return valueString .. "\n"
