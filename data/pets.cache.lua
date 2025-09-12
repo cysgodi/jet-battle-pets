@@ -8,30 +8,54 @@ JetBattlePets.cache.pets = {}
 
 PetCache = {}
 
-local function petGetter(_, speciesID)
-  if PetCache[speciesID] ~= nil then
-    return PetCache[speciesID]
+local function getter(_, petOrSpeciesID)
+  if PetCache[petOrSpeciesID] ~= nil then
+    return PetCache[petOrSpeciesID]
   end
 
-  if C_AddOns.IsAddOnLoaded("Rematch") then
-    PetCache[speciesID] = Rematch.petInfo:Fetch(speciesID)
-  elseif type(speciesID) == "string" then
-    PetCache[speciesID] = C_PetJournal.GetPetInfoTableByPetID(speciesID)
+  if type(petOrSpeciesID) == "string" then
+    local info = C_PetJournal.GetPetInfoTableByPetID(petOrSpeciesID)
+
+    PetCache[info.speciesID] = info
   else
-    local name = C_PetJournal.GetPetInfoBySpeciesID(speciesID)
-    local _, petID = C_PetJournal.FindPetIDByName(name)
+    local name,
+    icon,
+    petType,
+    creatureID,
+    sourceText,
+    description,
+    isWild,
+    canBattle,
+    tradable,
+    unique,
+    obtainable,
+    displayID =
+        C_PetJournal.GetPetInfoBySpeciesID(petOrSpeciesID)
 
-    PetCache[speciesID] = C_PetJournal.GetPetInfoTableByPetID(petID)
+    PetCache[petOrSpeciesID] = {
+      canBattle = canBattle,
+      creatureID = creatureID,
+      description = description,
+      displayID = displayID,
+      icon = icon,
+      isWild = isWild,
+      name = name,
+      obtainable = obtainable,
+      petType = petType,
+      sourceText = sourceText,
+      tradable = tradable,
+      unique = unique,
+    }
   end
 
-  return PetCache[speciesID]
+  return PetCache[petOrSpeciesID]
 end
 
-local function petSetter(_, speciesID, data)
+local function setter(_, speciesID, data)
   PetCache[speciesID] = data
 end
 
 setmetatable(JetBattlePets.cache.pets, {
-  __index = petGetter,
-  __newindex = petSetter
+  __index = getter,
+  __newindex = setter
 })
