@@ -340,13 +340,6 @@ end
 function JetBattlePetsTextUtils:Print(value)
 end
 
----Build a string consisting of `count` copies of `character`
----@param character string A single character
----@param count integer The number of times to repeat the character
----@return string
-function JetBattlePetsTextUtils:RepeatCharacter(character, count)
-end
-
 ---Given the hex value of a color and some text, return a string literal
 ---in the form `|c00XXYYZZProvidedTextr|`
 ---@param colorHexString string
