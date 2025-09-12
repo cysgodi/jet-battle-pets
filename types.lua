@@ -340,6 +340,13 @@ end
 function JetBattlePetsTextUtils:Print(value)
 end
 
+---Replace Blizzard string format escaped characters with standard
+---ones.
+---@param text string
+---@return string
+function JetBattlePetsTextUtils:Sanitize(text)
+end
+
 ---Given the hex value of a color and some text, return a string literal
 ---in the form `|c00XXYYZZProvidedTextr|`
 ---@param colorHexString string
@@ -355,6 +362,10 @@ end
 ---@param text string
 ---@return string
 function JetBattlePetsTextUtils:SetColorByName(rarity, text)
+end
+
+---Split a string into tokens based on a given delimiter.
+function JetBattlePetsTextUtils:Split(text, splitter)
 end
 
 ---Build a string representation of a table

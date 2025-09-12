@@ -43,6 +43,12 @@ function JetBattlePets.text:Print(value)
   print(JetBattlePets.text:ToString(value))
 end
 
+function JetBattlePets.text:Sanitize(text)
+  local sanitized, _ = string.gsub(text, "|n", "\n")
+
+  return sanitized
+end
+
 function JetBattlePets.text:SetColor(colorHexString, text)
   return string.format(
     "%s%s%s%s",
@@ -64,18 +70,37 @@ function JetBattlePets.text:SetColorByName(rarity, text)
   return JetBattlePets.text:SetColor(color, text)
 end
 
+function JetBattlePets.text:Split(text, delimiter)
+  delimiter = delimiter or " "
+  text = JetBattlePets.text:Sanitize(text)
+
+  local tokens = {}
+  local pattern = string.format("[^%s]+", delimiter)
+
+  for token in string.gmatch(text, pattern) do
+    table.insert(tokens, token)
+  end
+
+  return tokens
+end
+
 function JetBattlePets.text:TableToString(table, indent)
   local spaces = string.rep(" ", indent)
   local subSpaces = string.rep(" ", indent + 2)
-  local tableString = "[\n"
+
+  local tableString = "{"
+
+  if #table > 0 then
+    tableString = tableString .. "\n"
+  end
 
   for key, value in pairs(table) do
     local keyString = subSpaces .. key
-    local valueString = JetBattlePets.text:ToString(value, indent + 2)
+    local valueString = JetBattlePets.text:ToString(value, indent + 2) .. "\n"
     tableString = tableString .. keyString .. " = " .. valueString
   end
 
-  tableString = tableString .. spaces .. "]"
+  tableString = tableString .. spaces .. "}"
 
   return tableString
 end
@@ -96,5 +121,5 @@ function JetBattlePets.text:ToString(value, indent)
     valueString = value and "true" or "false"
   end
 
-  return valueString .. "\n"
+  return valueString
 end
