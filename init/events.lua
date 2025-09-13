@@ -54,15 +54,6 @@ local function OnPetBattlePetChanged(_, owner)
 end
 EventsFrame:OnEvent("PET_BATTLE_PET_CHANGED", OnPetBattlePetChanged)
 
-local function OnPlayerEnteringWorld(_, loggingIn, reloading)
-  if not loggingIn and not reloading then
-    return
-  end
-
-  JetBattlePets.questLogTab:Init()
-end
-EventsFrame:OnEvent("PLAYER_ENTERING_WORLD", OnPlayerEnteringWorld)
-
 EventsFrame:RegisterEvent("ADDON_LOADED")
 EventsFrame:RegisterEvent("MODIFIER_STATE_CHANGED")
 EventsFrame:RegisterEvent("PET_BATTLE_OPENING_START")

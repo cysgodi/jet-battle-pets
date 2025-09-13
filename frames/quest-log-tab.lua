@@ -1,55 +1,53 @@
 local _, JetBattlePets = ...
 
-JetBattlePets.questLogTab = JetBattlePets.questLogTab or {}
+BattlePetsTabMixin = CreateFromMixins(QuestLogTabButtonMixin)
 
-function JetBattlePets.questLogTab:Init()
-  JetBattlePets.frames.QuestLogTab = JetBattlePets.frames.QuestLogTab or CreateFrame(
-    "Frame",
-    "JetBattlePetsQuestLogTab",
-    QuestMapFrame,
-    "JetBattlePetsQuestTabButtonTemplate"
-  )
-
-  JetBattlePets.frames.QuestLogPage = JetBattlePets.frames.QuestLogPage or CreateFrame(
-    "Frame",
-    "JetBattlePetsQuestLogPage",
-    QuestMapFrame,
-    "JetBattlePetsQuestLogPageTemplate"
-  )
-
-  table.insert(QuestMapFrame.ContentFrames, JetBattlePets.frames.QuestLogPage)
-end
-
-JetBattlePetsQuestTabButtonMixin = CreateFromMixins(QuestLogTabButtonMixin)
-
-function JetBattlePetsQuestTabButtonMixin:OnLoad()
-  local IconTexture = self:CreateTexture()
-  IconTexture:SetAtlas(JetBattlePets.constants.ATLAS_NAMES.QUEST_LOG_TAB_ICON)
-  IconTexture:SetPoint("CENTER", self.Icon, 0, 0)
-  IconTexture:SetSize(24, 24)
-
-  self.Icon:SetTexture(IconTexture)
-  self.Icon:SetSize(24, 24)
-
+function BattlePetsTabMixin:OnLoad()
+  -- add the tab button to the Quest Map frame
   self:SetPoint("TOP", QuestMapFrame.TabButtons[#QuestMapFrame.TabButtons - 1], "BOTTOM", 0, -3)
   self:SetChecked(false)
 end
 
-function JetBattlePetsQuestTabButtonMixin:SetChecked(checked)
+---Show/hide "selected" texture based on whether tab is active
+function BattlePetsTabMixin:SetChecked(checked)
+  self.Icon:SetAtlas(JetBattlePets.constants.ATLAS_NAMES.QUEST_LOG_TAB_ICON)
+  self.Icon:SetSize(29, 29)
+
+  if checked then
+    self.Icon:SetAlpha(1)
+  else
+    self.Icon:SetAlpha(0.4)
+  end
+
   self.SelectedTexture:SetShown(checked)
 end
 
-function JetBattlePetsQuestTabButtonMixin:OnMouseUp(button, upInside)
-  QuestLogTabButtonMixin.OnMouseUp(self, button, upInside)
+---Select tab on mouse up after click
+function BattlePetsTabMixin:OnMouseUp(button, cursorInsideFrame)
+  QuestLogTabButtonMixin.OnMouseUp(self, button, cursorInsideFrame)
 
-  if (button == "LeftButton" and upInside) then
+  if (button == "LeftButton" and cursorInsideFrame) then
     QuestMapFrame:SetDisplayMode(self.displayMode)
   end
 end
 
-JetBattlePetsQuestLogPageMixin = {}
+BattlePetsMixin = {}
 
-function JetBattlePetsQuestLogPageMixin:OnShow()
+---Initialize pets list when tab is shown
+function BattlePetsMixin:OnShow()
   local mapId = self:GetParent():GetParent():GetMapID();
-  print(mapId)
+  local map = JetBattlePets.cache.maps[mapId]
+
+  local pets = JetBattlePets.pets.GetPets(map.petIDs)
+  JetBattlePets.array:Each(pets, function(pet)
+    local sourceLines = JetBattlePets.text:Split(pet.sourceText, "\n")
+
+    self.Pets[pet.speciesID] = self.Pet[pet.speciesID] or
+        JetBattlePets.text:Print(sourceLines)
+  end)
+end
+
+JetBattlePetsQuestLogEntryMixin = {}
+
+function JetBattlePetsQuestLogEntryMixin:OnShow()
 end

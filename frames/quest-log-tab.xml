@@ -1,20 +1,16 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
-  <Script file="quest-log-tab.lua" />
-
   <!-- Quest Log tab for battle pets -->
   <Frame 
     inherits="QuestLogTabButtonTemplate"
-    mixin="JetBattlePetsQuestTabButtonMixin"
-    name="JetBattlePetsQuestTabButtonTemplate"
+    parentKey="BattlePetsTab"
+    mixin="BattlePetsTabMixin"
+    name="BattlePetsTabTemplate"
     virtual="true"
   >
     <KeyValues>
-      <!-- ID used for WoW to know which tab is selected -->
-      <KeyValue key="displayMode" value="JetBattlePets" type="string" />
-
-      <!-- Text in the tooltip on hover -->
+      <KeyValue key="displayMode" value="QuestLogDisplayMode.BattlePets" type="string" />
       <KeyValue key="tooltipText" value="Battle Pets" type="string" />
     </KeyValues>
 
@@ -41,13 +37,13 @@
   <Frame
     enableMouse="true"
     hidden="true"
-    mixin="JetBattlePetsQuestLogPageMixin"
-    name="JetBattlePetsQuestLogPageTemplate"
+    mixin="BattlePetsMixin"
+    name="BattlePetsFrameTemplate"
     virtual="true"
   >
     <KeyValues>
       <!-- ID of the page so WoW knows when to display it -->
-      <KeyValue key="displayMode" value="JetBattlePets" type="string" />
+      <KeyValue key="displayMode" value="QuestLogDisplayMode.BattlePets" type="string" />
     </KeyValues>
 
     <Anchors>
@@ -133,4 +129,86 @@
       <OnShow method="OnShow" />
     </Scripts>
   </Frame>
+
+  <Button name="JetBattlePetsQuestLogEntry"
+    enableMouse="true"
+    mixin="JetBattlePetsQuestLogEntryMixin"
+    virtual="true"
+  >
+    <Size x="295" y="0" />
+
+    <HighlightTexture
+      alphaMode="ADD"
+      atlas="event-scheduler-ongoing-events-card-hover"
+      useAtlasSize="true"
+    />
+
+    <Frames>
+      <Button parentKey="IconButton"
+        mixin="JetBattlePetsQuestLogIconButtonMixin"
+      >
+        <Size x="28" y="28" />
+
+        <Anchors>
+          <Anchor point="TOPLEFT" />
+        </Anchors>
+
+        <NormalTexture atlas="UI-QuestPoi-QuestNumber" />
+        <HighlightTexture atlas="UI-QuestPoi-InnerGlow" 
+          alphaMode="ADD"
+        />
+
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture parentKey="Underlay">
+              <Anchors>
+                <Anchor point="CENTER" />
+              </Anchors>
+            </Texture>
+          </Layer>
+
+          <Layer level="OVERLAY">
+            <Texture parentKey="Display">
+              <Anchors>
+                <Anchor point="CENTER" />
+              </Anchors>
+            </Texture>
+          </Layer>
+        </Layers>
+      </Button>
+    </Frames>
+
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture parentKey="Background"
+          atlas="event-scheduler-ongoing-events-card-incomplete"
+          useAtlasSize="true"
+        >
+          <Anchors>
+            <Anchor point="TOPLEFT" />
+            <Anchor point="BOTTOMRIGHT" />
+          </Anchors>
+        </Texture>
+      </Layer>
+
+      <Layer level="ARTWORK">
+        <FontString parentKey="Name" 
+          inherits="GameFontHighlight"
+          justifyH="LEFT"
+          maxLines="1"
+        >
+          <Anchors>
+            <Anchor point="TOPLEFT" x="30" y="-5" />
+          </Anchors>
+
+          <Color color="WHITE_FONT_COLOR" />
+        </FontString>
+      </Layer>
+    </Layers>
+
+    <Scripts>
+      <OnShow method="OnShow" />
+    </Scripts>
+  </Button>
+
 </Ui>
