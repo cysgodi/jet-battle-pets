@@ -31,7 +31,7 @@ exist for this to work properly:
 **Tab Contents Frame**
 
 ```xml
-  <Frame inherits="<your-optional-template"
+  <Frame inherits="<your-optional-template>"
     mixin="<your-optional-mixin>"
     parent="QuestMapFrame"
     parentArray="ContentFrames"
@@ -103,20 +103,22 @@ end
 
 BattlePetsMixin = {}
 
-function BattlePetsMixin:OnLoad()
-  self.TitleText:SetText("Battle Pets")
-end
-
 ---Initialize pets list when tab is shown
 function BattlePetsMixin:OnShow()
-  local mapId = self:GetParent():GetParent():GetMapID();
+  self.pets = self.pets or {}
+
+  local mapId = self:GetParent():GetCurrentMapID();
   local map = JetBattlePets.cache.maps[mapId]
 
   local pets = JetBattlePets.pets.GetPets(map.petIDs)
   JetBattlePets.array:Each(pets, function(pet)
-    local sourceLines = JetBattlePets.text:Split(pet.sourceText, "\n")
 
-    self.Pets[pet.speciesID] = self.Pet[pet.speciesID] or
-        JetBattlePets.text:Print(sourceLines)
   end)
+end
+
+BattlePetScrollFrameMixin = {}
+
+function BattlePetScrollFrameMixin:OnLoad()
+  self.TitleText:SetText("Battle Pets")
+  self.EmptyText:SetText("No Battle Pets")
 end

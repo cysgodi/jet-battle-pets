@@ -1,7 +1,122 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+  xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+  <EventScrollFrame
+    inherits="ScrollFrameTemplate"
+    name="QuestLogPanelScrollFrameTemplate"
+    virtual="true"
+  >
+    <KeyValues>
+      <KeyValue key="scrollBarX" value="8" type="number" />
+      <KeyValue key="scrollBarTopY" value="2" type="number" />
+      <KeyValue key="scrollBarBottomY" value="-4" type="number" />
+    </KeyValues>
+    <Anchors>
+      <Anchor point="TOPLEFT" />
+      <Anchor point="BOTTOMRIGHT" />
+    </Anchors>
+    <ScrollChild>
+      <Frame
+        inherits="VerticalLayoutFrame, POIButtonOwnerTemplate"
+        parentKey="Contents"
+      >
+        <Size x="304" y="454" />
+        <Anchors>
+          <Anchor point="TOPLEFT" />
+        </Anchors>
+        <Frames>
+          <Frame parentKey="Separator" hidden="true">
+            <Size x="304" y="15" />
+            <KeyValues>
+              <KeyValue key="leftPadding" value="2" type="number" />
+            </KeyValues>
+            <Layers>
+              <Layer level="OVERLAY">
+                <Texture
+                  atlas="QuestLog-frame-devider"
+                  parentKey="Divider"
+                  setAllPoints="true"
+                />
+              </Layer>
+            </Layers>
+          </Frame>
+        </Frames>
+      </Frame>
+    </ScrollChild>
+    <Frames>
+      <Frame
+        inherits="QuestLogBorderFrameTemplate"
+        parentKey="BorderFrame"
+      >
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture
+              atlas="questlog-frame-gradient-bottom"
+              parentKey="Shadow"
+              useAtlasSize="true"
+            >
+              <Anchors>
+                <Anchor point="BOTTOM" y="4" />
+              </Anchors>
+            </Texture>
+          </Layer>
+        </Layers>
+      </Frame>
+    </Frames>
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture
+          atlas="QuestLog-main-background"
+          parentKey="Background"
+          useAtlasSize="true"
+        >
+          <Anchors>
+            <Anchor point="TOPLEFT" />
+            <Anchor point="BOTTOMRIGHT" />
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="ARTWORK">
+        <FontString
+          hidden="true"
+          inherits="Game16Font"
+          parentKey="EmptyText"
+          text="No Items"
+        >
+          <Size x="250" />
+          <Anchors>
+            <Anchor point="CENTER" y="50" />
+          </Anchors>
+        </FontString>
+        <FontString
+          inherits="Game15Font_Shadow"
+          parentKey="TitleText"
+          text="Quest Log Panel"
+          wordwrap="false"
+        >
+          <Anchors>
+            <Anchor
+              point="BOTTOM"
+              relativeKey="$parent.BorderFrame"
+              relativePoint="TOP"
+              x="-1"
+              y="3"
+            />
+          </Anchors>
+        </FontString>
+      </Layer>
+      <Layer level="OVERLAY">
+        <Texture parentKey="Edge" atlas="questlog_line_scrollbar" useAtlasSize="true" alpha="0">
+          <Anchors>
+            <Anchor point="TOPRIGHT" x="25" y="0" />
+            <Anchor point="BOTTOMRIGHT" x="25" y="3" />
+          </Anchors>
+        </Texture>
+      </Layer>
+    </Layers>
+  </EventScrollFrame>
   <!-- Quest Log tab for battle pets -->
-  <Frame 
+  <Frame
     inherits="QuestLogTabButtonTemplate"
     parent="QuestMapFrame"
     parentKey="BattlePetsTab"
@@ -12,17 +127,11 @@
       <KeyValue key="tooltipText" value="Battle Pets" type="string" />
     </KeyValues>
   </Frame>
-  <!-- Battle Pets panel in the Quest Log -->
+  <!-- Quest Log panel template -->
   <Frame
-    inherits="EventSchedulerFrameTemplate"
-    mixin="BattlePetsMixin"
-    parent="QuestMapFrame"
-    parentArray="ContentFrames"
-    parentKey="BattlePetsFrame"
+    name="QuestLogPanelTemplate"
+    virtual="true"
   >
-    <KeyValues>
-      <KeyValue key="displayMode" value="QuestLogDisplayMode.BattlePets" type="global" />
-    </KeyValues>
     <Anchors>
       <Anchor
         point="TOPLEFT"
@@ -35,12 +144,27 @@
         x="-22"
       />
     </Anchors>
-    <Layers>
-      <Layer level="BACKGROUND">
-        <Texture setAllPoints="true">
-          <Color r="1" g="1" b="0" />
-        </Texture>
-      </Layer>
-    </Layers>
+  </Frame>
+  <Frame
+    inherits="QuestLogPanelTemplate"
+    mixin="BattlePetsMixin"
+    parent="QuestMapFrame"
+    parentArray="ContentFrames"
+    parentKey="BattlePetsFrame"
+  >
+    <KeyValues>
+      <KeyValue key="displayMode" value="QuestLogDisplayMode.BattlePets" type="global" />
+    </KeyValues>
+    <Frames>
+      <EventScrollFrame
+        inherits="QuestLogPanelScrollFrameTemplate"
+        mixin="BattlePetScrollFrameMixin"
+        parentKey="ScrollFrame"
+      >
+        <Scripts>
+          <OnLoad method="OnLoad" />
+        </Scripts>
+      </EventScrollFrame>
+    </Frames>
   </Frame>
 </Ui>
