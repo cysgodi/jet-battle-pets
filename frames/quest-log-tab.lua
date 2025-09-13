@@ -90,12 +90,12 @@ end
 ---states.
 function BattlePetsTabMixin:SetChecked(checked)
   self.Icon:SetAtlas(JetBattlePets.constants.ATLAS_NAMES.QUEST_LOG_TAB_ICON)
-  self.Icon:SetSize(29, 29)
+  self.Icon:SetSize(26, 26)
 
   if checked then
     self.Icon:SetAlpha(1)
   else
-    self.Icon:SetAlpha(0.4)
+    self.Icon:SetAlpha(0.6)
   end
 
   self.SelectedTexture:SetShown(checked)
