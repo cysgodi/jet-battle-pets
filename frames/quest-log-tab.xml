@@ -1,6 +1,73 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 
+  <Button
+    name="QuestLogBattlePetTemplate"
+    virtual="true"
+  >
+    <Size x="290" y="16" />
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString inherits="GameFontNormalLeft" parentKey="PetName">
+          <Anchors>
+            <Anchor point="TOPLEFT" x="31" y="-8" />
+            <Anchor point="TOP" x="0" y="-8" />
+          </Anchors>
+          <Color r="0.75" g="0.61" b="0" />
+        </FontString>
+        <Texture
+          atlas="TaskPOI-Icon"
+          hidden="true"
+          parentKey="TaskIcon"
+          useAtlasSize="true"
+        >
+          <Anchors>
+            <Anchor
+              point="TOPRIGHT"
+              relativeKey="$parent.PetName"
+              relativePoint="TOPLEFT"
+              x="-5"
+              y="4"
+            />
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="BORDER">
+        <Texture
+          atlas="questlog-quest-glow-yellow" useAtlasSize="true"
+          parentKey="HighlightTexture"
+        >
+          <Anchors>
+            <Anchor
+              point="TOP"
+              relativeKey="$parent.PetName"
+              y="4"
+            />
+
+            <Anchor
+              point="BOTTOM"
+              relativeKey="$parent.PetName"
+              y="-4"
+            />
+          </Anchors>
+        </Texture>
+      </Layer>
+    </Layers>
+    <ButtonText
+      nonspacewrap="true"
+      parentKey="ButtonText"
+    >
+      <Size x="0" y="10" />
+
+      <Anchors>
+        <Anchor point="LEFT" x="20" y="0" />
+      </Anchors>
+    </ButtonText>
+    <NormalFont style="GameFontNormalLeft" />
+    <HighlightFont style="GameFontHighlightLeft" />
+    <DisabledFont style="GameFontHighlightLeft" />
+  </Button>
+
   <EventScrollFrame
     inherits="ScrollFrameTemplate"
     name="QuestLogPanelScrollFrameTemplate"
