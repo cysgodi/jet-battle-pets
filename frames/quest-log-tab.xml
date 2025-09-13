@@ -10,27 +10,9 @@
     virtual="true"
   >
     <KeyValues>
-      <KeyValue key="displayMode" value="QuestLogDisplayMode.BattlePets" type="string" />
+      <KeyValue key="displayMode" value="QuestLogDisplayMode.BattlePets" type="global" />
       <KeyValue key="tooltipText" value="Battle Pets" type="string" />
     </KeyValues>
-
-    <Layers>
-      <!-- Tab Icon -->
-      <Layer level="ARTWORK">
-        <Texture parentKey="BattlePetIcon">
-          <Size x="24" y="24" />
-
-          <Anchors>
-            <Anchor point="CENTER" />
-          </Anchors>
-        </Texture>
-      </Layer>
-    </Layers>
-
-    <Scripts>
-      <OnLoad method="OnLoad" />
-      <OnMouseUp method="OnMouseUp" />
-    </Scripts>
   </Frame>
 
   <!-- Quest Log page showing pets in the current zone -->
@@ -42,8 +24,7 @@
     virtual="true"
   >
     <KeyValues>
-      <!-- ID of the page so WoW knows when to display it -->
-      <KeyValue key="displayMode" value="QuestLogDisplayMode.BattlePets" type="string" />
+      <KeyValue key="displayMode" value="QuestLogDisplayMode.BattlePets" type="global" />
     </KeyValues>
 
     <Anchors>

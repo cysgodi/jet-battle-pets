@@ -2,13 +2,9 @@ local _, JetBattlePets = ...
 
 BattlePetsTabMixin = CreateFromMixins(QuestLogTabButtonMixin)
 
-function BattlePetsTabMixin:OnLoad()
-  -- add the tab button to the Quest Map frame
-  self:SetPoint("TOP", QuestMapFrame.TabButtons[#QuestMapFrame.TabButtons - 1], "BOTTOM", 0, -3)
-  self:SetChecked(false)
-end
-
----Show/hide "selected" texture based on whether tab is active
+---Override the default `SetChecked` method because we're using a
+---single atlas with different alpha levels for active vs inactive
+---states.
 function BattlePetsTabMixin:SetChecked(checked)
   self.Icon:SetAtlas(JetBattlePets.constants.ATLAS_NAMES.QUEST_LOG_TAB_ICON)
   self.Icon:SetSize(29, 29)
@@ -20,15 +16,6 @@ function BattlePetsTabMixin:SetChecked(checked)
   end
 
   self.SelectedTexture:SetShown(checked)
-end
-
----Select tab on mouse up after click
-function BattlePetsTabMixin:OnMouseUp(button, cursorInsideFrame)
-  QuestLogTabButtonMixin.OnMouseUp(self, button, cursorInsideFrame)
-
-  if (button == "LeftButton" and cursorInsideFrame) then
-    QuestMapFrame:SetDisplayMode(self.displayMode)
-  end
 end
 
 BattlePetsMixin = {}
