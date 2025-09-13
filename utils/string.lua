@@ -44,7 +44,11 @@ function JetBattlePets.text:Print(value)
 end
 
 function JetBattlePets.text:Sanitize(text)
-  local sanitized, _ = string.gsub(text, "|n", "\n")
+  --remove colorization
+  local sanitized = string.gsub(text, "|c%x+([%a%s:]+).+|r", "%1")
+
+  --replace pipe newlines with standard bash ones
+  sanitized = string.gsub(sanitized, "|n", "\n")
 
   return sanitized
 end
