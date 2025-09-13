@@ -103,6 +103,10 @@ end
 
 BattlePetsMixin = {}
 
+function BattlePetsMixin:OnLoad()
+  self.TitleText:SetText("Battle Pets")
+end
+
 ---Initialize pets list when tab is shown
 function BattlePetsMixin:OnShow()
   local mapId = self:GetParent():GetParent():GetMapID();
@@ -115,9 +119,4 @@ function BattlePetsMixin:OnShow()
     self.Pets[pet.speciesID] = self.Pet[pet.speciesID] or
         JetBattlePets.text:Print(sourceLines)
   end)
-end
-
-JetBattlePetsQuestLogEntryMixin = {}
-
-function JetBattlePetsQuestLogEntryMixin:OnShow()
 end
