@@ -1,195 +1,46 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-
   <!-- Quest Log tab for battle pets -->
   <Frame 
     inherits="QuestLogTabButtonTemplate"
+    parent="QuestMapFrame"
     parentKey="BattlePetsTab"
     mixin="BattlePetsTabMixin"
-    name="BattlePetsTabTemplate"
-    virtual="true"
   >
     <KeyValues>
       <KeyValue key="displayMode" value="QuestLogDisplayMode.BattlePets" type="global" />
       <KeyValue key="tooltipText" value="Battle Pets" type="string" />
     </KeyValues>
   </Frame>
-
-  <!-- Quest Log page showing pets in the current zone -->
+  <!-- Battle Pets panel in the Quest Log -->
   <Frame
-    enableMouse="true"
-    hidden="true"
+    inherits="EventSchedulerFrameTemplate"
     mixin="BattlePetsMixin"
-    name="BattlePetsFrameTemplate"
-    virtual="true"
+    parent="QuestMapFrame"
+    parentArray="ContentFrames"
+    parentKey="BattlePetsFrame"
   >
     <KeyValues>
       <KeyValue key="displayMode" value="QuestLogDisplayMode.BattlePets" type="global" />
     </KeyValues>
-
     <Anchors>
-      <Anchor point="TOPLEFT" relativeKey="$parent.ContentsAnchor" y="-29" />
-      <Anchor point="BOTTOMRIGHT" relativeKey="$parent.ContentsAnchor" x="-22" />
-    </Anchors>
-
-    <Layers>
-      <Layer level="BACKGROUND">
-        <Texture setAllPoints="true" />
-      </Layer>
-    </Layers>
-
-    <Frames>
-      <Frame 
-        parentKey="BorderFrame"
-        inherits="QuestLogBorderFrameTemplate"
+      <Anchor
+        point="TOPLEFT"
+        relativeKey="$parent.ContentsAnchor"
+        y="-29"
       />
-
-      <!-- Scroll box for the page -->
-      <Frame
-        parentKey="ScrollBox"
-        inherits="WowScrollBoxList"
-      >
-        <Anchors>
-          <Anchor point="TOPLEFT" />
-          <Anchor point="BOTTOMRIGHT" />
-        </Anchors>
-
-        <Layers>
-          <Layer level="BACKGROUND">
-            <Texture 
-              atlas="QuestLog-main-background"
-              parentKey="Background"
-              useAtlasSize="true"
-            >
-              <Anchors>
-                <Anchor point="TOPLEFT" />
-                <Anchor point="BOTTOMRIGHT" />
-              </Anchors>
-            </Texture>
-
-            <!-- Text displayed when there are no pets in the zone -->
-            <FontString 
-              hidden="true"
-              inherits="Game16Font"
-              parentKey="EmptyText"
-              text="No Battle Pets"
-            >
-              <Anchors>
-                <Anchor point="CENTER" />
-              </Anchors>
-            </FontString>
-          </Layer>
-        </Layers>
-      </Frame>
-
-      <EventFrame
-        parentKey="ScrollBar"
-        inherits="MinimalScrollBar"
-      >
-        <Anchors>
-          <Anchor 
-            point="TOPLEFT" 
-            relativeKey="$parent.ScrollBox"
-            relativePoint="TOPRIGHT"
-            x="8"
-            y="2"
-          />
-          
-          <Anchor 
-            point="BOTTOMLEFT" 
-            relativeKey="$parent.ScrollBox"
-            relativePoint="BOTTOMRIGHT"
-            x="6"
-            y="-4"
-          />
-        </Anchors>
-      </EventFrame>
-    </Frames>
-
-    <Scripts>
-      <OnShow method="OnShow" />
-    </Scripts>
-  </Frame>
-
-  <Button name="JetBattlePetsQuestLogEntry"
-    enableMouse="true"
-    mixin="JetBattlePetsQuestLogEntryMixin"
-    virtual="true"
-  >
-    <Size x="295" y="0" />
-
-    <HighlightTexture
-      alphaMode="ADD"
-      atlas="event-scheduler-ongoing-events-card-hover"
-      useAtlasSize="true"
-    />
-
-    <Frames>
-      <Button parentKey="IconButton"
-        mixin="JetBattlePetsQuestLogIconButtonMixin"
-      >
-        <Size x="28" y="28" />
-
-        <Anchors>
-          <Anchor point="TOPLEFT" />
-        </Anchors>
-
-        <NormalTexture atlas="UI-QuestPoi-QuestNumber" />
-        <HighlightTexture atlas="UI-QuestPoi-InnerGlow" 
-          alphaMode="ADD"
-        />
-
-        <Layers>
-          <Layer level="BACKGROUND">
-            <Texture parentKey="Underlay">
-              <Anchors>
-                <Anchor point="CENTER" />
-              </Anchors>
-            </Texture>
-          </Layer>
-
-          <Layer level="OVERLAY">
-            <Texture parentKey="Display">
-              <Anchors>
-                <Anchor point="CENTER" />
-              </Anchors>
-            </Texture>
-          </Layer>
-        </Layers>
-      </Button>
-    </Frames>
-
+      <Anchor
+        point="BOTTOMRIGHT"
+        relativeKey="$parent.ContentsAnchor"
+        x="-22"
+      />
+    </Anchors>
     <Layers>
       <Layer level="BACKGROUND">
-        <Texture parentKey="Background"
-          atlas="event-scheduler-ongoing-events-card-incomplete"
-          useAtlasSize="true"
-        >
-          <Anchors>
-            <Anchor point="TOPLEFT" />
-            <Anchor point="BOTTOMRIGHT" />
-          </Anchors>
+        <Texture setAllPoints="true">
+          <Color r="1" g="1" b="0" />
         </Texture>
       </Layer>
-
-      <Layer level="ARTWORK">
-        <FontString parentKey="Name" 
-          inherits="GameFontHighlight"
-          justifyH="LEFT"
-          maxLines="1"
-        >
-          <Anchors>
-            <Anchor point="TOPLEFT" x="30" y="-5" />
-          </Anchors>
-
-          <Color color="WHITE_FONT_COLOR" />
-        </FontString>
-      </Layer>
     </Layers>
-
-    <Scripts>
-      <OnShow method="OnShow" />
-    </Scripts>
-  </Button>
-
+  </Frame>
 </Ui>
