@@ -153,6 +153,8 @@ BattlePetsMixin = {}
 ---Initialize pets list when tab is shown
 function BattlePetsMixin:OnShow()
   self.pets = self.pets or {}
+  self.ScrollFrame.entryFramePool:ReleaseAll()
+  self.ScrollFrame.Contents:ResetUsage()
 
   local mapId = self:GetParent():GetCurrentMapID()
   local map = JetBattlePets.cache.maps[mapId]
