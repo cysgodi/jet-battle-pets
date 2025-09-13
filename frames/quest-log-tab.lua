@@ -1,7 +1,5 @@
 local _, JetBattlePets = ...
 
-BattlePetsTabMixin = CreateFromMixins(QuestLogTabButtonMixin)
-
 --[[
 Add a tab to the built-in Quest Log . The below XML frames need to
 exist for this to work properly:
@@ -107,6 +105,8 @@ function BattlePetEntry_OnLeave(self)
   self.HighlightTexture:Hide()
 end
 
+BattlePetsTabMixin = CreateFromMixins(QuestLogTabButtonMixin)
+
 ---Override the default `SetChecked` method because we're using a
 ---single atlas with different alpha levels for active vs inactive
 ---states.
@@ -153,7 +153,7 @@ function BattlePetScrollFrameMixin:OnLoad()
   local contentsFrame = self.Contents
 
   self.entryFramePool = CreateFramePool(
-    "BUTTON",
+    "Button",
     contentsFrame,
     "QuestLogEntryTemplate",
     function(framePool, frame)

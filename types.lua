@@ -2,6 +2,27 @@
 
 ---@class Dictionary<T>: { [string]: T }
 
+---@class BattlePetEntry : Frame
+---@field frameIndex integer
+---@field info PetJournalPetInfo
+---@field speciesID integer
+---@field Text FontString
+BattlePetEntry = {}
+
+---@class BattlePetScrollFrame : EventScrollFrame
+---@field Contents BattlePetScrollFrameContents
+---@field entryFramePool FramePool
+BattlePetScrollFrame = {}
+
+---@class BattlePetScrollFrameContents : Frame
+BattlePetScrollFrameContents = {}
+
+---Initialize scroll frame contents
+---@param onCreateFn function | nil A callback to execute during init
+---@param useHighlightManager boolean Whether to use the highlight manager
+function BattlePetScrollFrameContents:Init(onCreateFn, useHighlightManager)
+end
+
 ---@class JetBattlePets
 ---@field atlas JetBattlePetsAtlasUtils
 ---@field array JetBattlePetsArrayUtils
