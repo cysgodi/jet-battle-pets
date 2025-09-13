@@ -31,8 +31,8 @@ function JetBattlePets.array:Each(array, callback)
     return
   end
 
-  for _, value in pairs(array) do
-    callback(value)
+  for index, value in pairs(array) do
+    callback(value, index)
   end
 end
 
