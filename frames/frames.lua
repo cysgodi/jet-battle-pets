@@ -7,8 +7,6 @@ JetBattlePets.frames.BattlePetsTab = JetBattlePets.frames.BattlePetsTab or Creat
   "BattlePetsTabTemplate"
 )
 
-table.insert(QuestMapFrame.TabButtons, JetBattlePets.frames.BattlePetsTab)
-
 JetBattlePets.frames.BattlePetsMapFrame = JetBattlePets.frames.BattlePetsMapFrame or CreateFrame(
   "Frame",
   "BattlePetsFrame",
