@@ -9,7 +9,7 @@
     name="QuestLogEntryTemplate"
     virtual="true"
   >
-    <Size x="290" y="16" />
+    <Size x="290" y="32" />
     <Layers>
       <Layer level="ARTWORK">
         <FontString inherits="GameFontNormalLeft" parentKey="Text">
@@ -27,11 +27,10 @@
         >
           <Anchors>
             <Anchor
-              point="TOPRIGHT"
+              point="RIGHT"
               relativeKey="$parent.Text"
-              relativePoint="TOPLEFT"
-              x="-5"
-              y="4"
+              relativePoint="LEFT"
+              x="-4"
             />
           </Anchors>
         </Texture>

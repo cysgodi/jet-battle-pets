@@ -83,6 +83,28 @@ function AddQuestLogTab(name)
   )
 end
 
+---Get the icon for a battle pet source from a pet's source text
+---@param sourceText string
+---@return AtlasNames
+local function BattlePets_GetSourceIconFromSourceText(sourceText)
+  local atlasNames = JetBattlePets.constants.ATLAS_NAMES
+  local lines = JetBattlePets.text:Split(sourceText, "\n")
+  local atlas = atlasNames.SOURCE_PET_BATTLE
+  local sourceParts = JetBattlePets.text:Split(lines[1], ":")
+  local source = string.gsub(sourceParts[1], "|", "@")
+  -- print(source)
+
+  if source == "Drop" then
+    atlas = atlasNames.SOURCE_DROP
+  elseif source == "Quest" then
+    atlas = atlasNames.SOURCE_QUEST
+  elseif source == "Vendor" then
+    atlas = atlasNames.SOURCE_VENDOR
+  end
+
+  return atlas
+end
+
 local function BattlePets_AddButton(pet, frameIndex)
   local button = BattlePetScrollFrame.entryFramePool:Acquire();
 
@@ -92,6 +114,9 @@ local function BattlePets_AddButton(pet, frameIndex)
 
   QuestMapFrame:SetFrameLayoutIndex(button)
 
+  local atlas = BattlePets_GetSourceIconFromSourceText(pet.sourceText)
+  button.TaskIcon:SetAtlas(atlas)
+  button.TaskIcon:Show()
   button.Text:SetText(pet.name)
   button:SetPoint("LEFT", 20, 0)
   button:Show()
