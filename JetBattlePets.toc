@@ -52,7 +52,6 @@ utils/battleUi.lua
 frames/variant-models.xml
 frames/quest-log-tab.lua
 frames/quest-log-tab.xml
-frames/frames.lua
 
 # 3rd party integrations
 integrations/events.lua
