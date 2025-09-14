@@ -11,18 +11,19 @@
   >
     <Size x="290" y="32" />
     <Layers>
-      <Layer level="ARTWORK">
+      <Layer level="ARTWORK" textureSubLevel="2">
         <FontString inherits="GameFontNormalLeft" parentKey="Text">
           <Anchors>
-            <Anchor point="TOPLEFT" x="31" y="-8" />
+            <Anchor point="TOPLEFT" x="48" y="-8" />
             <Anchor point="TOP" x="0" y="-8" />
           </Anchors>
           <Color r="0.75" g="0.61" b="0" />
         </FontString>
+      </Layer>
+      <Layer level="ARTWORK" textureSubLevel="1">
         <Texture
-          atlas="TaskPOI-Icon"
-          hidden="true"
-          parentKey="TaskIcon"
+          atlas="UI-QuestPoi-QuestNumber"
+          parentKey="TaskIconBackground"
           useAtlasSize="true"
         >
           <Anchors>
@@ -31,6 +32,23 @@
               relativeKey="$parent.Text"
               relativePoint="LEFT"
               x="-4"
+            />
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="ARTWORK" textureSubLevel="2">
+        <Texture
+          atlas="TaskPOI-Icon"
+          hidden="true"
+          parentKey="TaskIcon"
+        >
+          <Size x="16" y="16" />
+          <Anchors>
+            <Anchor
+              point="TOP"
+              relativeKey="$parent.TaskIconBackground"
+              relativePoint="TOP"
+              y="-8"
             />
           </Anchors>
         </Texture>

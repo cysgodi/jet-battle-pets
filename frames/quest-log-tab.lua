@@ -115,7 +115,14 @@ local function BattlePets_AddButton(pet, frameIndex)
   QuestMapFrame:SetFrameLayoutIndex(button)
 
   local atlas = BattlePets_GetSourceIconFromSourceText(pet.sourceText)
+
+  if atlas == JetBattlePets.constants.ATLAS_NAMES.SOURCE_VENDOR then
+    button.TaskIcon:SetPoint("TOP", button.TaskIconBackground, "TOP", -1, -8)
+  end
+
+  button.TaskIconBackground:Hide()
   button.TaskIcon:SetAtlas(atlas)
+  button.TaskIconBackground:Show()
   button.TaskIcon:Show()
   button.Text:SetText(pet.name)
   button:SetPoint("LEFT", 20, 0)
@@ -189,6 +196,7 @@ function BattlePetScrollFrameMixin:OnLoad()
     end
   )
 
+  contentsFrame.topPadding = 16
   self.TitleText:SetText("Battle Pets")
   self.EmptyText:SetText("No Battle Pets")
 end
