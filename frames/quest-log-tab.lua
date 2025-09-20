@@ -288,10 +288,25 @@ QuestLogEntryMixin = {}
 
 function QuestLogEntryMixin:OnEnter()
   self.HighlightTexture:Show()
+
+  if C_AddOns.IsAddOnLoaded("Rematch") then
+    Rematch.cardManager:OnEnter(
+      Rematch.petCard,
+      self.TaskIcon,
+      self.speciesID
+    )
+  else
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT", -162, 0)
+    GameTooltip:SetText(self.info.name)
+  end
 end
 
 function QuestLogEntryMixin:OnLeave()
   self.HighlightTexture:Hide()
+
+  if C_AddOns.IsAddOnLoaded("Rematch") then
+    Rematch.cardManager:OnLeave(Rematch.petCard)
+  end
 end
 
 function QuestLogEntryMixin:OnLoad()
