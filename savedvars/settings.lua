@@ -18,6 +18,9 @@ local DEFAULT_SETTINGS = {
   -- flag to turn encounter data collection on/off
   ENABLE_DATA_COLLECTION = false,
 
+  -- flag to enable/disable the battle pet quest log tab
+  ENABLE_QUEST_LOG_TAB = false,
+
   -- flag to enable/disable the variant model viewer feature
   SHOW_VARIANT_MODEL_VIEWER = true,
 
