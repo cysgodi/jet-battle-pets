@@ -42,6 +42,7 @@ local function getter(_, petOrSpeciesID)
       name = name,
       obtainable = obtainable,
       petType = petType,
+      speciesID = petOrSpeciesID,
       sourceText = sourceText,
       tradable = tradable,
       unique = unique,
