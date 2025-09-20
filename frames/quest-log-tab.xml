@@ -24,8 +24,8 @@
         <Texture
           atlas="UI-QuestPoi-QuestNumber"
           parentKey="TaskIconBackground"
-          useAtlasSize="true"
         >
+          <Size x="36" y="36" />
           <Anchors>
             <Anchor
               point="RIGHT"
@@ -45,10 +45,9 @@
           <Size x="16" y="16" />
           <Anchors>
             <Anchor
-              point="TOP"
+              point="CENTER"
               relativeKey="$parent.TaskIconBackground"
-              relativePoint="TOP"
-              y="-8"
+              relativePoint="CENTER"
             />
           </Anchors>
         </Texture>

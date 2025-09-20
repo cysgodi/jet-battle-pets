@@ -272,7 +272,8 @@ function BattlePetScrollFrameMixin:AddButton(pet, frameIndex)
   local atlas = BattlePets_GetSourceIconFromSourceText(pet.sourceText)
 
   if atlas == JetBattlePets.constants.ATLAS_NAMES.SOURCE_VENDOR then
-    button.TaskIcon:SetPoint("TOP", button.TaskIconBackground, "TOP", -1, -8)
+    button.TaskIcon:SetPoint("CENTER", button.TaskIconBackground, "CENTER", -1, 0)
+    button.TaskIcon:SetSize(14, 14)
   end
 
   button.TaskIconBackground:Hide()
@@ -298,6 +299,7 @@ end
 
 function QuestLogEntryMixin:OnEnter()
   self.HighlightTexture:Show()
+  self.TaskIconBackground:SetAtlas(JetBattlePets.constants.ATLAS_NAMES.QUEST_LOG_TASK_ICON_HIGHLIGHT)
 
   if C_AddOns.IsAddOnLoaded("Rematch") then
     Rematch.cardManager:OnEnter(
@@ -313,6 +315,7 @@ end
 
 function QuestLogEntryMixin:OnLeave()
   self.HighlightTexture:Hide()
+  self.TaskIconBackground:SetAtlas(JetBattlePets.constants.ATLAS_NAMES.QUEST_LOG_TASK_ICON)
 
   if C_AddOns.IsAddOnLoaded("Rematch") then
     Rematch.cardManager:OnLeave(Rematch.petCard)
