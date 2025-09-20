@@ -17,7 +17,7 @@ function EventsFrame:HandleEvent(event, ...)
   self[event] = self[event] or {}
 
   for _, callback in pairs(self[event]) do
-    callback(self, event, ...)
+    callback(event, ...)
   end
 end
 
