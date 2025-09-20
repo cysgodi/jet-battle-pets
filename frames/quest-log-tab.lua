@@ -302,9 +302,24 @@ function QuestLogEntryMixin:OnEnter()
   self.TaskIconBackground:SetAtlas(JetBattlePets.constants.ATLAS_NAMES.QUEST_LOG_TASK_ICON_HIGHLIGHT)
 
   if C_AddOns.IsAddOnLoaded("Rematch") then
+    self.RematchAnchor = self.RematchAnchor or CreateFrame(
+      "Frame",
+      "RematchAnchor",
+      self
+    )
+
+    self.RematchAnchor:SetPoint(
+      "TOPLEFT",
+      self,
+      "TOPRIGHT",
+      -24,
+      36
+    )
+    self.RematchAnchor:SetSize(1, 1)
+
     Rematch.cardManager:OnEnter(
       Rematch.petCard,
-      self.TaskIcon,
+      self.RematchAnchor,
       self.speciesID
     )
   else
