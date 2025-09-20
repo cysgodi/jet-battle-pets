@@ -75,6 +75,7 @@
       </Layer>
     </Layers>
     <Scripts>
+      <OnClick method="OnClick" />
       <OnLoad method="OnLoad" />
       <OnEnter method="OnEnter" />
       <OnLeave method="OnLeave" />

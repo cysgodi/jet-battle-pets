@@ -286,6 +286,16 @@ end
 
 QuestLogEntryMixin = {}
 
+function QuestLogEntryMixin:OnClick()
+  if C_AddOns.IsAddOnLoaded("Rematch") then
+    Rematch.cardManager:OnClick(
+      Rematch.petCard,
+      self,
+      self.speciesID
+    )
+  end
+end
+
 function QuestLogEntryMixin:OnEnter()
   self.HighlightTexture:Show()
 
