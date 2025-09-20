@@ -102,6 +102,23 @@ local function InitCaptureThreatWarningsOption(category)
   )
 end
 
+-- init checkbox to toggle quest log tab
+local function InitQuestLogTabOption(category)
+  local setting = Settings.RegisterProxySetting(
+    category,
+    "ENABLE_QUEST_LOG_TAB",
+    Settings.VarType.Boolean,
+    "Quest Log Tab",
+    Settings.Default.False,
+    function() return JetBattlePets.settings.ENABLE_QUEST_LOG_TAB end,
+    function(value) JetBattlePets.settings.ENABLE_QUEST_LOG_TAB = value end
+  )
+
+  Settings.CreateCheckbox(category, setting,
+    "Show a tab in the Quest Log with details about battle pets that can be found in each zone."
+  )
+end
+
 -- init experimental settings section
 local function InitExperimentalSettingsSection(category, layout)
   layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(
@@ -110,6 +127,7 @@ local function InitExperimentalSettingsSection(category, layout)
   ))
 
   InitCaptureThreatWarningsOption(category)
+  InitQuestLogTabOption(category)
 end
 
 -- init addon options on load
