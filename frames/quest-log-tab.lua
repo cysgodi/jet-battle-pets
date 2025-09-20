@@ -195,14 +195,6 @@ local function BattlePets_GetSourceIconFromSourceText(sourceText)
   return atlas
 end
 
-function BattlePetEntry_OnEnter(self)
-  self.HighlightTexture:Show()
-end
-
-function BattlePetEntry_OnLeave(self)
-  self.HighlightTexture:Hide()
-end
-
 BattlePetsTabMixin = {}
 
 ---Override the default `SetChecked` method because we're using a
@@ -293,6 +285,14 @@ function BattlePetScrollFrameMixin:AddButton(pet, frameIndex)
 end
 
 QuestLogEntryMixin = {}
+
+function QuestLogEntryMixin:OnEnter()
+  self.HighlightTexture:Show()
+end
+
+function QuestLogEntryMixin:OnLeave()
+  self.HighlightTexture:Hide()
+end
 
 function QuestLogEntryMixin:OnLoad()
   self:RegisterForClicks("LeftButtonUp", "RightButtonUp")

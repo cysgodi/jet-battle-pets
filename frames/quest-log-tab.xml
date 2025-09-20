@@ -76,8 +76,8 @@
     </Layers>
     <Scripts>
       <OnLoad method="OnLoad" />
-      <OnEnter function="BattlePetEntry_OnEnter" />
-      <OnLeave function="BattlePetEntry_OnLeave" />
+      <OnEnter method="OnEnter" />
+      <OnLeave method="OnLeave" />
     </Scripts>
     <ButtonText
       nonspacewrap="true"
