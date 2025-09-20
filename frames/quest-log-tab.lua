@@ -1,86 +1,176 @@
 local _, JetBattlePets = ...
 
---[[
-Add a tab to the built-in Quest Log . The below XML frames need to
-exist for this to work properly:
-
-**Tab Frame**
-
-```xml
-  <Frame inherits="QuestLogTabButtonTemplate"
-    parent="QuestMapFrame"
-    parentKey="<name>Tab"
-    mixin="<your-optional-mixin>"
-  >
-    <KeyValues>
-      <KeyValue key="displayMode"
-        value="QuestLogDisplayMode.<name>"
-        type="global"
-      />
-
-      <KeyValue key="tooltipText"
-        value="<your-tooltip-text>"
-        type="string"
-      />
-    </KeyValues>
-  </Frame>
-```
-
-**Tab Contents Frame**
-
-```xml
-  <Frame inherits="<your-optional-template>"
-    mixin="<your-optional-mixin>"
-    parent="QuestMapFrame"
-    parentArray="ContentFrames"
-    parentKey="<your-frame-name>"
-  >
-    <KeyValues>
-      <KeyValue key="displayMode"
-        value="QuestLogDisplayMode.<name>"
-        type="global"
-      />
-    </KeyValues>
-
-    <Anchors>
-      <Anchor
-        point="TOPLEFT"
-        relativeKey="$parent.ContentsAnchor"
-        y="-29"
-      />
-
-      <Anchor
-        point="BOTTOMRIGHT"
-        relativeKey="$parent.ContentsAnchor"
-        x="-22"
-      />
-    </Anchors>
-
-    <Layers>
-      <Layer level="BACKGROUND">
-        <Texture setAllPoints="true">
-          <Color r="1" g="1" b="0" />
-        </Texture>
-      </Layer>
-    </Layers>
-  </Frame>
-```
-]]
+---Add a page to the quest log
 ---@param name string
-function AddQuestLogTab(name)
+---@param pageMixin table Mixin for the page frame
+---@param scrollFrameMixin table Mixin for the event scroll frame
+local function AddQuestLogPage(name, pageMixin, scrollFrameMixin)
+  local panelName = string.format("%sFrame", name)
+
+  if QuestMapFrame[panelName] or not QuestLogDisplayMode[name] then
+    return
+  end
+
+  local basePageFrame = CreateFrame(
+    "Frame",
+    panelName,
+    QuestMapFrame,
+    "QuestLogPanelTemplate"
+  )
+  local pageFrame = Mixin(basePageFrame, pageMixin or {})
+  pageFrame.displayMode = QuestLogDisplayMode[name]
+  pageFrame:SetParentKey(panelName)
+  pageFrame:Hide()
+  pageFrame:SetScript("OnShow", pageFrame.OnShow)
+
+  table.insert(QuestMapFrame.ContentFrames, pageFrame)
+
+  local baseScrollFrame = CreateFrame(
+    "EventScrollFrame",
+    string.format("%sScrollFrame", name),
+    pageFrame,
+    "QuestLogPanelScrollFrameTemplate"
+  )
+
+  local scrollFrame = Mixin(baseScrollFrame, scrollFrameMixin or {})
+  scrollFrame:SetParentKey("ScrollFrame")
+  scrollFrame:Init()
+
+  QuestMapFrame[panelName] = pageFrame
+
+  return pageFrame
+end
+
+--Add a tab to the built-in Quest Log.
+---@param name string
+---@param tooltipText string The text to display in the tooltip
+---@param tabMixin table A mixin for the tab frame
+---@param pageMixin table A mixin for the page frame
+---@param scrollFrameMixin table A mixin for the scroll frame
+---@return Frame TabFrame The frame created for the new tab
+function AddQuestLogTab(
+    name,
+    tooltipText,
+    tabMixin,
+    pageMixin,
+    scrollFrameMixin
+)
+  local tabName = string.format("%sTab", name)
+  if QuestMapFrame[tabName] then
+    return QuestMapFrame[tabName]
+  end
+
   local displayModeArray = tInvert(QuestLogDisplayMode)
   local tabIndex = #displayModeArray + 1
-  local tabName = string.format("%sTab", name)
 
-  QuestLogDisplayMode[tabName] = tabIndex
+  QuestLogDisplayMode[name] = tabIndex
 
-  QuestMapFrame[name .. "Tab"]:SetPoint(
+
+  local baseFrame = CreateFrame(
+    "Frame",
+    tabName,
+    QuestMapFrame,
+    "QuestLogTabButtonTemplate"
+  )
+  local frame = Mixin(baseFrame, BattlePetsTabMixin, tabMixin or {})
+  frame.displayMode = QuestLogDisplayMode[name]
+  frame.tooltipText = tooltipText
+
+  table.insert(QuestMapFrame.TabButtons, frame)
+  frame:SetPoint(
     "TOP",
     QuestMapFrame.TabButtons[tabIndex - 1],
     "BOTTOM",
     0,
     -3
   )
+  frame:SetParentKey(tabName)
+  frame:Show()
+
+  QuestMapFrame[tabName] = frame
+
+  ReloadQuestLogTabs()
+  ReloadQuestMapFrame()
+
+  AddQuestLogPage(name, pageMixin, scrollFrameMixin)
+
+  return frame
+end
+
+---Remove a tab with a given name from the built-in Quest Log.
+---@param name string
+function RemoveQuestLogTab(name)
+  local tabName = string.format("%sTab", name)
+
+  RemoveQuestLogPage(name)
+
+  if not QuestMapFrame[tabName] then
+    return
+  end
+
+  if QuestMapFrame.displayMode == QuestLogDisplayMode[name] then
+    QuestMapFrame:SetDisplayMode(1)
+  end
+
+  local tabs = {}
+
+  for _, tab in pairs(QuestMapFrame.TabButtons) do
+    if tab.displayMode and tab.displayMode ~= QuestLogDisplayMode[name] then
+      table.insert(tabs, tab)
+    else
+      tab:ClearAllPoints()
+      tab:SetParent(nil)
+      tab = nil
+    end
+  end
+
+  QuestMapFrame.TabButtons = tabs
+  QuestLogDisplayMode[name] = nil
+  QuestMapFrame[tabName] = nil
+
+  ReloadQuestLogTabs()
+  ReloadQuestMapFrame()
+end
+
+---Remove a page with a given name from the build-in Quest Log.
+---@param name string
+function RemoveQuestLogPage(name)
+  local pageName = string.format("%sFrame", name)
+
+  if not QuestMapFrame[pageName] then
+    return
+  end
+
+  local pages = {}
+
+  for _, page in pairs(QuestMapFrame.ContentFrames) do
+    if page.displayMode and page.displayMode ~= QuestLogDisplayMode[name] then
+      table.insert(pages, page)
+    else
+      page:ClearAllPoints()
+      page:SetParent(nil)
+      page = nil
+    end
+  end
+
+  QuestMapFrame.ContentFrames = pages
+  QuestMapFrame[pageName] = nil
+end
+
+---Execute the OnLoad method for all items in the quest map frame's
+---tab buttons list.
+function ReloadQuestLogTabs()
+  for _, tab in pairs(QuestMapFrame.TabButtons) do
+    if tab["OnLoad"] then
+      tab:OnLoad()
+    end
+  end
+end
+
+---Re-initialize the quest map frame.
+function ReloadQuestMapFrame()
+  QuestMapFrame.displayMode = nil
+  QuestMapFrame_OnLoad(QuestMapFrame)
 end
 
 ---Get the icon for a battle pet source from a pet's source text
@@ -105,30 +195,6 @@ local function BattlePets_GetSourceIconFromSourceText(sourceText)
   return atlas
 end
 
-local function BattlePets_AddButton(pet, frameIndex)
-  local button = BattlePetScrollFrame.entryFramePool:Acquire();
-
-  button.info = pet
-  button.speciesID = pet.speciesID
-  button.frameIndex = frameIndex
-
-  QuestMapFrame:SetFrameLayoutIndex(button)
-
-  local atlas = BattlePets_GetSourceIconFromSourceText(pet.sourceText)
-
-  if atlas == JetBattlePets.constants.ATLAS_NAMES.SOURCE_VENDOR then
-    button.TaskIcon:SetPoint("TOP", button.TaskIconBackground, "TOP", -1, -8)
-  end
-
-  button.TaskIconBackground:Hide()
-  button.TaskIcon:SetAtlas(atlas)
-  button.TaskIconBackground:Show()
-  button.TaskIcon:Show()
-  button.Text:SetText(pet.name)
-  button:SetPoint("LEFT", 20, 0)
-  button:Show()
-end
-
 function BattlePetEntry_OnEnter(self)
   self.HighlightTexture:Show()
 end
@@ -137,7 +203,7 @@ function BattlePetEntry_OnLeave(self)
   self.HighlightTexture:Hide()
 end
 
-BattlePetsTabMixin = CreateFromMixins(QuestLogTabButtonMixin)
+BattlePetsTabMixin = {}
 
 ---Override the default `SetChecked` method because we're using a
 ---single atlas with different alpha levels for active vs inactive
@@ -160,6 +226,7 @@ BattlePetsMixin = {}
 ---Initialize pets list when tab is shown
 function BattlePetsMixin:OnShow()
   self.pets = self.pets or {}
+
   self.ScrollFrame.entryFramePool:ReleaseAll()
   self.ScrollFrame.Contents:ResetUsage()
 
@@ -169,7 +236,7 @@ function BattlePetsMixin:OnShow()
   local pets = JetBattlePets.pets.GetPets(map.petIDs)
 
   JetBattlePets.array:Each(pets, function(pet, index)
-    BattlePets_AddButton(pet, index)
+    self.ScrollFrame:AddButton(pet, index)
   end)
 
   self.ScrollFrame.Contents:Layout()
@@ -177,12 +244,12 @@ end
 
 BattlePetScrollFrameMixin = {}
 
-function BattlePetScrollFrameMixin:OnLoad()
+function BattlePetScrollFrameMixin:Init()
   ScrollFrame_OnLoad(self)
 
   local onCreateFn = nil
   local useHighlightManager = true
-  BattlePetScrollFrame.Contents:Init(onCreateFn, useHighlightManager)
+  self.Contents:Init(onCreateFn, useHighlightManager)
 
   local contentsFrame = self.Contents
 
@@ -199,6 +266,30 @@ function BattlePetScrollFrameMixin:OnLoad()
   contentsFrame.topPadding = 16
   self.TitleText:SetText("Battle Pets")
   self.EmptyText:SetText("No Battle Pets")
+end
+
+function BattlePetScrollFrameMixin:AddButton(pet, frameIndex)
+  local button = self.entryFramePool:Acquire();
+
+  button.info = pet
+  button.speciesID = pet.speciesID
+  button.frameIndex = frameIndex
+
+  QuestMapFrame:SetFrameLayoutIndex(button)
+
+  local atlas = BattlePets_GetSourceIconFromSourceText(pet.sourceText)
+
+  if atlas == JetBattlePets.constants.ATLAS_NAMES.SOURCE_VENDOR then
+    button.TaskIcon:SetPoint("TOP", button.TaskIconBackground, "TOP", -1, -8)
+  end
+
+  button.TaskIconBackground:Hide()
+  button.TaskIcon:SetAtlas(atlas)
+  button.TaskIconBackground:Show()
+  button.TaskIcon:Show()
+  button.Text:SetText(pet.name)
+  button:SetPoint("LEFT", 20, 0)
+  button:Show()
 end
 
 QuestLogEntryMixin = {}

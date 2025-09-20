@@ -54,14 +54,10 @@ local function OnPetBattlePetChanged(_, owner)
 end
 EventsFrame:OnEvent("PET_BATTLE_PET_CHANGED", OnPetBattlePetChanged)
 
-local function OnPlayerEnteringWorld(_, loggingIn, reloading)
-  if not loggingIn and not reloading then
-    return
-  end
-
-  InitJetBattlePetsFrames()
-end
-EventsFrame:OnEvent("PLAYER_ENTERING_WORLD", OnPlayerEnteringWorld)
+EventRegistry:RegisterCallback(
+  "WorldMapOnShow",
+  InitJetBattlePetsFrames
+)
 
 EventsFrame:RegisterEvent("ADDON_LOADED")
 EventsFrame:RegisterEvent("MODIFIER_STATE_CHANGED")
@@ -69,6 +65,7 @@ EventsFrame:RegisterEvent("PET_BATTLE_OPENING_START")
 EventsFrame:RegisterEvent("PET_BATTLE_OVER")
 EventsFrame:RegisterEvent("PET_BATTLE_PET_CHANGED")
 EventsFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+EventsFrame:RegisterEvent("QUEST_LOG_UPDATE")
 EventsFrame:SetScript("OnEvent", EventsFrame.HandleEvent)
 
 JetBattlePets.events = EventsFrame

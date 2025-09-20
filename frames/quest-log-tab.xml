@@ -230,47 +230,4 @@
   </Frame>
 
   <!-- END TEMPLATES -->
-
-  <!-- Quest Log tab for battle pets -->
-  <Frame
-    hidden="true"
-    inherits="QuestLogTabButtonTemplate"
-    parent="QuestMapFrame"
-    parentKey="BattlePetsTab"
-    mixin="BattlePetsTabMixin"
-  >
-    <KeyValues>
-      <KeyValue key="displayMode" value="QuestLogDisplayMode.BattlePets" type="global" />
-      <KeyValue key="tooltipText" value="Battle Pets" type="string" />
-    </KeyValues>
-  </Frame>
-
-  <!-- Quest Log panel for battle pets -->
-  <Frame
-    hidden="true"
-    inherits="QuestLogPanelTemplate"
-    mixin="BattlePetsMixin"
-    parent="QuestMapFrame"
-    parentArray="ContentFrames"
-    parentKey="BattlePetsFrame"
-  >
-    <KeyValues>
-      <KeyValue key="displayMode" value="QuestLogDisplayMode.BattlePets" type="global" />
-    </KeyValues>
-    <Frames>
-      <EventScrollFrame
-        inherits="QuestLogPanelScrollFrameTemplate"
-        mixin="BattlePetScrollFrameMixin"
-        name="BattlePetScrollFrame"
-        parentKey="ScrollFrame"
-      >
-        <Scripts>
-          <OnLoad method="OnLoad" />
-        </Scripts>
-      </EventScrollFrame>
-    </Frames>
-    <Scripts>
-      <OnShow method="OnShow" />
-    </Scripts>
-  </Frame>
 </Ui>
