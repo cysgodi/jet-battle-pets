@@ -233,6 +233,7 @@
 
   <!-- Quest Log tab for battle pets -->
   <Frame
+    hidden="true"
     inherits="QuestLogTabButtonTemplate"
     parent="QuestMapFrame"
     parentKey="BattlePetsTab"
@@ -246,6 +247,7 @@
 
   <!-- Quest Log panel for battle pets -->
   <Frame
+    hidden="true"
     inherits="QuestLogPanelTemplate"
     mixin="BattlePetsMixin"
     parent="QuestMapFrame"
