@@ -303,21 +303,20 @@ function VariantModelMixin:SetDimensions(modelSlot)
   )
   self:SetPoint("TOPLEFT", xOffset, yOffset)
 
-  self.Border:SetFrameLevel(6)
+  self.Border:SetFrameLevel(3)
   self.Border:SetPoint("TOP")
   self.Border:SetSize(
     modelDimensions.HEIGHT,
     modelDimensions.WIDTH
   )
 
-  self.VariantModel:SetFrameLevel(5)
   self.VariantModel:SetPoint("TOP")
   self.VariantModel:SetSize(
     modelDimensions.WIDTH,
     modelDimensions.HEIGHT
   )
 
-  self.Background:SetFrameLevel(4)
+  self.Background:SetFrameLevel(1)
   self.Background:SetPoint("TOP")
   self.Background:SetSize(
     modelDimensions.HEIGHT,

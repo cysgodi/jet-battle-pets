@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.1
+
+- fixed an issue where models in the model viewer were drawn behind their backgrounds
+
 ## v1.2.0
 
 - release the variant model viewer and enable by default
