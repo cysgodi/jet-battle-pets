@@ -1,4 +1,7 @@
-local _, JetBattlePets = ...
+local _, _JetBattlePets = ...
+
+---@class JetBattlePets
+local JetBattlePets = _JetBattlePets
 
 ---@class EventsFrame : Frame
 local EventsFrame = CreateFrame("Frame")

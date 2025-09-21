@@ -30,6 +30,7 @@ end
 ---@field cache table<string, Dictionary<table>>
 ---@field color JetBattlePetsColorUtils
 ---@field constants JetBattlePetsConstants
+---@field events EventsFrame
 ---@field encounters JetBattlePetsEncountersUtils
 ---@field frames Dictionary<Frame|VariantModelsWindow>
 ---@field grid JetBattlePetsGridUtils
