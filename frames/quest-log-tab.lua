@@ -29,6 +29,12 @@ local function AddQuestLogPage(name, pageMixin, scrollFrameMixin)
   pageFrame:Hide()
   pageFrame:SetScript("OnShow", pageFrame.OnShow)
 
+  local function callback()
+    pageFrame:Update()
+  end
+
+  JetBattlePets.events:OnEvent("QUEST_LOG_UPDATE", callback)
+
   table.insert(QuestMapFrame.ContentFrames, pageFrame)
 
   local baseScrollFrame = CreateFrame(
@@ -242,8 +248,12 @@ end
 
 BattlePetsMixin = {}
 
----Initialize pets list when tab is shown
 function BattlePetsMixin:OnShow()
+  self:Update()
+end
+
+---Initialize pets list when tab is shown
+function BattlePetsMixin:Update()
   local mapID = self:GetParent():GetCurrentMapID()
 
   if self.mapID == mapID then return end
