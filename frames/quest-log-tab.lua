@@ -187,11 +187,15 @@ end
 ---@return string sourceName
 local function GetSourceNameFromSourceText(sourceText)
   local lines = JetBattlePets.text:Split(sourceText, "\n")
-  local sourceParts = JetBattlePets.text:Split(lines[1], ":")
-  -- assign to local variable since gsub has multiple returns
-  local source = string.gsub(sourceParts[1], "|", "@")
+  local sourceLine = lines[1]
 
-  return source
+  if lines[2] and string.find(sourceLine, "Zone") then
+    sourceLine = lines[2]
+  end
+
+  local sourceParts = JetBattlePets.text:Split(sourceLine, ":")
+
+  return sourceParts[1]
 end
 
 ---Get the icon for a battle pet source from a pet's source text
@@ -201,7 +205,11 @@ local function GetSourceIconFromSourceName(sourceName)
   local atlasNames = JetBattlePets.constants.ATLAS_NAMES
   local atlas = atlasNames.SOURCE_PET_BATTLE
 
-  if sourceName == "Drop" then
+  if sourceName == "Achievement" then
+    atlas = atlasNames.SOURCE_ACHIEVEMENT
+  elseif sourceName == "Discovery" then
+    atlas = atlasNames.SOURCE_DISCOVERY
+  elseif sourceName == "Drop" then
     atlas = atlasNames.SOURCE_DROP
   elseif sourceName == "Quest" then
     atlas = atlasNames.SOURCE_QUEST
