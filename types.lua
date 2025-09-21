@@ -386,6 +386,9 @@ function JetBattlePetsTextUtils:SetColorByName(rarity, text)
 end
 
 ---Split a string into tokens based on a given delimiter.
+---@param text string
+---@param splitter string
+---@return table<number, string>
 function JetBattlePetsTextUtils:Split(text, splitter)
 end
 

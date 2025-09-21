@@ -1,4 +1,9 @@
-local _, JetBattlePets = ...
+local _, _JetBattlePets = ...
+
+---@class JetBattlePets
+local JetBattlePets = _JetBattlePets
+
+---@class QuestLogTabButtonFrame : Frame
 
 ---Add a page to the quest log
 ---@param name string
@@ -17,6 +22,7 @@ local function AddQuestLogPage(name, pageMixin, scrollFrameMixin)
     QuestMapFrame,
     "QuestLogPanelTemplate"
   )
+  ---@class QuestLogTabButtonFrame
   local pageFrame = Mixin(basePageFrame, pageMixin or {})
   pageFrame.displayMode = QuestLogDisplayMode[name]
   pageFrame:SetParentKey(panelName)
@@ -32,6 +38,7 @@ local function AddQuestLogPage(name, pageMixin, scrollFrameMixin)
     "QuestLogPanelScrollFrameTemplate"
   )
 
+  ---@class EventScrollFrame
   local scrollFrame = Mixin(baseScrollFrame, scrollFrameMixin or {})
   scrollFrame:SetParentKey("ScrollFrame")
   scrollFrame:Init()
@@ -72,6 +79,8 @@ function AddQuestLogTab(
     QuestMapFrame,
     "QuestLogTabButtonTemplate"
   )
+
+  ---@class QuestLogTabButtonFrame
   local frame = Mixin(baseFrame, BattlePetsTabMixin, tabMixin or {})
   frame.displayMode = QuestLogDisplayMode[name]
   frame.tooltipText = tooltipText
@@ -173,16 +182,25 @@ function ReloadQuestMapFrame()
   QuestMapFrame_OnLoad(QuestMapFrame)
 end
 
+---Get the name of a source from provided source text.
+---@param sourceText string
+---@return string sourceName
+local function GetSourceNameFromSourceText(sourceText)
+  local lines = JetBattlePets.text:Split(sourceText, "\n")
+  local sourceParts = JetBattlePets.text:Split(lines[1], ":")
+  -- assign to local variable since gsub has multiple returns
+  local source = string.gsub(sourceParts[1], "|", "@")
+
+  return source
+end
+
 ---Get the icon for a battle pet source from a pet's source text
 ---@param sourceText string
----@return AtlasNames
-local function BattlePets_GetSourceIconFromSourceText(sourceText)
+---@return string
+local function GetSourceIconFromSourceText(sourceText)
   local atlasNames = JetBattlePets.constants.ATLAS_NAMES
-  local lines = JetBattlePets.text:Split(sourceText, "\n")
   local atlas = atlasNames.SOURCE_PET_BATTLE
-  local sourceParts = JetBattlePets.text:Split(lines[1], ":")
-  local source = string.gsub(sourceParts[1], "|", "@")
-  -- print(source)
+  local source = GetSourceNameFromSourceText(sourceText)
 
   if source == "Drop" then
     atlas = atlasNames.SOURCE_DROP
@@ -234,6 +252,10 @@ function BattlePetsMixin:OnShow()
   self.ScrollFrame.Contents:Layout()
 end
 
+---@class BattlePetScrollFrameMixin : EventScrollFrame
+---@field TitleText FontString
+---@field EmptyText FontString
+---@field entryFramePool FramePool
 BattlePetScrollFrameMixin = {}
 
 function BattlePetScrollFrameMixin:Init()
@@ -269,7 +291,7 @@ function BattlePetScrollFrameMixin:AddButton(pet, frameIndex)
 
   QuestMapFrame:SetFrameLayoutIndex(button)
 
-  local atlas = BattlePets_GetSourceIconFromSourceText(pet.sourceText)
+  local atlas = GetSourceIconFromSourceText(pet.sourceText)
 
   if atlas == JetBattlePets.constants.ATLAS_NAMES.SOURCE_VENDOR then
     button.TaskIcon:SetPoint("CENTER", button.TaskIconBackground, "CENTER", -1, 0)
