@@ -205,6 +205,8 @@ local function GetSourceIconFromSourceName(sourceName)
     atlas = atlasNames.SOURCE_DROP
   elseif sourceName == "Quest" then
     atlas = atlasNames.SOURCE_QUEST
+  elseif sourceName == "Treasure" then
+    atlas = atlasNames.SOURCE_TREASURE
   elseif sourceName == "Vendor" then
     atlas = atlasNames.SOURCE_VENDOR
   end
@@ -234,23 +236,38 @@ BattlePetsMixin = {}
 
 ---Initialize pets list when tab is shown
 function BattlePetsMixin:OnShow()
-  self.pets = self.pets or {}
+  local mapID = self:GetParent():GetCurrentMapID()
 
-  self.ScrollFrame.OtherPool:ReleaseAll()
-  self.ScrollFrame.VendorPool:ReleaseAll()
-  self.ScrollFrame.WildPool:ReleaseAll()
-  self.ScrollFrame.Contents:ResetUsage()
+  if self.mapID == mapID then return end
 
-  local mapId = self:GetParent():GetCurrentMapID()
-  local map = JetBattlePets.cache.maps[mapId]
-
+  local map = JetBattlePets.cache.maps[mapID]
   local pets = JetBattlePets.pets.GetPets(map.petIDs)
 
-  JetBattlePets.array:Each(pets, function(pet, index)
-    self.ScrollFrame:AddButton(pet, index)
+  local PetsBySource = {}
+
+  JetBattlePets.array:Each(pets, function(pet)
+    local source = GetSourceNameFromSourceText(pet.sourceText)
+    PetsBySource[source] = PetsBySource[source] or {}
+    table.insert(PetsBySource[source], pet)
   end)
 
-  self.ScrollFrame.Contents:Layout()
+  local logRows = {}
+
+  for source, sourcePets in pairs(PetsBySource) do
+    table.insert(logRows,
+      {
+        isCollapsed = false,
+        isHeader = true,
+        text = string.format("%s (%d)", source, #sourcePets)
+      }
+    )
+
+    JetBattlePets.array:Each(sourcePets, function(pet)
+      table.insert(logRows, pet)
+    end)
+  end
+
+  self.ScrollFrame:Update(logRows)
 end
 
 ---Create a pool of quest log entry template frames given a frame to
@@ -272,9 +289,8 @@ end
 ---@class BattlePetScrollFrameMixin : EventScrollFrame
 ---@field TitleText FontString
 ---@field EmptyText FontString
----@field OtherPool FramePool
----@field VendorPool FramePool
----@field WildPool FramePool
+---@field HeaderPool FramePool
+---@field PetPool FramePool
 BattlePetScrollFrameMixin = {}
 
 function BattlePetScrollFrameMixin:Init()
@@ -284,19 +300,32 @@ function BattlePetScrollFrameMixin:Init()
   local useHighlightManager = true
   self.Contents:Init(onCreateFn, useHighlightManager)
 
-  self.OtherPool = InitQuestLogEntryFramePool(self.Contents)
-  self.VendorPool = InitQuestLogEntryFramePool(self.Contents)
-  self.WildPool = InitQuestLogEntryFramePool(self.Contents)
+  self.HeaderPool = CreateFramePool(
+    "Button",
+    self.Contents,
+    "QuestLogHeaderTemplate"
+  )
+
+  self.PetPool = InitQuestLogEntryFramePool(self.Contents)
 
   self.Contents.topPadding = 16
   self.TitleText:SetText("Battle Pets")
   self.EmptyText:SetText("No Battle Pets")
 end
 
-function BattlePetScrollFrameMixin:AddButton(pet, frameIndex)
+function BattlePetScrollFrameMixin:AddHeaderButton(header, frameIndex)
+  local button = self.HeaderPool:Acquire()
+  button:UpdateCollapsedState(nil, header)
+  button.questLogIndex = frameIndex
+  QuestMapFrame:SetFrameLayoutIndex(button)
+  button:SetText(header.text)
+
+  return button
+end
+
+function BattlePetScrollFrameMixin:AddPetButton(pet, frameIndex)
   local source = GetSourceNameFromSourceText(pet.sourceText)
-  local pool = self:GetFramePoolBySourceName(source)
-  local button = pool:Acquire();
+  local button = self.PetPool:Acquire();
 
   button.info = pet
   button.speciesID = pet.speciesID
@@ -321,19 +350,25 @@ function BattlePetScrollFrameMixin:AddButton(pet, frameIndex)
   button:Show()
 end
 
----Get the appropriate frame pool from a given source name.
----@param source string
----@return FramePool
-function BattlePetScrollFrameMixin:GetFramePoolBySourceName(source)
-  local pool = self.OtherPool
+function BattlePetScrollFrameMixin:Update(rows)
+  self.HeaderPool:ReleaseAll()
+  self.PetPool:ReleaseAll()
 
-  if source == "Vendor" then
-    pool = self.VendorPool
-  elseif source == "Pet Battle" then
-    pool = self.WildPool
-  end
+  JetBattlePets.array:Each(rows, function(row, index)
+    local button
 
-  return pool
+    if row.isHeader then
+      button = self:AddHeaderButton(row, index)
+    else
+      button = self:AddPetButton(row, index)
+    end
+
+    if button then
+      button:Show()
+    end
+  end)
+
+  self.Contents:Layout()
 end
 
 QuestLogEntryMixin = {}

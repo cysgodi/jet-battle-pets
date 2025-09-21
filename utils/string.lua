@@ -45,7 +45,7 @@ end
 
 function JetBattlePets.text:Sanitize(text)
   --remove colorization
-  local sanitized = string.gsub(text, "|c%x+([%a%s:]+).+|r", "%1")
+  local sanitized = string.gsub(text, "|c%x+([%a%s:]+).*|r", "%1")
 
   --replace pipe newlines with standard bash ones
   sanitized = string.gsub(sanitized, "|n", "\n")

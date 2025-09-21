@@ -98,6 +98,7 @@ local ATLAS_NAMES = {
   SOURCE_DROP = "DungeonSkull",
   SOURCE_PET_BATTLE = "WildBattlePetCapturable",
   SOURCE_QUEST = "SmallQuestBang",
+  SOURCE_TREASURE = "VignetteLoot",
   SOURCE_VENDOR = "Crosshair_buy_32",
   THREAT_ICON = "Ping_Chat_Warning",
   VARIANT_OUTLINE_OWNED = "transmog-wardrobe-border-collected",
