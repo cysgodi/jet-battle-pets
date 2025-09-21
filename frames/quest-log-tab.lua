@@ -195,18 +195,17 @@ local function GetSourceNameFromSourceText(sourceText)
 end
 
 ---Get the icon for a battle pet source from a pet's source text
----@param sourceText string
+---@param sourceName string
 ---@return string
-local function GetSourceIconFromSourceText(sourceText)
+local function GetSourceIconFromSourceName(sourceName)
   local atlasNames = JetBattlePets.constants.ATLAS_NAMES
   local atlas = atlasNames.SOURCE_PET_BATTLE
-  local source = GetSourceNameFromSourceText(sourceText)
 
-  if source == "Drop" then
+  if sourceName == "Drop" then
     atlas = atlasNames.SOURCE_DROP
-  elseif source == "Quest" then
+  elseif sourceName == "Quest" then
     atlas = atlasNames.SOURCE_QUEST
-  elseif source == "Vendor" then
+  elseif sourceName == "Vendor" then
     atlas = atlasNames.SOURCE_VENDOR
   end
 
@@ -237,7 +236,9 @@ BattlePetsMixin = {}
 function BattlePetsMixin:OnShow()
   self.pets = self.pets or {}
 
-  self.ScrollFrame.entryFramePool:ReleaseAll()
+  self.ScrollFrame.OtherPool:ReleaseAll()
+  self.ScrollFrame.VendorPool:ReleaseAll()
+  self.ScrollFrame.WildPool:ReleaseAll()
   self.ScrollFrame.Contents:ResetUsage()
 
   local mapId = self:GetParent():GetCurrentMapID()
@@ -252,10 +253,28 @@ function BattlePetsMixin:OnShow()
   self.ScrollFrame.Contents:Layout()
 end
 
+---Create a pool of quest log entry template frames given a frame to
+---use as the parent.
+---@param parent Frame
+---@return FramePool
+local function InitQuestLogEntryFramePool(parent)
+  return CreateFramePool(
+    "Button",
+    parent,
+    "QuestLogEntryTemplate",
+    function(framePool, frame)
+      Pool_HideAndClearAnchors(framePool, frame)
+      frame.info = nil
+    end
+  )
+end
+
 ---@class BattlePetScrollFrameMixin : EventScrollFrame
 ---@field TitleText FontString
 ---@field EmptyText FontString
----@field entryFramePool FramePool
+---@field OtherPool FramePool
+---@field VendorPool FramePool
+---@field WildPool FramePool
 BattlePetScrollFrameMixin = {}
 
 function BattlePetScrollFrameMixin:Init()
@@ -265,33 +284,28 @@ function BattlePetScrollFrameMixin:Init()
   local useHighlightManager = true
   self.Contents:Init(onCreateFn, useHighlightManager)
 
-  local contentsFrame = self.Contents
+  self.OtherPool = InitQuestLogEntryFramePool(self.Contents)
+  self.VendorPool = InitQuestLogEntryFramePool(self.Contents)
+  self.WildPool = InitQuestLogEntryFramePool(self.Contents)
 
-  self.entryFramePool = CreateFramePool(
-    "Button",
-    contentsFrame,
-    "QuestLogEntryTemplate",
-    function(framePool, frame)
-      Pool_HideAndClearAnchors(framePool, frame)
-      frame.info = nil
-    end
-  )
-
-  contentsFrame.topPadding = 16
+  self.Contents.topPadding = 16
   self.TitleText:SetText("Battle Pets")
   self.EmptyText:SetText("No Battle Pets")
 end
 
 function BattlePetScrollFrameMixin:AddButton(pet, frameIndex)
-  local button = self.entryFramePool:Acquire();
+  local source = GetSourceNameFromSourceText(pet.sourceText)
+  local pool = self:GetFramePoolBySourceName(source)
+  local button = pool:Acquire();
 
   button.info = pet
   button.speciesID = pet.speciesID
+  button.source = source
   button.frameIndex = frameIndex
 
   QuestMapFrame:SetFrameLayoutIndex(button)
 
-  local atlas = GetSourceIconFromSourceText(pet.sourceText)
+  local atlas = GetSourceIconFromSourceName(button.source)
 
   if atlas == JetBattlePets.constants.ATLAS_NAMES.SOURCE_VENDOR then
     button.TaskIcon:SetPoint("CENTER", button.TaskIconBackground, "CENTER", -1, 0)
@@ -305,6 +319,21 @@ function BattlePetScrollFrameMixin:AddButton(pet, frameIndex)
   button.Text:SetText(pet.name)
   button:SetPoint("LEFT", 20, 0)
   button:Show()
+end
+
+---Get the appropriate frame pool from a given source name.
+---@param source string
+---@return FramePool
+function BattlePetScrollFrameMixin:GetFramePoolBySourceName(source)
+  local pool = self.OtherPool
+
+  if source == "Vendor" then
+    pool = self.VendorPool
+  elseif source == "Pet Battle" then
+    pool = self.WildPool
+  end
+
+  return pool
 end
 
 QuestLogEntryMixin = {}
