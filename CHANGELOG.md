@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.2
+
+- bumped TOC for 11.2.5
+
 ## v1.2.1
 
 - fixed an issue where models in the model viewer were drawn behind their backgrounds
