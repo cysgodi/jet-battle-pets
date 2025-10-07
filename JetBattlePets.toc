@@ -5,7 +5,6 @@
 ## Notes: Just Enough Battle Pets
 ## SavedVariables: JetBattlePetsEncounters, JetBattlePetsSettings
 ## OptionalDeps: Rematch
-## LoadSavedVariablesFirst: 1
 ## IconTexture: Interface\AddOns\JetBattlePets\textures\icon
 ## Category-enUS: Pet Battles
 ## Category-deDE: Haustierkämpfe
