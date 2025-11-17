@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.3
+
+- bumped TOC for 11.2.7
+
 ## v1.2.2
 
 - bumped TOC for 11.2.5
