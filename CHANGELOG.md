@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.4
+
+- fixed an issue where the addon was showing as out-of-date for 11.2.5
+
 ## v1.2.3
 
 - bumped TOC for 11.2.7
