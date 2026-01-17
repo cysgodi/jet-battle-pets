@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.2.5
+
+- fixed an error when right-clicking on a pet portrait in a battle when Rematch wasn't installed
+- added compatibility with 12.0.0 to TOC
+
 ## v1.2.4
 
 - fixed an issue where the addon was showing as out-of-date for 11.2.5

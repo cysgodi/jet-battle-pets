@@ -164,7 +164,7 @@ local function OnClickPetFrame(self)
   end
 
   local rematchInfo = C_AddOns.GetAddOnInfo("Rematch")
-  local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED"
+  local noRematch = rematchInfo.reason == "MISSING" or rematchInfo.reason == "DISABLED" or Rematch == nil
 
   if noRematch or not Rematch.settings.PetCardInBattle then
     return
