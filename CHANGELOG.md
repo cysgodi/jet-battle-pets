@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.6
+
+- bumped TOC for 12.0.1
+
 ## v1.2.5
 
 - fixed an error when right-clicking on a pet portrait in a battle when Rematch wasn't installed
