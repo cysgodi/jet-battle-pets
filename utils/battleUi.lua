@@ -50,9 +50,11 @@ function JetBattlePets.battleUi:OnModifierStateChanged(key, down)
   local BattleUiFrames = JetBattlePets.constants.FRAMES.BATTLE_UI
   local frameName
 
-  for _, frame in pairs(BattleUiFrames) do
-    if MouseIsOver(PetBattleFrame[frame]) then
-      frameName = frame
+  for _, _frameName in pairs(BattleUiFrames) do
+    local frame = PetBattleFrame[_frameName]
+
+    if frame ~= nil and frame["IsMouseOver"] ~= nil and PetBattleFrame[_frameName]:IsMouseOver() then
+      frameName = _frameName
     end
   end
 
