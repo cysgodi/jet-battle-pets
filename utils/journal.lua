@@ -143,7 +143,7 @@ function JetBattlePets.journal:GetNumOwned(speciesID, displayID)
     local petID, _speciesID = C_PetJournal.GetPetInfoByIndex(index)
 
     if _speciesID == speciesID then
-      local petInfo = JetBattlePets.pets.GetPet(petID)
+      local petInfo = JetBattlePets.pets.GetPet(petID or _speciesID)
 
       if petInfo.displayID == displayID or C_PetJournal.PetUsesRandomDisplay(speciesID) then
         ownedCount = ownedCount + 1
