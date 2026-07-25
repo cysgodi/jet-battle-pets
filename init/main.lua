@@ -15,8 +15,5 @@ function JetBattlePets.pets.GetPet(petOrSpeciesID)
     return C_PetJournal.GetPetInfoTableByPetID(petOrSpeciesID)
   end
 
-  local name = C_PetJournal.GetPetInfoBySpeciesID(petOrSpeciesID)
-  local _, petID = C_PetJournal.FindPetIDByName(name)
-
-  return C_PetJournal.GetPetInfoTableByPetID(petID)
+  return C_PetJournal.GetPetInfoTableBySpeciesID(petOrSpeciesID)
 end
