@@ -5,7 +5,7 @@
 - fixed an issue that would cause an error any time pet info was fetched from the base API
 - fixed an issue with the model viewer that would cause an error if a fetched pet's info only contained a species ID and no WOWGUID
 - removed compatibility with WoW versions below 12.1.0
-  - the `C_PetJournal.GetPetInfoBySpeciesID` has been removed, and it's replacement, `C_PetJournal.GetPetInfoTableBySpeciesID`, doesn't exist prior to 12.1
+  - the `C_PetJournal.GetPetInfoBySpeciesID` function has been removed, and its replacement, `C_PetJournal.GetPetInfoTableBySpeciesID`, doesn't exist prior to 12.1
 
 ## v1.2.8
 
