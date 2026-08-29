@@ -231,25 +231,25 @@ function JetBattlePets.rematch:AddVariantStats()
   })
 end
 
--- add filter to find species that use a random model
-local function AddHasRandomModelFilter()
-  Rematch.menus:AddToMenu("PetOther", {
+local petVariantsMenu = {
+  { title = "Variants" },
+  {
+    check = true,
+    func = Rematch.petFilterMenu.ToggleChecked,
+    group = "Other",
+    isChecked = Rematch.petFilterMenu.GetChecked,
+    key = "HasVariants",
+    text = "Has Multiple Models"
+  },
+  {
     check = true,
     func = Rematch.petFilterMenu.ToggleChecked,
     group = "Other",
     isChecked = Rematch.petFilterMenu.GetChecked,
     key = "HasRandomModel",
     text = "Uses Random Model"
-  })
-
-  function Rematch.filters.otherFuncs:HasRandomModel(petInfo)
-    return petInfo.speciesID and C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
-  end
-end
-
--- add filter to find species that have a shiny variant
-local function AddHasShinyFilter()
-  Rematch.menus:AddToMenu("PetOther", {
+  },
+  {
     check = true,
     func = Rematch.petFilterMenu.ToggleChecked,
     group = "Other",
@@ -257,16 +257,8 @@ local function AddHasShinyFilter()
     key = "HasShiny",
     radioGroup = "Has Shiny",
     text = "Has Shiny"
-  })
-
-  function Rematch.filters.otherFuncs:HasShiny(petInfo)
-    return HasShiny(petInfo)
-  end
-end
-
--- add filter to find shiny models
-local function AddIsShinyFilter()
-  Rematch.menus:AddToMenu("PetOther", {
+  },
+  {
     check = true,
     func = Rematch.petFilterMenu.ToggleChecked,
     group = "Other",
@@ -274,17 +266,37 @@ local function AddIsShinyFilter()
     key = "IsShiny",
     radioGroup = "Is Shiny",
     text = "Is Shiny",
+  }
+}
+
+function JetBattlePets.rematch:AddVariantFilters()
+  local filterMenu = Rematch.menus:GetDefinition("PetFilterMenu")
+  table.insert(filterMenu, 12, {
+    group = "Other",
+    highlight = Rematch.petFilterMenu.GroupUsed,
+    subMenu = "PetVariants",
+    text = "Variants",
   })
+
+  Rematch.settings.Filters["Variants"] = {}
+  Rematch.menus:Register("PetVariants", petVariantsMenu)
+  Rematch.menus:Register("PetFilterMenu", filterMenu)
+
+  function Rematch.filters.otherFuncs:HasRandomModel(petInfo)
+    return petInfo.speciesID and C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
+  end
+
+  function Rematch.filters.otherFuncs:HasShiny(petInfo)
+    return HasShiny(petInfo)
+  end
+
+  function Rematch.filters.otherFuncs:HasVariants(petInfo)
+    return petInfo.speciesID
+        and C_PetJournal.GetNumDisplays(petInfo.speciesID) > 1
+        and not C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
+  end
 
   function Rematch.filters.otherFuncs:IsShiny(petInfo)
     return IsShiny(petInfo)
   end
-end
-
-function JetBattlePets.rematch:AddVariantFilters()
-  Rematch.menus:AddToMenu("PetOther", { spacer = true, text = "" })
-
-  AddIsShinyFilter()
-  AddHasShinyFilter()
-  AddHasRandomModelFilter()
 end
