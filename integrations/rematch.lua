@@ -236,7 +236,7 @@ local petVariantsMenu = {
   {
     check = true,
     func = Rematch.petFilterMenu.ToggleChecked,
-    group = "Other",
+    group = "Variants",
     isChecked = Rematch.petFilterMenu.GetChecked,
     key = "HasVariants",
     text = "Has Multiple Models"
@@ -244,7 +244,7 @@ local petVariantsMenu = {
   {
     check = true,
     func = Rematch.petFilterMenu.ToggleChecked,
-    group = "Other",
+    group = "Variants",
     isChecked = Rematch.petFilterMenu.GetChecked,
     key = "HasRandomModel",
     text = "Uses Random Model"
@@ -252,7 +252,7 @@ local petVariantsMenu = {
   {
     check = true,
     func = Rematch.petFilterMenu.ToggleChecked,
-    group = "Other",
+    group = "Variants",
     isChecked = Rematch.petFilterMenu.GetChecked,
     key = "HasShiny",
     radioGroup = "Has Shiny",
@@ -261,7 +261,7 @@ local petVariantsMenu = {
   {
     check = true,
     func = Rematch.petFilterMenu.ToggleChecked,
-    group = "Other",
+    group = "Variants",
     isChecked = Rematch.petFilterMenu.GetChecked,
     key = "IsShiny",
     radioGroup = "Is Shiny",
@@ -272,7 +272,7 @@ local petVariantsMenu = {
 function JetBattlePets.rematch:AddVariantFilters()
   local filterMenu = Rematch.menus:GetDefinition("PetFilterMenu")
   table.insert(filterMenu, 12, {
-    group = "Other",
+    group = "Variants",
     highlight = Rematch.petFilterMenu.GroupUsed,
     subMenu = "PetVariants",
     text = "Variants",
@@ -281,6 +281,11 @@ function JetBattlePets.rematch:AddVariantFilters()
   Rematch.settings.Filters["Variants"] = {}
   Rematch.menus:Register("PetVariants", petVariantsMenu)
   Rematch.menus:Register("PetFilterMenu", filterMenu)
+
+  function Rematch.filters.funcs:Variants(petInfo)
+    print('test')
+    return false
+  end
 
   function Rematch.filters.otherFuncs:HasRandomModel(petInfo)
     return petInfo.speciesID and C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
