@@ -312,14 +312,14 @@ function JetBattlePets.rematch:PatchRematchExpansions()
     key = 11,
     icon = Rematch.petFilterMenu.GetIcon,
     isChecked = Rematch.petFilterMenu.GetChecked,
-    multiCheck = 11,
+    multiCheck = 12,
     multiCheckStart = 0,
     text = Rematch.utils:GetFormattedExpansionName(11),
   })
 
   for _, filter in ipairs(expansionsMenu) do
     if filter.multiCheck then
-      filter.multiCheck = 11
+      filter.multiCheck = 12
     end
   end
 
