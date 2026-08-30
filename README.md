@@ -29,6 +29,12 @@ Extended Rematch functionality:
 - a special badge in the Pet Journal for shiny pets that you own
 - model rarity information added to pet cards
 
+### Patches
+
+While Rematch is out of commission, JET also patches in additional missing functionality:
+
+- adds Midnight to the Expansions filter
+
 ## Configuration
 
 Choose for yourself how rare a battle pet model needs to be to trigger a notification.

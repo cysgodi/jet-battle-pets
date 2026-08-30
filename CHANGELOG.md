@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.10
+
+- move variant filters to their own Rematch filter group
+- add a filter to show only pets with multiple models (thanks @Lunaeria!)
+- add patches to extend and restore some Rematch functionality
+
 ## v1.2.9
 
 - fixed an issue that would cause an error any time pet info was fetched from the base API
