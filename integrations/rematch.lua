@@ -283,25 +283,18 @@ function JetBattlePets.rematch:AddVariantFilters()
   Rematch.menus:Register("PetFilterMenu", filterMenu)
 
   function Rematch.filters.funcs:Variants(petInfo)
-    print('test')
+    if self.HasRandomModel then
+      return petInfo.speciesID and C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
+    elseif self.HasShiny then
+      return HasShiny(petInfo)
+    elseif self.HasVariants then
+      return petInfo.speciesID
+          and C_PetJournal.GetNumDisplays(petInfo.speciesID) > 1
+          and not C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
+    elseif self.IsShiny then
+      return IsShiny(petInfo)
+    end
+
     return false
-  end
-
-  function Rematch.filters.otherFuncs:HasRandomModel(petInfo)
-    return petInfo.speciesID and C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
-  end
-
-  function Rematch.filters.otherFuncs:HasShiny(petInfo)
-    return HasShiny(petInfo)
-  end
-
-  function Rematch.filters.otherFuncs:HasVariants(petInfo)
-    return petInfo.speciesID
-        and C_PetJournal.GetNumDisplays(petInfo.speciesID) > 1
-        and not C_PetJournal.PetUsesRandomDisplay(petInfo.speciesID)
-  end
-
-  function Rematch.filters.otherFuncs:IsShiny(petInfo)
-    return IsShiny(petInfo)
   end
 end
