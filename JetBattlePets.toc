@@ -49,6 +49,7 @@ frames/variant-models.xml
 
 # 3rd party integrations
 integrations/events.lua
+integrations/patches/rematch_mouseover.lua
 integrations/patches/rematch_expansions.lua
 integrations/patches/rematch_filters.lua
 integrations/rematch.lua
