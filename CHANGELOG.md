@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.11
+
+- add a patch for Rematch to correct references to mouseover functions that changed in 12.1
+
 ## v1.2.10
 
 - move variant filters to their own Rematch filter group

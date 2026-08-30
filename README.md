@@ -33,6 +33,7 @@ Extended Rematch functionality:
 
 While Rematch is out of commission, JET also patches in additional missing functionality:
 
+- fixes Rematch compatibility with 12.1
 - adds Midnight to the Expansions filter
 
 ## Configuration
