@@ -5,9 +5,8 @@
   since the `filterGroups` variable is local to the Rematch filter
   file.
 
-  This patch **will** break any other addons that do this same thing
-  (and vice versa). It also may need to be updated if/when Rematch
-  is ever updated again if `filters.lua` changes in that update.
+  This patch exposes the local `filterGroups` variable at
+  `Rematch.filters.filterGroups` so that it can be extended by other addons.
 ]]
 
 -- Filter Override Patch
@@ -16,7 +15,7 @@ local L = rematch.localization
 local C = rematch.constants
 local settings = rematch.settings
 
-local filterGroups = {
+Rematch.filters.filterGroups = {
   -- {filterkey,localized_name},
   { "Search",    SEARCH },
   { "Stats",     L["Stats"] },
@@ -40,7 +39,7 @@ local filterGroups = {
 }
 
 -- for use with GetFilterList, to give other sub-groups a name
-local otherGroups = {
+Rematch.filters.otherGroups = {
   { "Leveling",    L["Leveling"] },
   { "Tradable",    L["Tradable"] },
   { "Battle",      L["Battle"] },
@@ -51,6 +50,9 @@ local otherGroups = {
   { "Hidden",      L["Hidden"] },
   { "CurrentZone", L["Zone"] },
 }
+
+local filterGroups = Rematch.filters.filterGroups
+local otherGroups = Rematch.filters.otherGroups
 
 -- the filtered list of petIDs/speciesIDs when the current filters are applied
 local filteredPetList = {}
@@ -138,9 +140,9 @@ end
 function rematch.filters:HasJust(filterGroup, key)
   local found = false
   for k, v in pairs(settings.Filters[filterGroup]) do
-    if k ~= key then   -- a key other than the one given is enabled, fails
+    if k ~= key then -- a key other than the one given is enabled, fails
       return false
-    else               -- key we're looking for is enabled, but not done looking until all enabled keys checked
+    else             -- key we're looking for is enabled, but not done looking until all enabled keys checked
       found = true
     end
   end
@@ -188,7 +190,7 @@ end
 -- also returns true/false if search is the only filter being used
 function rematch.filters:GetFilterList(filters)
   local list = ""
-  if not filters then   -- if no filters table provided, then use current filters
+  if not filters then -- if no filters table provided, then use current filters
     filters = settings.Filters
   end
   for _, info in ipairs(filterGroups) do
@@ -196,15 +198,15 @@ function rematch.filters:GetFilterList(filters)
     if filterName and filterGroup and filters[filterGroup] then
       if filterGroup == "Sort" and not settings.ResetSortWithFilters then
         -- while Sort always exists in filter, only need to list it when sort is reset with filters
-      elseif next(filters[filterGroup]) then       -- this filterGroup has something in it, it should be listed
-        if filterGroup == "Other" then             -- for "Other" filterGroup, list out individual subgroups
+      elseif next(filters[filterGroup]) then -- this filterGroup has something in it, it should be listed
+        if filterGroup == "Other" then       -- for "Other" filterGroup, list out individual subgroups
           for _, other in ipairs(otherGroups) do
             local otherGroup, otherName = other[1], other[2]
             if filters.Other[otherGroup] then
               list = list .. otherName .. ", "
             end
           end
-        else         -- for all other groups, add the name of the filterGroup to the list
+        else -- for all other groups, add the name of the filterGroup to the list
           list = list .. filterName .. ", "
         end
       end
@@ -243,7 +245,7 @@ function rematch.filters:SetSearch(text)
   if not text or text:len() == 0 then -- no search text, leave
     return
   end
-  settings.Filters.RawSearchText = text   -- before any parsing/changes are done, keep the original text
+  settings.Filters.RawSearchText = text -- before any parsing/changes are done, keep the original text
   -- pull out any stat operations and put them into Stats filterGroup (in the gsub function)
   text = text:gsub("(%w+[<>=]%d+)", rematch.filters.ParseStatOperators)
   text = text:gsub("(%w+=%d+%-%d)", rematch.filters.ParseStatRange)
@@ -355,11 +357,11 @@ end
 -- Strong Vs will return true only if every chosen Strong Vs pet type is strong against the chosen types (can be more than one)
 -- self (like all these other filters.funcs) is the filter's table, {[2]=true,[10]=true} is strong vs dragonkin and mechanical
 function rematch.filters.funcs:Strong(petInfo)
-  if not settings.StrongVsLevel then   -- if Pet Filter Options: Use Level In Strong Vs Filter is unchecked, we can use a cache to speed this up
+  if not settings.StrongVsLevel then -- if Pet Filter Options: Use Level In Strong Vs Filter is unchecked, we can use a cache to speed this up
     local speciesID = petInfo.speciesID
     if not speciesID then
       return false
-    elseif strongVsCache[speciesID] == nil then   -- this speciesID has not been tested yet
+    elseif strongVsCache[speciesID] == nil then -- this speciesID has not been tested yet
       -- to make sure all strong vs are accounted for, copy the filter into this reused strongNeeded
       wipe(strongNeeded)
       for petType in pairs(self) do
@@ -367,18 +369,18 @@ function rematch.filters.funcs:Strong(petInfo)
       end
       -- next nil out the strongNeeded that have a strongVs
       for abilityID, strongVsType in pairs(petInfo.strongVs) do
-        strongNeeded[strongVsType] = nil         -- this will nil other strong types that are already nil that we don't care about
+        strongNeeded[strongVsType] = nil -- this will nil other strong types that are already nil that we don't care about
       end
-      if next(strongNeeded) then                 -- something is left in the strongNeeded table, not all strong vs passed; fail pet
+      if next(strongNeeded) then         -- something is left in the strongNeeded table, not all strong vs passed; fail pet
         strongVsCache[speciesID] = false
-      else                                       -- nothing remains in strongNeeded table, so this pet passes
+      else                               -- nothing remains in strongNeeded table, so this pet passes
         strongVsCache[speciesID] = true
       end
     end
     return strongVsCache[speciesID]
-  else                   -- Pet Filter Options: Use Level In Strong Filter is checked; need to check every pet since they can be different levels
+  else             -- Pet Filter Options: Use Level In Strong Filter is checked; need to check every pet since they can be different levels
     if not petInfo.isOwned then
-      return false       -- unowned pets can't be high enough level, immediately leave
+      return false -- unowned pets can't be high enough level, immediately leave
     end
     wipe(strongNeeded)
     for petType in pairs(self) do
@@ -389,7 +391,7 @@ function rematch.filters.funcs:Strong(petInfo)
         strongNeeded[strongVsType] = nil
       end
     end
-    return not next(strongNeeded)     -- if nothing left in strongNeeded table, return true (list pet) otherwise false (don't list pet)
+    return not next(strongNeeded) -- if nothing left in strongNeeded table, return true (list pet) otherwise false (don't list pet)
   end
 end
 
@@ -410,13 +412,13 @@ end
 -- Level submenu
 function rematch.filters.funcs:Level(petInfo)
   if not petInfo.canBattle then
-    return false     -- pets that can't battle never show in level filters
+    return false -- pets that can't battle never show in level filters
   end
   if self.MovesetNot25 and petInfo.isMovesetAt25 then
-    return false     -- Moveset Not At 25 is checked and pet has a moveset at 25, fail
+    return false -- Moveset Not At 25 is checked and pet has a moveset at 25, fail
   end
   if self.Without25s and petInfo.isSpeciesAt25 then
-    return false     -- Without Any 25s is checked and pet has a version at 25, fail
+    return false -- Without Any 25s is checked and pet has a version at 25, fail
   end
   if self[1] or self[2] or self[3] or self[4] then
     local level = petInfo.level or 0
@@ -446,7 +448,7 @@ end
 function rematch.filters.funcs:Breed(petInfo)
   local breed = petInfo.breedID
   if breed == 0 then
-    breed = 13     -- for filters, 3-12 is the breeds and 13 is NEW
+    breed = 13 -- for filters, 3-12 is the breeds and 13 is NEW
   end
   return self[breed]
 end
@@ -563,7 +565,7 @@ end
 function rematch.filters.otherFuncs:Moveset(petInfo, value)
   local moveset = petInfo.moveset
   if not petInfo.canBattle or not moveset then
-    return false     -- not going to count pets that can't battle
+    return false -- not going to count pets that can't battle
   end
   local isUnique = rematch.collectionInfo:IsMovesetUnique(moveset)
   if value == "UniqueMoveset" and not isUnique then
@@ -588,7 +590,7 @@ end
 -- Other -> Current Zone (value is implicitly true if this filter is enabled)
 -- in addition, to track zone changes, use of this filter will start watching for ZONE_CHANGED_NEW_AREA if not already
 function rematch.filters.otherFuncs:CurrentZone(petInfo)
-  if not currentZone then   -- if this is the first filter run where filter is enabled, turn on zone updates
+  if not currentZone then -- if this is the first filter run where filter is enabled, turn on zone updates
     rematch.events:Register(rematch.filters, "ZONE_CHANGED_NEW_AREA", rematch.filters.ZONE_CHANGED_NEW_AREA)
     currentZone = GetRealZoneText() or ""
   end
@@ -601,19 +603,19 @@ end
 
 -- new zone isn't immediately available on ZONE_CHANGED_NEW_AREA; on zone change wait a second before updating
 function rematch.filters:ZONE_CHANGED_NEW_AREA()
-  if rematch.filters:Get("Other", "CurrentZone") then            -- if Current Zone filter enabled
-    rematch.timer:Start(1, rematch.filters.UpdateCurrentZone)    -- wait a second and update currentZone
-  else                                                           -- filter is no longer enabled, stop watching for zone updates
+  if rematch.filters:Get("Other", "CurrentZone") then         -- if Current Zone filter enabled
+    rematch.timer:Start(1, rematch.filters.UpdateCurrentZone) -- wait a second and update currentZone
+  else                                                        -- filter is no longer enabled, stop watching for zone updates
     rematch.events:Unregister(rematch.filters, "ZONE_CHANGED_NEW_AREA")
-    currentZone = nil                                            -- nil currentZone
+    currentZone = nil                                         -- nil currentZone
   end
 end
 
 -- this runs 1.0 second after zoning into a new area while Other -> Current Zone is enabled
 function rematch.filters:UpdateCurrentZone()
   currentZone = GetRealZoneText() or ""
-  rematch.filters:ForceUpdate()           -- set dirty flag so next filter will run
-  if rematch.petsPanel:IsVisible() then   -- and if pet list on screen then do a filter run now
+  rematch.filters:ForceUpdate()         -- set dirty flag so next filter will run
+  if rematch.petsPanel:IsVisible() then -- and if pet list on screen then do a filter run now
     rematch.petsPanel:Update()
   end
 end
@@ -624,7 +626,7 @@ end
 -- stats are within the defined ranges
 function rematch.filters.funcs:Stats(petInfo)
   if not petInfo.isOwned or not petInfo.canBattle then
-    return     -- all pets with stat searches must be collected pets that can battle
+    return -- all pets with stat searches must be collected pets that can battle
   end
   if self.Level then
     local level, low, high = petInfo.level, self.Level[1], self.Level[2]
@@ -695,16 +697,17 @@ function rematch.filters.funcs:Search(petInfo)
     -- ability name relevant 7-8, abilityDescription relevance 9-10
     for _, abilityID in ipairs(petInfo.abilityList) do
       local searchAbilityID = abilityRelevance[abilityID]
-      if searchAbilityID then       -- if already encountered this abilityID and it was a match no need to keep looking
+      if searchAbilityID then -- if already encountered this abilityID and it was a match no need to keep looking
         searchRelevance[speciesID] = searchAbilityID
         return true
-      elseif searchAbilityID == nil then     -- this ability's result hasn't been cached yet
+      elseif searchAbilityID == nil then -- this ability's result hasn't been cached yet
         local _, name, _, _, description = C_PetBattles.GetAbilityInfoByID(abilityID)
         -- ability name match: relevance 7-8
         if match(self, pattern, name) then
           local relevance = name:len() == length and 7 or 8
           searchRelevance[speciesID] = relevance
-          abilityRelevance[abilityID] = relevance           -- cache in both places, abilityID can be used by difference species
+          abilityRelevance[abilityID] =
+              relevance -- cache in both places, abilityID can be used by difference species
           return true
         end
         --  ability description match: relevance 9-10
@@ -727,7 +730,7 @@ function rematch.filters.funcs:Search(petInfo)
   end
 
   -- finished search gauntlet; this pet had no matches and should not list
-  searchRelevance[speciesID] = false   -- cache it as such
+  searchRelevance[speciesID] = false -- cache it as such
   return false
 end
 
@@ -793,8 +796,8 @@ function rematch.filters:Evaluate(petInfo)
   for _, filterGroup in ipairs(filtersUsed) do
     local func = rematch.filters.funcs[filterGroup]
     if func then
-      if not func(settings.Filters[filterGroup], petInfo) then      -- if filter function returns false, this pet should not list
-        return false                                                -- immediately return; no need to test other filters
+      if not func(settings.Filters[filterGroup], petInfo) then -- if filter function returns false, this pet should not list
+        return false                                           -- immediately return; no need to test other filters
       end
     end
   end
@@ -805,7 +808,7 @@ end
 -- runs all filters and returns an ordered list of petID/speciesIDs that meet all filters
 -- force is true to ignore the dirty flag and do a filter run regarldess whether any data has changed
 function rematch.filters:RunFilters(force)
-  if not dirty and not force then   -- if we already did this work and nothing has changed since, return the same filtered list
+  if not dirty and not force then -- if we already did this work and nothing has changed since, return the same filtered list
     return filteredPetList
   end
   -- do housekeeping before evaluating pets
@@ -840,7 +843,7 @@ end
 -- (in this case use the first numerical sortKey 1-8 that's not used)
 function rematch.filters:SetSort(sortLevel, sortKey)
   if sortLevel == 1 then
-    if sortKey == C.SORT_DEFAULT_LEVEL_1 then   -- default for level 1 sort is C.SORT_NAME
+    if sortKey == C.SORT_DEFAULT_LEVEL_1 then -- default for level 1 sort is C.SORT_NAME
       settings.Filters.Sort[sortLevel] = nil
     else
       settings.Filters.Sort[sortLevel] = sortKey
@@ -848,11 +851,11 @@ function rematch.filters:SetSort(sortLevel, sortKey)
     -- when setting a sortLevel 1 sort, clear the subsorts so it will pick up defaults
     settings.Filters.Sort[2] = nil
     settings.Filters.Sort[3] = nil
-    settings.Filters.Sort[-2] = nil     -- clear the subsort's reverse sort setting too
+    settings.Filters.Sort[-2] = nil -- clear the subsort's reverse sort setting too
     settings.Filters.Sort[-3] = nil
   end
   if sortLevel == 2 then
-    if sortKey == C.SORT_DEFAULT_LEVEL_2 then   -- default for level 2 sort is C.SORT_LEVEL
+    if sortKey == C.SORT_DEFAULT_LEVEL_2 then -- default for level 2 sort is C.SORT_LEVEL
       settings.Filters.Sort[sortLevel] = nil
     else
       settings.Filters.Sort[sortLevel] = sortKey
@@ -862,7 +865,7 @@ function rematch.filters:SetSort(sortLevel, sortKey)
     settings.Filters.Sort[-3] = nil
   end
   if sortLevel == 3 then
-    if sortKey == C.SORT_DEFAULT_LEVEL_3 then   -- default for level 3 sort is C.SORT_RARITY
+    if sortKey == C.SORT_DEFAULT_LEVEL_3 then -- default for level 3 sort is C.SORT_RARITY
       settings.Filters.Sort[sortLevel] = nil
     else
       settings.Filters.Sort[sortLevel] = sortKey
@@ -882,12 +885,12 @@ end
 function rematch.filters:GetSort(sortLevel)
   local sortKey = settings.Filters.Sort[sortLevel]
   if sortLevel == 1 and not sortKey then
-    return C.SORT_DEFAULT_LEVEL_1     -- default is C.SORT_NAME
+    return C.SORT_DEFAULT_LEVEL_1 -- default is C.SORT_NAME
   elseif sortLevel == 2 and not sortKey then
-    return C.SORT_DEFAULT_LEVEL_2     -- default is C.SORT_LEVEL
+    return C.SORT_DEFAULT_LEVEL_2 -- default is C.SORT_LEVEL
   elseif sortLevel == 3 and not sortKey then
-    return C.SORT_DEFAULT_LEVEL_3     -- default is C.SORT_RARITY
-  else                                -- sortKey should have a value at this point, return it
+    return C.SORT_DEFAULT_LEVEL_3 -- default is C.SORT_RARITY
+  else                            -- sortKey should have a value at this point, return it
     return sortKey
   end
 end
@@ -923,10 +926,10 @@ end
 function rematch.filters:LoadFavoriteFilter(filters)
   for _, filterInfo in pairs(filterGroups) do
     local filterGroup = filterInfo[1]
-    rematch.filters:Clear(filterGroup)     -- even rolling over sort and search (which may not reset on a ClearAll)
+    rematch.filters:Clear(filterGroup) -- even rolling over sort and search (which may not reset on a ClearAll)
     local savedGroup = filters[filterGroup]
     if not savedGroup then
-      filters[filterGroup] = {}       -- for older saved filters, in case new ones are added
+      filters[filterGroup] = {} -- for older saved filters, in case new ones are added
     elseif type(savedGroup) == "table" then
       settings.Filters[filterGroup] = CopyTable(savedGroup)
     else
