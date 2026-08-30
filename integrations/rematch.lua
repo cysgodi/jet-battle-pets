@@ -271,6 +271,7 @@ local petVariantsMenu = {
 
 function JetBattlePets.rematch:AddVariantFilters()
   local filterMenu = Rematch.menus:GetDefinition("PetFilterMenu")
+
   table.insert(filterMenu, 12, {
     group = "Variants",
     highlight = Rematch.petFilterMenu.GroupUsed,
@@ -297,4 +298,31 @@ function JetBattlePets.rematch:AddVariantFilters()
 
     return false
   end
+end
+
+function JetBattlePets.rematch:PatchRematchExpansions()
+  Rematch.constants.EXPANSION_COLORS[11] = "BF80FF" -- midnight
+
+  local filterMenu = Rematch.menus:GetDefinition("PetFilterMenu")
+  local expansionsMenu = Rematch.menus:GetDefinition("PetExpansion")
+  table.insert(expansionsMenu, 2, {
+    check = true,
+    func = Rematch.petFilterMenu.ToggleChecked,
+    group = "Expansion",
+    key = 11,
+    icon = Rematch.petFilterMenu.GetIcon,
+    isChecked = Rematch.petFilterMenu.GetChecked,
+    multiCheck = 11,
+    multiCheckStart = 0,
+    text = Rematch.utils:GetFormattedExpansionName(11),
+  })
+
+  for _, filter in ipairs(expansionsMenu) do
+    if filter.multiCheck then
+      filter.multiCheck = 11
+    end
+  end
+
+  Rematch.menus:Register("PetExpansions", expansionsMenu)
+  Rematch.menus:Register("PetFilterMenu", filterMenu)
 end

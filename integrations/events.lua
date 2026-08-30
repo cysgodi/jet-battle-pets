@@ -18,6 +18,7 @@ function JetBattlePets.events:PLAYER_ENTERING_WORLD()
     JetBattlePets.rematch:AddVariantFilters()
     JetBattlePets.rematch:AddVariantStats()
     JetBattlePets.rematch:AddModelRarity()
+    JetBattlePets.rematch:PatchRematchExpansions()
     JetBattlePets.state.REMATCH_INIT_COMPLETE = true
   end
 end
