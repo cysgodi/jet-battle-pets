@@ -3,6 +3,10 @@ local _, _JetBattlePets = ...
 ---@type JetBattlePets
 local JetBattlePets = _JetBattlePets
 
+if not Rematch then
+  return
+end
+
 JetBattlePets.rematch = JetBattlePets.rematch or {}
 
 -- get model rarity text to display on a pet card

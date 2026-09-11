@@ -9,11 +9,7 @@ function JetBattlePets.events:PLAYER_ENTERING_WORLD()
     return
   end
 
-  if C_AddOns.IsAddOnLoaded("Rematch") then
-    if JetBattlePets.state.REMATCH_INIT_COMPLETE then
-      return
-    end
-
+  if C_AddOns.IsAddOnLoaded("Rematch") and not JetBattlePets.state.REMATCH_INIT_COMPLETE and Rematch then
     JetBattlePets.rematch:AddIsShinyBadge()
     JetBattlePets.rematch:AddVariantFilters()
     JetBattlePets.rematch:AddVariantStats()

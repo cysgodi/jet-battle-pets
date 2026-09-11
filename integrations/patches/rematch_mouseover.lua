@@ -2,6 +2,10 @@
   Patches rematch to use renamed mouseover functions in the 12.1 API.
 ]]
 
+if not Rematch then
+  return
+end
+
 local rematch = Rematch
 local C = rematch.constants
 
@@ -456,7 +460,7 @@ function rematch.menus:RefreshMenus()
 end
 
 function RematchMenuFrameMixin:OnHide()
-  self:Hide()   -- if hiding due to parent hiding, hide this too
+  self:Hide() -- if hiding due to parent hiding, hide this too
   self:ClearAllPoints()
   -- release all menu buttons back to the pool
   for _, button in ipairs(self.buttons) do

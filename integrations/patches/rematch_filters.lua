@@ -9,13 +9,17 @@
   `Rematch.filters.filterGroups` so that it can be extended by other addons.
 ]]
 
+if not Rematch then
+  return
+end
+
 -- Filter Override Patch
-local rematch = Rematch
+local rematch = Rematch or {}
 local L = rematch.localization
 local C = rematch.constants
 local settings = rematch.settings
 
-Rematch.filters.filterGroups = {
+rematch.filters.filterGroups = {
   -- {filterkey,localized_name},
   { "Search",    SEARCH },
   { "Stats",     L["Stats"] },
@@ -33,13 +37,13 @@ Rematch.filters.filterGroups = {
   { "Other",     OTHER },
   { "Similar",   L["Similar"] },
   { "Script",    L["Script"] },
-  { "Moveset",   L["Moveset"] }, -- this is a specific moveset (moveset level is under leve, and unique/shared is under other/moveset)
+  { "Moveset",   L["Moveset"] }, -- this is a specific moveset (moveset level is under level, and unique/shared is under other/moveset)
   { "Expansion", EXPANSION_FILTER_TEXT },
   { "Sort",      L["Sort"] },
 }
 
 -- for use with GetFilterList, to give other sub-groups a name
-Rematch.filters.otherGroups = {
+rematch.filters.otherGroups = {
   { "Leveling",    L["Leveling"] },
   { "Tradable",    L["Tradable"] },
   { "Battle",      L["Battle"] },
@@ -51,8 +55,8 @@ Rematch.filters.otherGroups = {
   { "CurrentZone", L["Zone"] },
 }
 
-local filterGroups = Rematch.filters.filterGroups
-local otherGroups = Rematch.filters.otherGroups
+local filterGroups = rematch.filters.filterGroups
+local otherGroups = rematch.filters.otherGroups
 
 -- the filtered list of petIDs/speciesIDs when the current filters are applied
 local filteredPetList = {}

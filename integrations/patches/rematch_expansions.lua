@@ -1,3 +1,7 @@
+if not Rematch then
+  return
+end
+
 local rematch = Rematch
 
 --[[
@@ -36,7 +40,7 @@ local sourceIDs = rematch.odTable:Create(function(self)
       end
     end
   end
-  rematch.roster:RestoreJournal()   -- put everything back how it was
+  rematch.roster:RestoreJournal() -- put everything back how it was
   rematch.timer:Start(0, rematch.roster.FinishUpdatingRoster)
 end, true)
 
