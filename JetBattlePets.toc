@@ -1,5 +1,5 @@
 ## Interface: 120100
-## Version: 1.2.11
+## Version: 1.2.12
 ## Title: JET Battle Pets
 ## Author: Cysgodi
 ## Notes: Just Enough Battle Pets

@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.12
+
+- Fix errors from Rematch patches when Rematch is disabled or not installed.
+
 ## v1.2.11
 
 - add a patch for Rematch to correct references to mouseover functions that changed in 12.1
