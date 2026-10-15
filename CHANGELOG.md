@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.13
+
+- bumped TOC for 12.1.5 compatibility
+
 ## v1.2.12
 
 - Fix errors from Rematch patches when Rematch is disabled or not installed.
